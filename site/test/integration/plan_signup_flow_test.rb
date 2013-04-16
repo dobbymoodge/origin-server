@@ -144,11 +144,6 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
     assert_select ".plan-pricing td:content(?)", /€/, true, "Prices should be in EUR once selected during account creation"
     assert_select ".plan-pricing td:content(?)", /\$/, false, "Prices should not be in USD once EUR is selected during account creation"
 
-    # Re-open billing info page to edit
-    get '/account/plans/silver/upgrade/billing_info/edit'
-    assert_response :success
-    assert_select "option[value=eur]", false, "Currency should not be editable after account exists"
-
     post '/account/plans/silver/upgrade', {:plan_id => 'silver'}
     assert_response :success
     assert_select 'h1', 'You have upgraded to the Silver plan!'
