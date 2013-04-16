@@ -18,20 +18,6 @@ class BillingInfoControllerTest < ActionController::TestCase
     assert_redirected_to account_path
   end
 
-  test "should prevent changing currency once set" do
-    omit_if_aria_is_unavailable
-    with_account_holder
-    get :edit
-    assert_response :success
-    assert_not_nil assigns(:billing_info)
-    aria_billing_info = assigns(:billing_info).attributes
-    aria_billing_info['currency_cd'] = aria_billing_info['currency_cd'] == 'usd' ? 'eur' : 'usd'
-    post :update, :aria_billing_info => { :aria_billing_info => aria_billing_info }
-    assert assigns(:aria_user)
-    assert assigns(:billing_info).errors[:base].length > 0
-    assert_template :edit
-  end
-
   test "should update user account" do
     omit_if_aria_is_unavailable
     acct_info = {

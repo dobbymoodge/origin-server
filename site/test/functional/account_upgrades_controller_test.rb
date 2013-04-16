@@ -50,12 +50,11 @@ class AccountUpgradesControllerTest < ActionController::TestCase
         :aria_billing_info => {
           :first_name => 'Bob',
           :last_name => 'Smith',
-          :city => 'Happyville',
-          :region => 'TX',
-          :country => 'US',
-          :address1 => '12345 Test str',
-          :zip => '10001',
-          :currency_cd => 'usd'
+          :city => 'Lund',
+          :region => 'Scania',
+          :country => 'SE',
+          :address1 => '10 Adelgatan',
+          :zip => '223309',
         }
       }
 
@@ -67,6 +66,7 @@ class AccountUpgradesControllerTest < ActionController::TestCase
     assert aria_user.has_valid_account?
     assert aria_user.has_complete_account?
     assert aria_user.billing_info.persisted?
+    assert_equal 'eur', aria_user.currency_cd
 
     assert_equal :full, session[:streamline_type]
     assert_redirected_to account_plan_upgrade_payment_method_path

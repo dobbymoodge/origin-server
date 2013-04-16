@@ -160,8 +160,6 @@ $ ->
           required:     true
         "streamline_full_user[aria_billing_info][country]":
           required:     true
-        "streamline_full_user[aria_billing_info][currency_cd]":
-          required:     true
 
   # /app/account/plans/<plan>/upgrade/billing_info/edit
   $('form#edit_aria_billing_info').validate
@@ -184,6 +182,4 @@ $ ->
       "aria_billing_info[aria_billing_info][zip]":
         required:     true
       "aria_billing_info[aria_billing_info][country]":
-        required:     true
-      "aria_billing_info[aria_billing_info][currency_cd]":
         required:     true

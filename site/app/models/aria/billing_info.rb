@@ -9,8 +9,7 @@ module Aria
               :zip,
               :first_name,
               :middle_initial,
-              :last_name,
-              :currency_cd
+              :last_name
     # Rails 3.0 requires all define_attribute_method calls to be together
 
     # Aria makes us explicitly unset values on update
@@ -34,7 +33,6 @@ module Aria
                           :zip
     validates_presence_of :region, :message => "State can't be blank", :if => :region_is_state?
     validates_presence_of :region, :message => "Region can't be blank", :unless => :region_is_state?
-    validates_presence_of :currency_cd, :message => "Currency can't be blank", :if => :can_change_currency?
 
     validates_length_of :first_name, :maximum => 32
     validates_length_of :middle_initial, :maximum => 1
@@ -56,7 +54,7 @@ module Aria
                    },
                    :rename_to_load => {},
                    :no_rename_to_update => ['bill_middle_initial'],
-                   :no_prefix => ['currency_cd']
+                   :no_prefix => []
 
     #def tax_exempt?
     #  tax_exempt.present? and tax_exempt.to_i > 0
@@ -78,10 +76,6 @@ module Aria
         super(hash)
         hash['region'] = hash.delete(@@region_load_map[hash['country']])
       end
-    end
-
-    def can_change_currency?
-      !@persisted
     end
 
     def full_name
@@ -106,7 +100,6 @@ module Aria
         :country => 'US',
         :region => 'TX',
         :zip => '10001',
-        :currency_cd => 'usd'
       }.merge(opts))
     end
 

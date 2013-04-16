@@ -254,6 +254,9 @@ module Aria
       template_id = invoice_template_id(params['country'],params['bill_country'])
       params['alt_template_msg_no'] = template_id unless template_id.nil?
 
+      # Set the account currency CD based on the billing country
+      params['currency_cd'] = account_currency_cd(params['bill_country'])
+
       Aria.create_acct_complete(params)
       true
     rescue Aria::AccountExists
@@ -275,10 +278,6 @@ module Aria
         validates &= v.valid? if v.respond_to? :valid?
       end
       return false unless validates
-
-      if self.billing_info.attributes['currency_cd'].present? and params.has_key?('currency_cd') and self.billing_info.attributes['currency_cd'] != params['currency_cd']
-        raise Aria::Error, 'Contact customer support if you need to change your payment currency'
-      end
 
       Aria.update_acct_complete(acct_no, params)
       clear_cache!
@@ -332,6 +331,11 @@ module Aria
       def invoice_template_id(country, bill_country)
         country_code = country.blank? ? bill_country : country
         Rails.configuration.aria_invoice_template_id_map[country_code]
+      end
+
+      def account_currency_cd(bill_country)
+        @@currency_cd_by_country ||= Rails.configuration.currency_cd_by_country
+        @@currency_cd_by_country[bill_country]
       end
 
       def aria_datetime(s)

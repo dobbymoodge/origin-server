@@ -268,6 +268,7 @@ class AriaUnitTest < ActiveSupport::TestCase
       :master_plan_no => Rails.application.config.aria_default_plan_no.to_s,
       :userid => Digest::MD5::hexdigest('foo'),
       :alt_template_msg_no => '3754655',
+      :currency_cd => 'eur'
     }).to_return(resp(ok_wddx))
 
     stub_aria(:get_acct_no_from_user_id, {

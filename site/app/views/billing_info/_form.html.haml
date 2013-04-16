@@ -15,11 +15,6 @@
         = b.input :zip, :input_html => { :class => 'input-mini', :placeholder => "ZIP"}, :autocomplete => 'postal-code'
       = b.inputs :inline => true, :name => 'Country' do
         = b.input :country, :as => :select, :collection => countries_for_select, :include_blank => false, :autocomplete => 'country'
-      = b.inputs :inline => true, :name => 'Currency' do
-        - if billing_info.can_change_currency?
-          = b.input :currency_cd, :as => :select, :collection => currencies_for_select, :include_blank => false, :input_html => { :title => "Preferred currency for billing" }
-        - else
-          = b.input :currency_cd, :input_html => { :value => billing_info.currency_cd.upcase, :title => "Existing users may not change their currency", :readonly => true, :disabled => true }
   %aside.span4
     %h5 Your contact information is safe
     %p
@@ -32,15 +27,6 @@
       We plan on expanding availability in the future.
       Please contact us at #{link_to_account_mailto} if you are interested in subscribing from another country.
 
-    - if billing_info.can_change_currency?
-      %h5 Choosing Your Currency
-      %p
-        You may choose to be billed in any of our available currencies.
-        However, once you choose a currency, you cannot change it.
-    - else
-      %h5 Why Can't I Change My Currency?
-      %p
-        Once your account is created, you are unable to change the currency you are billed in.
     - if @aria_user and @aria_user.has_account? and @aria_user.has_valid_payment_method?
       %h5 Already Have A Payment Method Registered?
       %p

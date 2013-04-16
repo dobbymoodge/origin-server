@@ -20,7 +20,7 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
     }
   end
 
-  def user_params(currency_cd="usd")
+  def user_params
     { :streamline_full_user => {
         :greeting =>"Mr.",
         :first_name =>"Joe",
@@ -32,22 +32,21 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
         :password => "f00b4r",
         :password_confirmation =>"f00b4r"
       },
-      :aria_billing_info => billing_params(currency_cd),
+      :aria_billing_info => billing_params,
     }
   end
 
-  def billing_params(currency_cd="usd")
+  def billing_params
     { :first_name =>"Joe",
       :middle_initial =>"",
       :last_name =>"Somebody",
       :address1 =>"12345 Happy Street",
       :address2 =>"",
       :address3 =>"",
-      :city => "Happyville",
-      :region =>"TX",
-      :zip => "10001",
-      :country => "US",
-      :currency_cd => currency_cd
+      :city => "Toronto",
+      :region =>"ON",
+      :zip => "M167U8",
+      :country => "CA",
     }
   end
 
@@ -105,9 +104,8 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
 
     get '/account/plans/silver/upgrade/edit'
     assert_response :success
-    assert_select "option[value=eur]", true, "Currency should be editable during Aria account creation"
 
-    put '/account/plans/silver/upgrade/edit', :streamline_full_user => user_params("eur")
+    put '/account/plans/silver/upgrade/edit', :streamline_full_user => user_params
     assert_redirected_to '/account/plans/silver/upgrade/payment_method'
 
     omit_if_aria_is_unavailable
@@ -128,7 +126,7 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
     # Do some direct checking here just to validate
     omit_if_aria_is_unavailable
     user = Aria::UserContext.new(WebUser.new(:rhlogin => user.rhlogin))
-    assert_equal 'eur', user.currency_cd
+    assert_equal 'cad', user.currency_cd
     assert user.has_valid_payment_method?
     assert payment_method = user.payment_method
     assert payment_method.persisted?
