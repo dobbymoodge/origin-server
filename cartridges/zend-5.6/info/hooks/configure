@@ -128,5 +128,5 @@ fi
 export CART_INFO_DIR
 $CART_INFO_DIR/bin/deploy_httpd_proxy.sh $application $namespace $uuid $IP
 
-client_result "Note:  You can access the Zend Server Console at: https://${application}-${namespace}.${CLOUD_DOMAIN}/ZendServer"
+client_result "Note:  You should set the password for the Zend Server Console at: https://${application}-${namespace}.${CLOUD_DOMAIN}/ZendServer"
 enable_cgroups
