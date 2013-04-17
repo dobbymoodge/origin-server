@@ -73,6 +73,7 @@ class AriaIntegrationTest < ActionDispatch::IntegrationTest
     assert user.create_account(:billing_info => info, :contact_info => contact_info), user.errors.inspect
     assert_equal info.attributes, user.billing_info.attributes
     assert_equal 'usd', user.currency_cd
+    assert_equal Rails.configuration.aria_invoice_template_id_map['US'], user.account_details.alt_msg_template_no.to_s
 
     # update to Canadian address
     info.country = 'CA'
@@ -82,6 +83,7 @@ class AriaIntegrationTest < ActionDispatch::IntegrationTest
     assert user.update_account(:billing_info => info), user.errors.inspect
     assert_equal info.attributes, user.billing_info.attributes
     assert_equal 'usd', user.currency_cd
+    assert_equal Rails.configuration.aria_invoice_template_id_map['US'], user.account_details.alt_msg_template_no.to_s
 
     # update to French address, unset some optional fields
     info.country = 'FR'
@@ -95,6 +97,7 @@ class AriaIntegrationTest < ActionDispatch::IntegrationTest
     info.middle_initial = info.address2 = nil
     assert_equal expected_attributes, user.billing_info.attributes
     assert_equal 'usd', user.currency_cd
+    assert_equal Rails.configuration.aria_invoice_template_id_map['US'], user.account_details.alt_msg_template_no.to_s
 
     #
     # user_eur
@@ -109,6 +112,7 @@ class AriaIntegrationTest < ActionDispatch::IntegrationTest
     assert user_eur.create_account(:billing_info => info, :contact_info => contact_info), user_eur.errors.inspect
     assert_equal info.attributes, user_eur.billing_info.attributes
     assert_equal 'eur', user_eur.currency_cd
+    assert_equal Rails.configuration.aria_invoice_template_id_map['FR'], user_eur.account_details.alt_msg_template_no.to_s
 
     #
     # user_cad
@@ -123,6 +127,7 @@ class AriaIntegrationTest < ActionDispatch::IntegrationTest
     assert user_cad.create_account(:billing_info => info, :contact_info => contact_info), user_cad.errors.inspect
     assert_equal info.attributes, user_cad.billing_info.attributes
     assert_equal 'cad', user_cad.currency_cd
+    assert_equal Rails.configuration.aria_invoice_template_id_map['CA'], user_cad.account_details.alt_msg_template_no.to_s
   end
 
   test 'should set direct post settings' do

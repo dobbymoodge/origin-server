@@ -43,10 +43,10 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
       :address1 =>"12345 Happy Street",
       :address2 =>"",
       :address3 =>"",
-      :city => "Toronto",
-      :region =>"ON",
-      :zip => "M167U8",
-      :country => "CA",
+      :city => "Lund",
+      :region =>"Scania",
+      :zip => "223397",
+      :country => "SE",
     }
   end
 
@@ -126,7 +126,7 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
     # Do some direct checking here just to validate
     omit_if_aria_is_unavailable
     user = Aria::UserContext.new(WebUser.new(:rhlogin => user.rhlogin))
-    assert_equal 'cad', user.currency_cd
+    assert_equal 'eur', user.currency_cd
     assert user.has_valid_payment_method?
     assert payment_method = user.payment_method
     assert payment_method.persisted?
