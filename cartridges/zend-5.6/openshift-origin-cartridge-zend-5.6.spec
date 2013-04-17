@@ -2,7 +2,7 @@
 
 Summary:   Provides zend-5.6 support
 Name:      openshift-origin-cartridge-zend-5.6
-Version: 1.7.2
+Version: 1.7.3
 Release:   1%{?dist}
 Group:     Development/Languages
 License:   ASL 2.0
@@ -108,6 +108,11 @@ rm -rf %{buildroot}
 %doc %{cartridgedir}/LICENSE
 
 %changelog
+* Wed Apr 17 2013 Dan McPherson <dmcphers@redhat.com> 1.7.3-1
+- Warn user to set Zend Server Console password on app create
+  (vvitek@redhat.com)
+- fix /health page for zend-5.6 (vvitek@redhat.com)
+
 * Wed Apr 10 2013 Adam Miller <admiller@redhat.com> 1.7.2-1
 - Delete move/pre-move/post-move hooks and any references to these hooks
   (rpenta@redhat.com)
