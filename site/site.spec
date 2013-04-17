@@ -8,7 +8,7 @@
 
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
-Version: 1.7.7
+Version: 1.7.8
 Release:   1%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
@@ -189,6 +189,9 @@ fi
 %{sitedir}/public
 
 %changelog
+* Tue Apr 16 2013 Dan McPherson <dmcphers@redhat.com> 1.7.8-1
+- 
+
 * Tue Apr 16 2013 Troy Dawson <tdawson@redhat.com> 1.7.7-1
 - Fix bug 952371 - make first and last name required in billing info
   (jliggitt@redhat.com)
