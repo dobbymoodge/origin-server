@@ -8,7 +8,7 @@
 
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
-Version: 1.7.8
+Version: 1.7.9
 Release:   1%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
@@ -193,6 +193,9 @@ fi
 %{sitedir}/public
 
 %changelog
+* Tue Apr 16 2013 Dan McPherson <dmcphers@redhat.com> 1.7.9-1
+- Add buildrequires for new test packages (ccoleman@redhat.com)
+
 * Tue Apr 16 2013 Dan McPherson <dmcphers@redhat.com> 1.7.8-1
 - 
 
