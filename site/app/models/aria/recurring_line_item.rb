@@ -37,7 +37,7 @@ module Aria
       true
     end
     def tax?
-      (service_name || '').include?('Taxes')
+      (service_name || '').include?('Tax')
     end
 
     def name
