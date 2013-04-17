@@ -272,7 +272,7 @@ class AriaUnitTest < ActiveSupport::TestCase
       :status_cd => 0.to_s,
       :master_plan_no => Rails.application.config.aria_default_plan_no.to_s,
       :userid => Digest::MD5::hexdigest('foo'),
-      :alt_template_msg_no => '3754655',
+      :alt_msg_template_no => '3754655',
       :currency_cd => 'usd'
     }
     api_args.merge!(billing_info.to_aria_attributes)
@@ -288,6 +288,18 @@ class AriaUnitTest < ActiveSupport::TestCase
     user.expects(:login).returns('foo').at_least_once
     assert user.create_account( :billing_info => billing_info, :contact_info => contact_info )
     assert user.errors.empty?
+  end
+
+  # Temporary test case to accomodate Streamline bug. This should be removed when the
+  # ContactInfo models is updated for correct enforcement.
+  test 'should enable creation of ContactInfo without country' do
+    full_user = Streamline::FullUser.test
+    full_user.country = nil
+    assert contact_info = Aria::ContactInfo.from_full_user(full_user)
+    assert_equal nil, contact_info.country
+    full_user.country = ''
+    assert contact_info = Aria::ContactInfo.from_full_user(full_user)
+    assert_equal '', contact_info.country
   end
 
   test 'get_acct_no_from_user_id is cacheable' do
