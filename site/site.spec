@@ -46,6 +46,8 @@ Requires:       %{?scl:%scl_prefix}rubygem(dalli)
 Requires:       %{?scl:%scl_prefix}rubygem(countries)
 Requires:       %{?scl:%scl_prefix}rubygem(poltergeist)
 Requires:       %{?scl:%scl_prefix}rubygem(konacha)
+Requires:       %{?scl:%scl_prefix}rubygem(minitest)
+Requires:       %{?scl:%scl_prefix}rubygem(rspec-core)
 
 %if 0%{?fedora}%{?rhel} <= 6
 BuildRequires:  ruby193-build
@@ -82,6 +84,8 @@ BuildRequires:  %{?scl:%scl_prefix}rubygem(dalli)
 BuildRequires:  %{?scl:%scl_prefix}rubygem(countries)
 BuildRequires:  %{?scl:%scl_prefix}rubygem(poltergeist)
 BuildRequires:  %{?scl:%scl_prefix}rubygem(konacha)
+BuildRequires:  %{?scl:%scl_prefix}rubygem(minitest)
+BuildRequires:  %{?scl:%scl_prefix}rubygem(rspec-core)
 
 BuildArch:      noarch
 
