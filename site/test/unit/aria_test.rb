@@ -273,7 +273,7 @@ class AriaUnitTest < ActiveSupport::TestCase
       :master_plan_no => Rails.application.config.aria_default_plan_no.to_s,
       :userid => Digest::MD5::hexdigest('foo'),
       :alt_msg_template_no => '111',
-      :collections_acct_groups => '10017441',
+      :collections_acct_groups => Rails.application.config.default_collections_group_id.to_s,
       :currency_cd => 'usd'
     }
     api_args.merge!(billing_info.to_aria_attributes)
