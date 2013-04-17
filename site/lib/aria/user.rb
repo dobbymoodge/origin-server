@@ -257,6 +257,11 @@ module Aria
       # Set the account currency CD based on the billing country
       params['currency_cd'] = Aria::User.account_currency_cd(params['bill_country'])
 
+      # Set the default collection group
+      unless Aria::User.collections_acct_group_id.blank?
+        params['collections_acct_groups'] = Aria::User.collections_acct_group_id
+      end
+
       Aria.create_acct_complete(params)
       true
     rescue Aria::AccountExists
@@ -336,6 +341,10 @@ module Aria
       def self.account_currency_cd(bill_country)
         return Rails.configuration.default_currency.to_s if bill_country.blank?
         Rails.configuration.currency_cd_by_country[bill_country]
+      end
+
+      def self.collections_acct_group_id
+        return Rails.configuration.default_collections_group_id.to_s
       end
 
       def aria_datetime(s)

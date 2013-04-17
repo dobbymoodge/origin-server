@@ -76,6 +76,9 @@ RedHatCloud::Application.configure do
   config.preferred_countries = [:US]
   config.currency_cd_by_country = Hash.new('eur').merge!({ 'US' => 'usd', 'CA' => 'cad' })
 
+  # Default collections account group
+  config.default_collections_group_id = '10017441'
+
   # Supported Credit Cards
   # Specify accepted cards here. Keys can be found in config/credit_cards.yml
   config.accepted_cards = [:visa,:mastercard,:amex]
