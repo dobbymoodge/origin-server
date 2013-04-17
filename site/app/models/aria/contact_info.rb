@@ -5,6 +5,11 @@ module Aria
 
     attr_aria *@@attribute_names.map(&:to_sym)
 
+    # :country -should- be required. For the time being, this rule is relaxed
+    # due to a known streamline bug that would affect Commercialization UAT
+    validates_presence_of :address1, :city, :region, :zip
+    validates_inclusion_of :country, :in => Rails.configuration.allowed_countries.map(&:to_s), :message => "Unsupported country #{:country}", :allow_blank => true
+
     class << self
       def from_billing_info(billing_info)
         new(billing_info.attributes.slice(*@@attribute_names))

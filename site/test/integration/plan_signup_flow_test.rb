@@ -20,7 +20,7 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
     }
   end
 
-  def user_params(currency_cd="usd")
+  def user_params
     { :streamline_full_user => {
         :greeting =>"Mr.",
         :first_name =>"Joe",
@@ -32,22 +32,21 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
         :password => "f00b4r",
         :password_confirmation =>"f00b4r"
       },
-      :aria_billing_info => billing_params(currency_cd),
+      :aria_billing_info => billing_params,
     }
   end
 
-  def billing_params(currency_cd="usd")
+  def billing_params
     { :first_name =>"Joe",
       :middle_initial =>"",
       :last_name =>"Somebody",
       :address1 =>"12345 Happy Street",
       :address2 =>"",
       :address3 =>"",
-      :city => "Happyville",
-      :region =>"TX",
-      :zip => "10001",
-      :country => "US",
-      :currency_cd => currency_cd
+      :city => "Lund",
+      :region =>"Scania",
+      :zip => "223397",
+      :country => "SE",
     }
   end
 
@@ -105,9 +104,8 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
 
     get '/account/plans/silver/upgrade/edit'
     assert_response :success
-    assert_select "option[value=eur]", true, "Currency should be editable during Aria account creation"
 
-    put '/account/plans/silver/upgrade/edit', :streamline_full_user => user_params("eur")
+    put '/account/plans/silver/upgrade/edit', :streamline_full_user => user_params
     assert_redirected_to '/account/plans/silver/upgrade/payment_method'
 
     omit_if_aria_is_unavailable
@@ -145,11 +143,6 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select ".plan-pricing td:content(?)", /€/, true, "Prices should be in EUR once selected during account creation"
     assert_select ".plan-pricing td:content(?)", /\$/, false, "Prices should not be in USD once EUR is selected during account creation"
-
-    # Re-open billing info page to edit
-    get '/account/plans/silver/upgrade/billing_info/edit'
-    assert_response :success
-    assert_select "option[value=eur]", false, "Currency should not be editable after account exists"
 
     post '/account/plans/silver/upgrade', {:plan_id => 'silver'}
     assert_response :success

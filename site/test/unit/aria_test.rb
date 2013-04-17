@@ -252,13 +252,18 @@ class AriaUnitTest < ActiveSupport::TestCase
     user = TestUser.new
     user.expects(:login).returns('foo').at_least_once
     Aria.expects(:create_acct_complete).raises(Aria::AuthenticationError)
-    assert !user.create_account
+    assert billing_info = Aria::BillingInfo.test
+    assert contact_info = Aria::ContactInfo.from_billing_info(billing_info)
+    assert !user.create_account( :billing_info => billing_info, :contact_info => contact_info )
     assert user.errors.size == 1
     assert user.errors[:base][0] =~ /AuthenticationError/, user.errors.inspect
   end
 
   test 'should invoke create_acct_complete' do
-    stub_aria(:create_acct_complete, {
+    assert billing_info = Aria::BillingInfo.test
+    assert contact_info = Aria::ContactInfo.from_billing_info(billing_info)
+
+    api_args = {
       :supp_field_values => 'foo',
       :supp_field_names => 'rhlogin',
       :password => 'passw0rd',
@@ -267,8 +272,13 @@ class AriaUnitTest < ActiveSupport::TestCase
       :status_cd => 0.to_s,
       :master_plan_no => Rails.application.config.aria_default_plan_no.to_s,
       :userid => Digest::MD5::hexdigest('foo'),
-      :alt_template_msg_no => '3754655',
-    }).to_return(resp(ok_wddx))
+      :alt_msg_template_no => '111',
+      :collections_acct_groups => Rails.application.config.default_collections_group_id.to_s,
+      :currency_cd => 'usd'
+    }
+    api_args.merge!(billing_info.to_aria_attributes)
+    api_args.merge!(contact_info.to_aria_attributes)
+    stub_aria(:create_acct_complete, api_args).to_return(resp(ok_wddx))
 
     stub_aria(:get_acct_no_from_user_id, {
       :user_id => Digest::MD5::hexdigest('foo'),
@@ -277,8 +287,20 @@ class AriaUnitTest < ActiveSupport::TestCase
     user = TestUser.new
     user.expects(:random_password).returns('passw0rd')
     user.expects(:login).returns('foo').at_least_once
-    assert user.create_account
+    assert user.create_account( :billing_info => billing_info, :contact_info => contact_info )
     assert user.errors.empty?
+  end
+
+  # Temporary test case to accomodate Streamline bug. This should be removed when the
+  # ContactInfo models is updated for correct enforcement.
+  test 'should enable creation of ContactInfo without country' do
+    full_user = Streamline::FullUser.test
+    full_user.country = nil
+    assert contact_info = Aria::ContactInfo.from_full_user(full_user)
+    assert_equal nil, contact_info.country
+    full_user.country = ''
+    assert contact_info = Aria::ContactInfo.from_full_user(full_user)
+    assert_equal '', contact_info.country
   end
 
   test 'get_acct_no_from_user_id is cacheable' do
@@ -406,8 +428,9 @@ class AriaUnitTest < ActiveSupport::TestCase
   test 'validates values for create account' do
     user = TestUser.new
     user.expects(:login).at_least_once.returns('foo')
-    billing_info = Aria::BillingInfo.new
-    assert !user.create_account(:billing_info => billing_info)
+    assert billing_info = Aria::BillingInfo.new
+    assert contact_info = Aria::ContactInfo.from_billing_info(billing_info)
+    assert !user.create_account( :billing_info => billing_info, :contact_info => contact_info )
     assert user.errors.empty?
     assert !billing_info.errors.empty?
   end
