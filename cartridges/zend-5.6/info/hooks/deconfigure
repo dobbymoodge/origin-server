@@ -63,4 +63,5 @@ oo-frontend-disconnect \
     --with-container-name "$application" \
     --with-namespace "$namespace" \
     --path "" \
-    --path "/ZendServer"
+    --path "/ZendServer" \
+    --path "/health"

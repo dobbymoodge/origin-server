@@ -25,4 +25,5 @@ oo-frontend-connect \
     --with-container-name "$application" \
     --with-namespace "$namespace" \
     --path "" --target "$IP:8080" \
-    --path "/ZendServer" --target "$IP:16081/ZendServer"
+    --path "/ZendServer" --target "$IP:16081/ZendServer" \
+    --path "/health" --target "$CART_INFO_DIR/configuration/health.html" --file
