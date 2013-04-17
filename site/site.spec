@@ -8,7 +8,7 @@
 
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
-Version: 1.7.9
+Version: 1.7.10
 Release:   1%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
@@ -193,6 +193,18 @@ fi
 %{sitedir}/public
 
 %changelog
+* Wed Apr 17 2013 Dan McPherson <dmcphers@redhat.com> 1.7.10-1
+- Looking current group ID (hripps@redhat.com)
+- Fixed test cases for dummy invoice tmpl ID & coll group (hripps@redhat.com)
+- Set collections group default during acct creation (hripps@redhat.com)
+- Updated to validate invoice template ID assignment (hripps@redhat.com)
+- Updated to include workaround for Streamline bug (hripps@redhat.com)
+- Aria models now require and validate country plus other tweaks
+  (hripps@redhat.com)
+- Modified based on review feedback (hripps@redhat.com)
+- Billing currency now auto-selected per config file mapping
+  (hripps@redhat.com)
+
 * Tue Apr 16 2013 Dan McPherson <dmcphers@redhat.com> 1.7.9-1
 - Add buildrequires for new test packages (ccoleman@redhat.com)
 
