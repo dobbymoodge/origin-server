@@ -12,7 +12,9 @@ class AriaIntegrationTest < ActionDispatch::IntegrationTest
     assert_raise(Aria::AuthenticationError){ user.create_session }
     assert_nil user.destroy_session
 
-    user.create_account
+    assert billing_info = Aria::BillingInfo.test
+    assert contact_info = Aria::ContactInfo.from_billing_info(billing_info)
+    assert user.create_account( :billing_info => billing_info, :contact_info => contact_info )
 
     assert s = user.create_session
     assert s.length > 0
@@ -27,7 +29,9 @@ class AriaIntegrationTest < ActionDispatch::IntegrationTest
     assert !user.has_valid_account?
     assert !user.send(:has_account?)
 
-    assert user.create_account
+    assert billing_info = Aria::BillingInfo.test
+    assert contact_info = Aria::ContactInfo.from_billing_info(billing_info)
+    assert user.create_account( :billing_info => billing_info, :contact_info => contact_info )
     assert user.errors.empty?
 
     assert_equal 'Y', Aria.get_acct_details_all(user.acct_no).is_test_acct
@@ -39,7 +43,9 @@ class AriaIntegrationTest < ActionDispatch::IntegrationTest
 
   test 'should set bill day correctly' do
     user = Aria::UserContext.new(WebUser.new :rhlogin => new_uuid)
-    assert user.create_account
+    assert billing_info = Aria::BillingInfo.test
+    assert contact_info = Aria::ContactInfo.from_billing_info(billing_info)
+    assert user.create_account( :billing_info => billing_info, :contact_info => contact_info )
     assert user.errors.empty?
     assert_equal '1', user.account_details.bill_day, "A new user's bill_day is not 1. Make sure 'Perform Prorated Initial Invoicing Upon Account Creation' is set to false in Aria"
   end
@@ -62,7 +68,9 @@ class AriaIntegrationTest < ActionDispatch::IntegrationTest
     info.zip = 12345.to_s
     info.region = 'TX'
     info.middle_initial = 'P'
-    assert user.create_account(:billing_info => info), user.errors.inspect
+
+    assert contact_info = Aria::ContactInfo.from_billing_info(info)
+    assert user.create_account(:billing_info => info, :contact_info => contact_info), user.errors.inspect
     assert_equal info.attributes, user.billing_info.attributes
     assert_equal 'usd', user.currency_cd
 
@@ -97,7 +105,8 @@ class AriaIntegrationTest < ActionDispatch::IntegrationTest
     info.zip = 54321.to_s
     info.region = 'Loraine'
     info.middle_initial = 'P'
-    assert user_eur.create_account(:billing_info => info), user_eur.errors.inspect
+    assert contact_info = Aria::ContactInfo.from_billing_info(info)
+    assert user_eur.create_account(:billing_info => info, :contact_info => contact_info), user_eur.errors.inspect
     assert_equal info.attributes, user_eur.billing_info.attributes
     assert_equal 'eur', user_eur.currency_cd
 
@@ -110,7 +119,8 @@ class AriaIntegrationTest < ActionDispatch::IntegrationTest
     info.zip = 'K1A0B1'
     info.region = 'ON'
     info.middle_initial = 'P'
-    assert user_cad.create_account(:billing_info => info), user_cad.errors.inspect
+    assert contact_info = Aria::ContactInfo.from_billing_info(info)
+    assert user_cad.create_account(:billing_info => info, :contact_info => contact_info), user_cad.errors.inspect
     assert_equal info.attributes, user_cad.billing_info.attributes
     assert_equal 'cad', user_cad.currency_cd
   end

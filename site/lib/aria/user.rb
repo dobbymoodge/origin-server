@@ -252,7 +252,7 @@ module Aria
 
       # Set the invoice template ID based on the country
       template_id = invoice_template_id(params['country'],params['bill_country'])
-      params['alt_template_msg_no'] = template_id unless template_id.nil?
+      params['alt_msg_template_no'] = template_id unless template_id.nil?
 
       # Set the account currency CD based on the billing country
       params['currency_cd'] = Aria::User.account_currency_cd(params['bill_country'])
@@ -334,7 +334,7 @@ module Aria
       end
 
       def self.account_currency_cd(bill_country)
-        return Rails.configuration.default_currency if bill_country.blank?
+        return Rails.configuration.default_currency.to_s if bill_country.blank?
         Rails.configuration.currency_cd_by_country[bill_country]
       end
 

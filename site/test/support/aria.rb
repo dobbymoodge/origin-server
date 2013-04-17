@@ -22,7 +22,10 @@ class ActiveSupport::TestCase
   end
 
   def create_silver_user(u)
-    assert u.create_account :billing_info => Aria::BillingInfo.test,
+    billing_info = Aria::BillingInfo.test
+    contact_info = Aria::ContactInfo.from_billing_info(billing_info)
+    assert u.create_account :billing_info => billing_info,
+                            :contact_info => contact_info,
                             :payment_method => Aria::PaymentMethod.test,
                             :test_acct_ind => 0,
                             :status_cd => 1

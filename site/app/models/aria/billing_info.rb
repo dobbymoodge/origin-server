@@ -24,7 +24,6 @@ module Aria
       'CA' => 'state',
     })
 
-
     validates_presence_of :first_name,
                           :last_name,
                           :address1,
@@ -45,6 +44,8 @@ module Aria
     validates_length_of :zip, :maximum => 14
     validates_length_of :region, :maximum => 2, :if => :region_is_state? # From Aria.state_prov
     validates_length_of :region, :maximum => 32, :unless => :region_is_state? # From Aria.locality
+
+    validates_inclusion_of :country, :in => Rails.configuration.allowed_countries.map(&:to_s), :message => "Unsupported country #{:country}"
 
     account_prefix :from => 'billing_',
                    :to => 'bill_',
