@@ -140,6 +140,7 @@ RedHatCloud::Application.configure do
                                  site/omniture.js
                                  site/s_code.js
                                  site/picatcha.js
+                                 site/address.js
                                  common.css
                                  console.css
                                  site.css
