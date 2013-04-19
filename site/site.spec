@@ -8,7 +8,7 @@
 
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
-Version: 1.7.12
+Version: 1.7.13
 Release:   1%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
@@ -193,6 +193,9 @@ fi
 %{sitedir}/public
 
 %changelog
+* Fri Apr 19 2013 Dan McPherson <dmcphers@redhat.com> 1.7.13-1
+- 
+
 * Fri Apr 19 2013 Dan McPherson <dmcphers@redhat.com> 1.7.12-1
 - Fix bug 953725 - don't do required element validation in contact_info
   (jliggitt@redhat.com)
