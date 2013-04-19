@@ -33,7 +33,7 @@ module Aria
     # The total amount associated with this line item.
     #
     def total_cost
-      @total_cost ||= units * rate
+      @total_cost ||= attributes['amount'] || (units * rate)
     end
 
     #
