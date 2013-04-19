@@ -131,7 +131,7 @@ function _redhat_frontpage_cache_request($url) {
       $response = drupal_http_request($request_url, array(), 'GET', NULL, 0, 5.0);
       if ($response->code == 200) {
         $response = filter_xss($response->data, array('a','img','div','p','small','cite','code','em','span'));
-        cache_set($url, $response, 'cache', $_SERVER['REQUEST_TIME'] + 1000*60*10);
+        cache_set($url, $response, 'cache', $_SERVER['REQUEST_TIME'] + 60*60*1);
       }
     } catch (Exception $e) {
     }
