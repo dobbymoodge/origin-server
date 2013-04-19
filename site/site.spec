@@ -8,7 +8,7 @@
 
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
-Version: 1.7.11
+Version: 1.7.12
 Release:   1%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
@@ -193,6 +193,12 @@ fi
 %{sitedir}/public
 
 %changelog
+* Fri Apr 19 2013 Dan McPherson <dmcphers@redhat.com> 1.7.12-1
+- Fix bug 953725 - don't do required element validation in contact_info
+  (jliggitt@redhat.com)
+- Fix bug 953176 - recognize tax line items correctly, use Aria-provided usage
+  total amount (jliggitt@redhat.com)
+
 * Thu Apr 18 2013 Dan McPherson <dmcphers@redhat.com> 1.7.11-1
 - Fix bug 953549 to add address.js to production build (jliggitt@redhat.com)
 
