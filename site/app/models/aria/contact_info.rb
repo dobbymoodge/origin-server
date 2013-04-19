@@ -5,9 +5,12 @@ module Aria
 
     attr_aria *@@attribute_names.map(&:to_sym)
 
-    # :country -should- be required. For the time being, this rule is relaxed
-    # due to a known streamline bug that would affect Commercialization UAT
-    validates_presence_of :address1, :city, :region, :zip
+    # Don't do validation of presence of attributes
+    # 1) We create from billing_info, which will do the validation
+    # or
+    # 2) We create from streamline, and can't edit anything anyway
+
+    # Do validate the country is allowed, if provided
     validates_inclusion_of :country, :in => Rails.configuration.allowed_countries.map(&:to_s), :message => "Unsupported country #{:country}", :allow_blank => true
 
     class << self
