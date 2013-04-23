@@ -94,12 +94,12 @@ RedHatCloud::Application.configure do
   # Add a corresponding value in config/countries.yml if the country uses something other than:
   #  - 'State' for the locality
   #  - 'Postcode' for the postal code
-  config.allowed_countries = %w(AT BE CA CH DE DK ES FI FR GB IE IS IT LU NL NO PT SE US).map(&:to_sym)
+  config.allowed_countries = [:AT, :BE, :CA, :CH, :DE, :DK, :ES, :FI, :FR, :GB, :IE, :IS, :IT, :LU, :NL, :NO, :PT, :SE, :US]
   config.preferred_countries = [:US]
   config.currency_cd_by_country = Hash.new('eur').merge!({ 'US' => 'usd', 'CA' => 'cad' })
 
   # Default collections account group
-  config.default_collections_group_id = '10017441'
+  config.collections_group_id_by_country = Hash.new('3').merge!({ 'US' => '1', 'CA' => '2' })
 
   # Supported Credit Cards
   # Specify accepted cards here. Keys can be found in config/credit_cards.yml
