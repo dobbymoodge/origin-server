@@ -344,7 +344,6 @@ module Aria
       def self.collections_acct_group_id(country, bill_country)
         country_code = country.blank? ? bill_country : country
         Rails.configuration.collections_group_id_by_country[country_code]
-        return Rails.configuration.default_collections_group_id.to_s
       end
 
       def aria_datetime(s)
