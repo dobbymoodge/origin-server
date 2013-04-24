@@ -8,7 +8,7 @@
 
 Summary:   Dependencies for OpenShift development
 Name:      rhc-devenv
-Version: 1.7.8
+Version: 1.7.9
 Release:   1%{?dist}
 Group:     Development/Libraries
 License:   GPLv2
@@ -757,6 +757,9 @@ rm -rf /tmp/phantomjs
 /etc/openshift/development
 
 %changelog
+* Wed Apr 24 2013 Adam Miller <admiller@redhat.com> 1.7.9-1
+- exclude mongodb from epel (admiller@redhat.com)
+
 * Tue Apr 16 2013 Troy Dawson <tdawson@redhat.com> 1.7.8-1
 - Symlink drupal favicon into root drupal directory (ccoleman@redhat.com)
 - Merge pull request #1192 from smarterclayton/bug_952187_fix_error_documents
