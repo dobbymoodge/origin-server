@@ -33,6 +33,7 @@ class AccountUpgradesControllerTest < ActionController::TestCase
 
   test "should upgrade a full user in streamline" do
     with_confirmed_user
+    test_country = 'SE'
     put :update,
       :plan_id => 'silver',
       :streamline_full_user => {
@@ -52,7 +53,7 @@ class AccountUpgradesControllerTest < ActionController::TestCase
           :last_name => 'Smith',
           :city => 'Lund',
           :region => 'Scania',
-          :country => 'SE',
+          :country => test_country,
           :address1 => '10 Adelgatan',
           :zip => '223309',
         }
@@ -67,6 +68,10 @@ class AccountUpgradesControllerTest < ActionController::TestCase
     assert aria_user.has_complete_account?
     assert aria_user.billing_info.persisted?
     assert_equal 'eur', aria_user.currency_cd
+
+    assert config_collections_group_id = Rails.configuration.collections_group_id_by_country[test_country]
+    assert account_collections_group_id = Aria.get_acct_groups_by_acct(aria_user.acct_no)[0].client_acct_group_id
+    assert_equal config_collections_group_id, account_collections_group_id
 
     assert_equal :full, session[:streamline_type]
     assert_redirected_to account_plan_upgrade_payment_method_path

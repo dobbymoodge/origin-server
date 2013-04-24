@@ -42,6 +42,10 @@ module Aria
       Array(super.acct_groups)
     end
 
+    def get_acct_groups_by_acct(acct_no)
+      Array(super(:acct_no => acct_no).acct_groups)
+    end
+
     def create_acct_complete(params)
       super encode_supplemental(params)
     end

@@ -127,6 +127,11 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
     omit_if_aria_is_unavailable
     user = Aria::UserContext.new(WebUser.new(:rhlogin => user.rhlogin))
     assert_equal 'eur', user.currency_cd
+
+    assert config_collections_group_id = Rails.configuration.collections_group_id_by_country[user.account_details.country]
+    assert account_collections_group_id = Aria.get_acct_groups_by_acct(user.acct_no)[0].client_acct_group_id
+    assert_equal config_collections_group_id, account_collections_group_id
+
     assert user.has_valid_payment_method?
     assert payment_method = user.payment_method
     assert payment_method.persisted?

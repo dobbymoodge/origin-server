@@ -273,11 +273,11 @@ class AriaUnitTest < ActiveSupport::TestCase
       :master_plan_no => Rails.application.config.aria_default_plan_no.to_s,
       :userid => Digest::MD5::hexdigest('foo'),
       :alt_msg_template_no => '111',
-      :collections_acct_groups => Rails.application.config.default_collections_group_id.to_s,
       :currency_cd => 'usd'
     }
     api_args.merge!(billing_info.to_aria_attributes)
     api_args.merge!(contact_info.to_aria_attributes)
+    api_args[:client_coll_acct_group_ids] = Rails.application.config.collections_group_id_by_country[api_args['country']]
     stub_aria(:create_acct_complete, api_args).to_return(resp(ok_wddx))
 
     stub_aria(:get_acct_no_from_user_id, {
