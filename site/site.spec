@@ -8,7 +8,7 @@
 
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
-Version: 1.7.13
+Version: 1.7.14
 Release:   1%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
@@ -193,6 +193,10 @@ fi
 %{sitedir}/public
 
 %changelog
+* Wed Apr 24 2013 Adam Miller <admiller@redhat.com> 1.7.14-1
+- Remove obsolete reference to default_collections_group_id (hripps@redhat.com)
+- [TO STAGE] Add collections account group support (hripps@redhat.com)
+
 * Fri Apr 19 2013 Dan McPherson <dmcphers@redhat.com> 1.7.13-1
 - 
 
