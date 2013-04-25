@@ -1,6 +1,7 @@
 module Aria
   class ContactInfo < Base
-    @@attribute_names = 'address1', 'address2', 'city', 'region', 'country', 'zip'
+    @@attribute_names = 'first_name', 'middle_initial', 'last_name', 'address1', 'address2', 'city', 'region', 'country', 'zip'
+
     @@region_key_map = Hash.new('locality').merge({ 'US' => 'state_prov', 'CA' => 'state_prov' })
 
     attr_aria *@@attribute_names.map(&:to_sym)
@@ -28,8 +29,8 @@ module Aria
 
     def to_aria_attributes
       aria = @attributes.clone
-      aria[@@region_key_map[country]] = region
-      aria.delete('region')
+      aria[@@region_key_map[country]] = aria.delete('region')
+      aria['mi'] = aria.delete('middle_initial')
       aria.delete_if {|k,v| v.nil? }
     end
   end

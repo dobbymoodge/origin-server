@@ -68,6 +68,8 @@ class AccountUpgradesControllerTest < ActionController::TestCase
     assert aria_user.has_complete_account?
     assert aria_user.billing_info.persisted?
     assert_equal 'eur', aria_user.currency_cd
+    assert_equal @user.email_address, aria_user.account_details.alt_email
+    assert_equal @user.email_address, aria_user.account_details.billing_email
 
     assert config_collections_group_id = Rails.configuration.collections_group_id_by_country[test_country]
     assert account_collections_group_id = Aria.get_acct_groups_by_acct(aria_user.acct_no)[0].client_acct_group_id
