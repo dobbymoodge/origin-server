@@ -84,6 +84,8 @@ module OpenShift
 
     def self.get_account_data(h, plan_name, base_info=false)
       base_data = <<MSG
+Operating Unit: #{h['operating_unit']}
+
 Account Data
 -----------------------------------
 RHLogin: #{get_login(h)}
@@ -120,6 +122,14 @@ MSG
         user_info = auth_service.get_user_info(get_login(h))
       end
       return if user_info.nil? or user_info.empty?
+      
+      billing_config = Rails.application.config.billing
+      billing_config[:config][:gss_operating_units].each do |ou_name, ou_values|
+        if ou_values.include?(user_info['country'])
+          h['operating_unit'] = ou_name.to_s
+          break
+        end
+      end
       data = <<MSG
 End User Contact
 -----------------------------------
@@ -164,18 +174,22 @@ MSG
     end
 
     def self.populate_contact_info(h, supp_field_info)
+      acct_contact = get_account_contact(h)
+      acct_data = get_account_data(h, nil, true)
       body = <<MSG
-#{get_account_data(h, nil, true)}
-#{get_account_contact(h)}
+#{acct_data}
+#{acct_contact}
 #{supp_field_info}
 MSG
     end
    
     def self.populate_plan_info(h, plan_name)
       supp_field_info = get_supplemental_fields(h)
+      acct_contact = get_account_contact(h)
+      acct_data = get_account_data(h, plan_name)
       body = <<MSG
-#{get_account_data(h, plan_name)}
-#{get_account_contact(h)}
+#{acct_data}
+#{acct_contact}
 MSG
       body + supp_field_info.to_s + get_billing_data
     end
