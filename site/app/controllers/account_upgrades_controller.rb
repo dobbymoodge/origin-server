@@ -87,8 +87,13 @@ class AccountUpgradesController < ConsoleController
     current_user_changed!
     process_async(:aria_user => current_user)
 
+    email = begin
+      current_user.email_address || current_user.load_email_address
+    rescue
+    end
+
     begin
-      render :edit and return unless @aria_user.create_account(:billing_info => @billing_info, :contact_info => @contact_info)
+      render :edit and return unless @aria_user.create_account(:billing_info => @billing_info, :contact_info => @contact_info, :email => email, :bill_email => email )
     rescue Aria::AccountExists
       render :edit and return unless @aria_user.update_account(:billing_info => @billing_info)
     end
