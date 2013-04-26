@@ -22,7 +22,13 @@ Broker::Application.configure do
       :event_remote_ipaddr_end   => conf.get("BILLING_PROVIDER_EVENT_REMOTE_IPADDR_END", ""),
       :event_plan_assign_email   => conf.get("BILLING_PROVIDER_EVENT_PLAN_ASSIGN_EMAIL", ""),
       :event_plan_revoke_email   => conf.get("BILLING_PROVIDER_EVENT_PLAN_REVOKE_EMAIL", ""),
-      :event_acct_modif_email  => conf.get("BILLING_PROVIDER_EVENT_ACCT_MODIF_EMAIL", "")
+      :event_acct_modif_email  => conf.get("BILLING_PROVIDER_EVENT_ACCT_MODIF_EMAIL", ""),
+      :gss_operating_units => {
+        :IE => ['AT', 'BE', 'CH', 'DE', 'DK', 'ES', 'FI', 'FR', 'GB',
+                'IE', 'IS', 'IT', 'LU', 'NL', 'NO', 'PT', 'SE'],
+        :US => ['US'],
+        :CA => ['CA']
+      }
     },
     :usage_type => {
       :gear => {
