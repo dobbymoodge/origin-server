@@ -130,8 +130,16 @@ class PlanSignupFlowTest < ActionDispatch::IntegrationTest
     assert_equal user.email_address, aria_user.account_details.alt_email
 
     assert config_collections_group_id = Rails.configuration.collections_group_id_by_country[aria_user.account_details.country]
-    assert account_collections_group_id = Aria.get_acct_groups_by_acct(aria_user.acct_no)[0].client_acct_group_id
-    assert_equal config_collections_group_id, account_collections_group_id
+    assert config_functional_group_no = Rails.configuration.functional_group_no_by_country[aria_user.account_details.country].to_i
+    assert_equal config_functional_group_no, aria_user.account_details.seq_func_group_no
+    assert aria_acct_groups = Aria.get_acct_groups_by_acct(aria_user.acct_no)
+    assert aria_coll_groups = aria_acct_groups.select{ |g| g.group_type == 'C' }
+    assert aria_func_groups = aria_acct_groups.select{ |g| g.group_type == 'F' }
+    assert_equal 2, aria_acct_groups.count
+    assert_equal 1, aria_coll_groups.count
+    assert_equal 1, aria_func_groups.count
+    assert_equal config_collections_group_id, aria_acct_groups[0].client_acct_group_id
+    assert_equal config_functional_group_no, aria_func_groups[0].group_no.to_i
 
     assert aria_user.has_valid_payment_method?
     assert payment_method = aria_user.payment_method

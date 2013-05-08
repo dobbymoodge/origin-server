@@ -278,7 +278,7 @@ class AriaUnitTest < ActiveSupport::TestCase
     api_args.merge!(billing_info.to_aria_attributes)
     api_args.merge!(contact_info.to_aria_attributes)
     api_args[:client_coll_acct_group_ids] = Rails.application.config.collections_group_id_by_country[api_args['bill_country']]
-    api_args[:client_func_acct_group_ids] = Rails.application.config.functional_group_id_by_country[api_args['country']]
+    api_args[:functional_acct_groups] = api_args[:seq_func_group_no] = Rails.application.config.functional_group_no_by_country[api_args['country']]
     stub_aria(:create_acct_complete, api_args).to_return(resp(ok_wddx))
 
     stub_aria(:get_acct_no_from_user_id, {
