@@ -8,7 +8,7 @@
 
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
-Version: 1.8.9
+Version: 1.8.10
 Release:   1%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
@@ -195,6 +195,10 @@ fi
 %{sitedir}/public
 
 %changelog
+* Thu May 09 2013 Adam Miller <admiller@redhat.com> 1.8.10-1
+- Add sequence functional group spec to create_acct_complete
+  (hripps@redhat.com)
+
 * Wed May 08 2013 Adam Miller <admiller@redhat.com> 1.8.9-1
 - Merge pull request #1327 from liggitt/bug_959559_js_validation_errors
   (dmcphers+openshiftbot@redhat.com)
