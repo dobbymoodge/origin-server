@@ -73,7 +73,8 @@ class AccountUpgradesControllerTest < ActionController::TestCase
     assert_equal @user.email_address, aria_user.account_details.billing_email
 
     assert config_collections_group_id = Rails.configuration.collections_group_id_by_country[test_country]
-    assert config_functional_group_id = Rails.configuration.functional_group_id_by_country[test_country]
+    assert config_functional_group_no = Rails.configuration.functional_group_no_by_country[test_country].to_i
+    assert_equal config_functional_group_no, aria_user.account_details.seq_func_group_no
     assert aria_acct_groups = Aria.get_acct_groups_by_acct(aria_user.acct_no)
     assert aria_coll_groups = aria_acct_groups.select{ |g| g.group_type == 'C' }
     assert aria_func_groups = aria_acct_groups.select{ |g| g.group_type == 'F' }
@@ -81,7 +82,7 @@ class AccountUpgradesControllerTest < ActionController::TestCase
     assert_equal 1, aria_coll_groups.count
     assert_equal 1, aria_func_groups.count
     assert_equal config_collections_group_id, aria_acct_groups[0].client_acct_group_id
-    assert_equal config_functional_group_id, aria_func_groups[0].client_acct_group_id
+    assert_equal config_functional_group_no, aria_func_groups[0].group_no.to_i
 
     assert_equal :full, session[:streamline_type]
     assert_redirected_to account_plan_upgrade_payment_method_path

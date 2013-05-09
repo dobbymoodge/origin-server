@@ -268,10 +268,10 @@ module Aria
       # Set the collection group; always keyed to billing country
       params['client_coll_acct_group_ids'] = Aria::User.collections_acct_group_id(params['bill_country'])
 
-      # Set the functional group
+      # Set the functional group and sequence group
       # Try the account country first, which is coming from Streamline if the
       # user has a pre-existing RHN account, then fall back to the billing country
-      params['client_func_acct_group_ids'] = Aria::User.functional_acct_group_id(params['country'],params['bill_country'])
+      params['functional_acct_groups'] = params['seq_func_group_no'] = Aria::User.functional_acct_group_no(params['country'],params['bill_country'])
 
       begin
         Aria.create_acct_complete(params)
@@ -368,9 +368,9 @@ module Aria
         Rails.configuration.collections_group_id_by_country[bill_country]
       end
 
-      def self.functional_acct_group_id(country, bill_country)
+      def self.functional_acct_group_no(country, bill_country)
         country_code = country.blank? ? bill_country : country
-        Rails.configuration.functional_group_id_by_country[country_code]
+        Rails.configuration.functional_group_no_by_country[country_code]
       end
 
       def aria_datetime(s)

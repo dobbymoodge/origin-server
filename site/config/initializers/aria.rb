@@ -42,11 +42,11 @@ Rails.application.config.tap do |config|
     ).merge!(
          Console.config.env(:ARIA_COLLECTIONS_GROUP_ID_MAP, { 'US' => '1', 'CA' => '2' })
     )
-  config.functional_group_id_by_country =
+  config.functional_group_no_by_country =
     HashWithIndifferentAccess.new(
-         Console.config.env(:ARIA_DEFAULT_FUNCTIONAL_GROUP_ID, 'F3')
+         Console.config.env(:ARIA_DEFAULT_FUNCTIONAL_GROUP_NO, '10018442')
     ).merge!(
-         Console.config.env(:ARIA_FUNCTIONAL_GROUP_ID_MAP, { 'US' => 'F1', 'CA' => 'F2' })
+         Console.config.env(:ARIA_FUNCTIONAL_GROUP_NO_MAP, { 'US' => '10018440', 'CA' => '10018441' })
     )
 
   # Supported Credit Cards
