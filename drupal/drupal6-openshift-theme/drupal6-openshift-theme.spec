@@ -5,7 +5,7 @@
 %global drupal_themename    openshift-theme
 
 Name:           drupal6-%{drupal_themename}
-Version: 3.16.5
+Version: 3.16.6
 Release:        1%{?dist}
 Summary:        Red Hat Openshift theme for Drupal %{drupal_release}
 
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri May 10 2013 Adam Miller <admiller@redhat.com> 3.16.6-1
+- Added Google AdWords remarketing script (spurtell@redhat.com)
+
 * Wed May 08 2013 Adam Miller <admiller@redhat.com> 3.16.5-1
 - Merge pull request #1322 from fabianofranz/master
   (dmcphers+openshiftbot@redhat.com)
