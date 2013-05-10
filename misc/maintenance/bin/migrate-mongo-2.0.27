@@ -4,7 +4,7 @@ $:.unshift('/var/www/openshift/broker')
 require 'config/environment'
 
 begin
-  db = OpenShift::DataStore.db
+  db = OpenShift::DataStore.db(:primary)
   puts "Removing usage records related to additional storage for existing users..."
   db["usage_records"].remove("usage_type" => "ADDTL_FS_GB")
   db["usage"].remove("usage_type" => "ADDTL_FS_GB")
@@ -15,6 +15,9 @@ begin
                   "$set" => {"capabilities.max_untracked_addtl_storage_per_gear" => 5,
                              "capabilities.max_tracked_addtl_storage_per_gear" => 0}}
   db["cloud_users"].update(filter, update_query, { :multi => true })
+
+  count = db["cloud_users"].find(filter).count
+  raise Exception.new "Failed to update silver plan users" if count != 0
  
   filter = {"capabilities.max_storage_per_gear" => {"$exists" => true}}
   selection = {:fields => ["capabilities.max_storage_per_gear"], :timeout => false}
@@ -26,6 +29,14 @@ begin
       db["cloud_users"].update({"_id" => user["_id"]}, update_query) 
     end
   end
+
+  # Fix issue created by old migration script
+  filter = {"plan_id" => "silver", "capabilities.max_untracked_addtl_storage_per_gear" => 30}
+  update_query = {"$set" => {"capabilities.max_untracked_addtl_storage_per_gear" => 5}}
+  db["cloud_users"].update(filter, update_query, { :multi => true })
+
+  count = db["cloud_users"].find(filter).count
+  raise Exception.new "Failed to update all existing users" if count != 0
 rescue Exception => e
   puts e.message
   puts e.backtrace
