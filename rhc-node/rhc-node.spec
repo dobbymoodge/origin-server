@@ -207,6 +207,8 @@ fi
 %attr(0750,-,-) %{_bindir}/rhc-restorecon
 %attr(0750,-,-) %{_bindir}/rhc-init-quota
 %attr(0750,-,-) %{_bindir}/rhc-fix-frontend
+%attr(0750,-,-) %{_bindir}/rhc-fix-missing-frontend
+%attr(0750,-,-) %{_bindir}/rhc-fix-stale-frontend
 %attr(0750,-,-) %{_bindir}/ec2-prep.sh
 %attr(0750,-,-) %{_bindir}/remount-secure.sh
 %dir %attr(0751,root,root) %{_var}/lib/openshift
