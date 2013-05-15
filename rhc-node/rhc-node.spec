@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.8.6
+Version: 1.8.7
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -238,6 +238,10 @@ fi
 
 
 %changelog
+* Wed May 15 2013 Adam Miller <admiller@redhat.com> 1.8.7-1
+- Move the frontend fix scripts into rhc-node so they are installed.
+  (rmillner@redhat.com)
+
 * Wed May 08 2013 Adam Miller <admiller@redhat.com> 1.8.6-1
 - v2 migrations WIP (dmcphers@redhat.com)
 - handle versions with dashes (dmcphers@redhat.com)
