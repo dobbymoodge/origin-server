@@ -7,24 +7,32 @@ module OpenShift
       "118" => "Account Supplemental Field Value Added",
       "119" => "Account Supplemental Field Value Modified"
     }
-    PLAN_STATE_UPDATE_RETRIES = 3
-    PLAN_STATE_UPDATE_RETRY_TIME = 3
+    PLAN_STATE_UPDATE_RETRIES = 2
+    PLAN_STATE_UPDATE_RETRY_TIME = 5
 
     def self.handle_event(h)
-      aria_config = Rails.application.config.billing[:config]
+      billing_config = Rails.application.config.billing
+      aria_config = billing_config[:config]
+      aria_plans = billing_config[:plans]
+      default_plan = billing_config[:default_plan]
+
       h['event_id'].each do |ev|
         case ev.to_i
         when 105, 106
-          # "-1" => "Suspended", "-2" => "Cancelled", "-3" => "Terminated"
+          next if aria_plans[default_plan][:name] == h['plan_name']
+          mark_acct_status(h)
+          if ev.to_i == 106
+            h['effective_date'] = get_end_of_month(h)
+          else
+            h['effective_date'] = h['created']
+          end
+          # "1" => Active, "-1" => "Suspended", "-2" => "Cancelled", "-3" => "Terminated"
           if h['status_cd'] < "0"
-            mark_acct_canceled(h)
-            if ev.to_i == 106
-              h['effective_date'] = get_end_of_month(h)
-            else
-              h['effective_date'] = h['created']
-            end
             h['old_plan_name'] = h['plan_name']
             h['plan_name'] = nil
+            send_entitlements(h)
+          elsif h['status_cd'] == "1"
+            h['old_plan_name'] = nil
             send_entitlements(h)
           end
         when 118, 119
@@ -39,6 +47,7 @@ module OpenShift
         else
           Rails.logger.error "Invalid Event, id: #{ev}"
         end
+        raise h['exception'] if h['exception']
       end
     end
    
@@ -194,20 +203,41 @@ MSG
       body + supp_field_info.to_s + get_billing_data
     end
 
-    def self.mark_acct_canceled(h)
+    def self.mark_acct_status(h)
       begin
         login = get_login(h)
-        Rails.logger.error "Unable to find 'RHLogin' field for the event: #{h}" if login.empty?
-        filter = {:login => login, :pending_plan_id => nil, :pending_plan_uptime => nil}
-        update = {"$set" => {:pending_plan_id => :free, :pending_plan_uptime => Time.now.utc, :plan_state => CloudUser::PLAN_STATES['canceled']}}
+        raise Exception.new "Unable to find 'RHLogin' field for the event: #{h}" if login.empty?
+        if h['status_cd'] < "0"
+          filter = {:login => login, :pending_plan_id => nil, :plan_state => {"$ne" => CloudUser::PLAN_STATES['pending']}}
+          new_plan_state = CloudUser::PLAN_STATES['canceled']
+          update = {"$set" => {:pending_plan_id => :free, :pending_plan_uptime => Time.now.utc, :plan_state => new_plan_state}}
+        elsif h['status_cd'] == "1"
+          billing_config = Rails.application.config.billing
+          aria_plans = billing_config[:plans]
+          default_plan = billing_config[:default_plan]
+          new_plan_id = nil
+          aria_plans.each do |k, v|
+            if v[:name] == h['plan_name']
+              new_plan_id = k
+              break
+            end
+          end
+          raise Exception.new "Unable to find plan_id for the plan '#{h['plan_name']}' for the event: #{h}" unless new_plan_id
+          filter = {:login => login, :plan_id => new_plan_id.to_s, :plan_state => {"$ne" => CloudUser::PLAN_STATES['pending']}}
+          new_plan_state = CloudUser::PLAN_STATES['active']
+          update = {"$set" => {:pending_plan_id => nil, :pending_plan_uptime => nil, :plan_state => new_plan_state}}
+        else
+          return
+        end
         user = nil
         OpenShift::AriaEvent::PLAN_STATE_UPDATE_RETRIES.times do 
           user = CloudUser.with(consistency: :strong).where(filter).find_and_modify(update, {:new => true})
           break if user
           sleep OpenShift::AriaEvent::PLAN_STATE_UPDATE_RETRY_TIME
         end
-        Rails.logger.error "Failed to change plan state to 'canceled' for user '#{login}'. Event: #{h}" unless user
+        raise Exception.new "Failed to change plan state to '#{new_plan_state}' for user '#{login}'. Event: #{h}" unless user
       rescue Exception => e
+        h['exception'] = e
         Rails.logger.error e.message
         Rails.logger.error e.backtrace.inspect
       end 
