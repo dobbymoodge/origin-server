@@ -5,7 +5,7 @@ module OpenShiftMigration
 
       cart_name = 'jbossas'
 
-      Util.cp_env_var_value(user.homedir, 'OPENSHIFT_INTERNAL_IP', 'OPENSHIFT_JBOSSAS_HTTP_IP')
+      Util.cp_env_var_value(user.homedir, 'OPENSHIFT_INTERNAL_IP', 'OPENSHIFT_JBOSSAS_IP')
       Util.cp_env_var_value(user.homedir, 'OPENSHIFT_INTERNAL_PORT', 'OPENSHIFT_JBOSSAS_HTTP_PORT')
 
       Util.add_cart_env_var(user, cart_name, "OPENSHIFT_JBOSSAS_VERSION", "7")
