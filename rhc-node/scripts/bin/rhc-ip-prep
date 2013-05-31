@@ -17,9 +17,8 @@ require 'openshift-origin-node/utils/node_logger'
 require 'openshift-origin-common'
 
 
-config = OpenShift::Config.new
-min_uid = (config.get('GEAR_MIN_UID') ||   500).to_i
-max_uid = (config.get('GEAR_MAX_UID') || 16000).to_i
+min_uid = 500
+max_uid = 16000
 
 
 # The mcs label generator is too expensive to keep entering with
