@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.9.9
+Version: 1.9.10
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -244,6 +244,12 @@ fi
 
 
 %changelog
+* Fri May 31 2013 Adam Miller <admiller@redhat.com> 1.9.10-1
+- remove HTTP from migrate (bdecoste@gmail.com)
+- remove HTTP from migrate (bdecoste@gmail.com)
+- Bug 969228 - The allocator used to just go to 16000 regardless of the node
+  configuration. (rmillner@redhat.com)
+
 * Thu May 30 2013 Adam Miller <admiller@redhat.com> 1.9.9-1
 - Merge pull request #1490 from jwhonce/wip/v2v2_migration
   (dmcphers+openshiftbot@redhat.com)
