@@ -12,7 +12,7 @@ zend_deployment.global_directives_ini_file=/usr/local/zend/etc/conf.d/ZendGlobal
 zend_deployment.webserver.type=apache
 
 ; Apache web server control
-zend_deployment.webserver.apache.ctl=/usr/local/zend/bin/apachectl
+zend_deployment.webserver.apache.ctl=<%= "#{ENV['OPENSHIFT_ZEND_DIR']}/bin/control" %>
 
 ; Database Type (SQLITE, MYSQL)
 zend_deployment.database.type=SQLITE

@@ -62,8 +62,11 @@ cp $OPENSHIFT_ZEND_DIR/versions/$version/configuration/etc/php.ini $OPENSHIFT_ZE
 # Symlink php.ini in sandboxed dir, so /usr/local/zend/etc/php.ini is available
 ln -s $OPENSHIFT_ZEND_DIR/configuration/etc/php.ini $zend_sandbox/etc/php.ini
 
-# FIXME: delete ~/zend/modules;
-# /usr/lib64/httpd/modules/ vs. /usr/local/zend/gui/lighttpd/lib/
+# Symlink apachectl in sandboxed dir, /usr/local/zend/bin/apachectl points to the control script
+mkdir -p $zend_sandbox/bin
+ln -s $OPENSHIFT_ZEND_DIR/bin/control $zend_sandbox/bin/apachectl
+
+# Symlinks referenced from configuration/etc/conf/httpd*.conf files
 ln -s /usr/lib64/httpd/modules $OPENSHIFT_ZEND_DIR/modules
 ln -s /etc/httpd/conf/magic $OPENSHIFT_ZEND_DIR/conf/magic
 

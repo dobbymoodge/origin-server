@@ -38,6 +38,9 @@ module OpenShiftMigration
       FileUtils.rm_f(File.join(zend_sandbox_dir, 'gui/lighttpd/tmp'))
       FileUtils.ln_sf(File.join(zend_usr_dir, 'gui/lighttpd/tmp'), File.join(zend_sandbox_dir, 'gui/lighttpd/tmp'))
 
+      FileUtils.mkdir_p(File.join(zend_sandbox_dir, 'bin'))
+      FileUtils.ln_sf(File.join(zend_dir, 'bin/control'), File.join(zend_sandbox_dir, 'bin/apachectl'))
+
       output << "generating new .pearrc\n"
       FileUtils.rm_f(File.join(user.homedir, '.pearrc'))
       pearrc = File.join(user.homedir, '.pearrc')
