@@ -2,7 +2,7 @@
 %global frameworkdir %{_libexecdir}/openshift/cartridges/v2/zend
 
 Name:    openshift-origin-cartridge-zend
-Version: 0.2.7
+Version: 0.2.8
 Release: 1%{?dist}
 Summary: Zend Server cartridge
 Group:   Development/Languages
@@ -65,6 +65,12 @@ sh %{cartridgedir}/versions/5.6/rpm/zend_configure_filesystem.sh
 
 
 %changelog
+* Sat Jun 01 2013 Dan McPherson <dmcphers@redhat.com> 0.2.8-1
+- Merge pull request #1504 from VojtechVitek/stage_bz968943_2
+  (dmcphers@redhat.com)
+- Make Initial-Build-Required default to false (ironcladlou@gmail.com)
+- Fix Zend apachectl deployment settings (vvitek@redhat.com)
+
 * Thu May 30 2013 Adam Miller <admiller@redhat.com> 0.2.7-1
 - add zend php binary to env PATH variable (vvitek@redhat.com)
 
