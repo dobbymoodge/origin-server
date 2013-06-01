@@ -8,7 +8,7 @@
 
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
-Version: 1.9.11
+Version: 1.9.12
 Release:   1%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
@@ -195,6 +195,12 @@ fi
 %{sitedir}/public
 
 %changelog
+* Sat Jun 01 2013 Dan McPherson <dmcphers@redhat.com> 1.9.12-1
+- Merge pull request #1501 from nhr/STAGE_remove_tos_link
+  (dmcphers+openshiftbot@redhat.com)
+- Remove TOS link from site footer (hripps@redhat.com)
+- Remove preview language (jliggitt@redhat.com)
+
 * Thu May 30 2013 Adam Miller <admiller@redhat.com> 1.9.11-1
 - Test signup flow more carefully (jliggitt@redhat.com)
 - Fix bug 967746 - tolerate missing PROHIBITED_EMAIL_DOMAINS config value
