@@ -10,7 +10,7 @@
 Summary:        OpenShift plugin for Aria Billing service
 
 Name:           rubygem-%{gem_name}
-Version: 1.7.4
+Version: 1.7.5
 Release:        1%{?dist}
 Group:          Development/Languages
 License:        ASL 2.0
@@ -79,6 +79,10 @@ rm -rf %{buildroot}
 /etc/openshift/plugins.d/openshift-origin-billing-aria-dev.conf
 
 %changelog
+* Sat Jun 01 2013 Dan McPherson <dmcphers@redhat.com> 1.7.5-1
+- Billing Events: Handle dunning/suspended to active aria status change.
+  (rpenta@redhat.com)
+
 * Thu May 30 2013 Adam Miller <admiller@redhat.com> 1.7.4-1
 - Update configuration values in openshift-origin-billing-aria.conf
   (rpenta@redhat.com)
