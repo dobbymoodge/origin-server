@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.9.10
+Version: 1.9.11
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -244,6 +244,14 @@ fi
 
 
 %changelog
+* Sat Jun 01 2013 Dan McPherson <dmcphers@redhat.com> 1.9.11-1
+- Fix stage migration issues (dmcphers@redhat.com)
+- Merge pull request #1504 from VojtechVitek/stage_bz968943_2
+  (dmcphers@redhat.com)
+- Bug 969228 - Check selinux node set with oo-accept-node.
+  (rmillner@redhat.com)
+- Fix Zend apachectl deployment settings (vvitek@redhat.com)
+
 * Fri May 31 2013 Adam Miller <admiller@redhat.com> 1.9.10-1
 - remove HTTP from migrate (bdecoste@gmail.com)
 - remove HTTP from migrate (bdecoste@gmail.com)
