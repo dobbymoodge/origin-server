@@ -58,9 +58,10 @@ module OpenShift
 
       Dir[PathUtils.join(@user.homedir, "*")].each do |cart_dir|
         next if cart_dir.end_with?('app-root') || cart_dir =~ /-\d/ || cart_dir.end_with?('git') ||
-            (not File.directory? cart_dir)
+            (not File.directory? cart_dir) || (File.symlink? cart_dir)
         yield cart_dir
       end
+
     end
 
     def gear_status

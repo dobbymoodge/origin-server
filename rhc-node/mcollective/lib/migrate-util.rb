@@ -177,9 +177,11 @@ module OpenShiftMigration
     end
 
     def self.make_user_owned(target, user)
-      mcs_label = OpenShift::Utils::SELinux.get_mcs_label(user.uid)
-      PathUtils.oo_chown_R(user.uid, user.gid, target)
-      OpenShift::Utils::SELinux.set_mcs_label_R(mcs_label, target)
+      if File.exists?(target)
+        mcs_label = OpenShift::Utils::SELinux.get_mcs_label(user.uid)
+        PathUtils.oo_chown_R(user.uid, user.gid, target)
+        OpenShift::Utils::SELinux.set_mcs_label_R(mcs_label, target)
+      end
     end
 
     def self.move_directory_between_carts(user, 
