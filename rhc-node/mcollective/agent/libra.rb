@@ -47,7 +47,14 @@ module MCollective
                   :version     => "0.1",
                   :url         => "https://engineering.redhat.com/trac/Libra",
                   :timeout     => 240
-        
+
+      def before_processing_hook(msg, connection)
+        # Set working directory to a 'safe' directory to prevent Dir.chdir
+        # calls with block from changing back to a directory which doesn't exist.
+        Log.instance.debug("Changing working directory to /tmp")
+        Dir.chdir('/tmp')
+      end
+
       #
       # Migrate between versions
       #
