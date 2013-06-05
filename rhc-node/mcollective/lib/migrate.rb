@@ -162,11 +162,13 @@ module OpenShiftMigration
       return "Skipping V1 -> V2 migration because gear appears to already be V2\n", 0
     end
 
+    filesystem, quota, quota_soft, quota_hard, inodes, inodes_soft, inodes_hard = OpenShift::Node.get_quota(uuid)
     begin
       progress.log 'Beginning V1 -> V2 migration'
       inspect_gear_state(progress, uuid, gear_home)
       detect_switchyard(progress, uuid, gear_home)
-
+      progress.log "Beginning quota blocks: #{quota_hard}  inodes: #{inodes_hard}"
+      OpenShift::Node.set_quota(uuid, quota_hard.to_i * 2, inodes_hard.to_i * 2)
       migrate_stop_lock(progress, uuid, gear_home)
       stop_gear(progress, hostname, uuid)
       migrate_pam_nproc_soft(progress, uuid)
@@ -200,6 +202,9 @@ module OpenShiftMigration
       progress.log "Caught an exception during internal migration steps: #{e.message}"
       progress.log e.backtrace.join("\n")
       exitcode = 1
+    ensure
+      progress.log "Resetting quota blocks: #{quota_hard}  inodes: #{inodes_hard}"
+      OpenShift::Node.set_quota(uuid, quota_hard.to_i, inodes_hard.to_i)
     end
 
     [progress.report, exitcode]
