@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.9.11
+Version: 1.9.12
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -244,6 +244,16 @@ fi
 
 
 %changelog
+* Wed Jun 05 2013 Adam Miller <admiller@redhat.com> 1.9.12-1
+- Tolerate missing JAVA_HOME/M2_HOME during jboss* migration
+  (ironcladlou@gmail.com)
+- Merge pull request #1547 from pmorie/stg/fix1 (dmcphers@redhat.com)
+- Skip directories without a manifest in V2MigrationCartModel
+  (pmorie@gmail.com)
+- Merge pull request #1545 from danmcp/stage (dmcphers@redhat.com)
+- Work around quota issues in migration (dmcphers@redhat.com)
+- Handle Net::HTTP timeouts in migration (ironcladlou@gmail.com)
+
 * Sat Jun 01 2013 Dan McPherson <dmcphers@redhat.com> 1.9.11-1
 - Fix stage migration issues (dmcphers@redhat.com)
 - Merge pull request #1504 from VojtechVitek/stage_bz968943_2
