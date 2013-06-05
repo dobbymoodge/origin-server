@@ -54,7 +54,7 @@ module OpenShiftMigration
       Util.add_cart_env_var(user, cart_name, 'OPENSHIFT_JBOSSEWS_PATH_ELEMENT', "#{java_home}/bin:#{m2_home}/bin")
 
       # Re-establish webapps symlink (normally happens during v2 install)
-      FileUtils.ln_s(File.join(user.homedir, 'app-root', 'repo', 'webapps'), File.join(cart_dir, 'webapps'))
+      FileUtils.ln_sf(File.join(user.homedir, 'app-root', 'repo', 'webapps'), File.join(cart_dir, 'webapps'))
       
       # Replace a couple of v2 links with physical files as the old apps didn't contain these files
       ['catalina.policy', 'postgresql_module.xml'].each do |conf|
@@ -63,7 +63,7 @@ module OpenShiftMigration
       end
 
       # Link the old nested jbossews-1.0 cart subdirectory to the gear level directory
-      FileUtils.ln_s(cart_dir, File.join(cart_dir, old_cart_name))
+      FileUtils.ln_sf(cart_dir, File.join(cart_dir, old_cart_name))
 
       # Move old logs into the new cartridge directory
       output << Util.move_directory_between_carts(user, old_cart_name, cart_name, ['logs'])
