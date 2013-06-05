@@ -619,7 +619,7 @@ module OpenShiftMigration
 
     FileUtils.rm_rf(File.join(user.homedir, "#{name}-#{version}"))
 
-    FileUtils.ln_s(File.join(user.homedir, name), File.join(user.homedir, "#{name}-#{version}"))
+    FileUtils.ln_sf(File.join(user.homedir, name), File.join(user.homedir, "#{name}-#{version}"))
   end
 
   def self.create_v2_zend_endpoints(progress, user)

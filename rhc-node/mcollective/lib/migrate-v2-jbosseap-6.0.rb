@@ -44,8 +44,8 @@ module OpenShiftMigration
       modules_jar = File.join(cartridge_dir, 'jboss-modules.jar')
       modules_dir = File.join(cartridge_dir, 'modules')
             
-      FileUtils.ln_s('/etc/alternatives/jbosseap-6.0/jboss-modules.jar', modules_jar)
-      FileUtils.ln_s('/etc/alternatives/jbosseap-6.0/modules', modules_dir)
+      FileUtils.ln_sf('/etc/alternatives/jbosseap-6.0/jboss-modules.jar', modules_jar)
+      FileUtils.ln_sf('/etc/alternatives/jbosseap-6.0/modules', modules_dir)
         
       Util.make_user_owned(modules_jar, user)
       Util.make_user_owned(modules_dir, user)
@@ -53,7 +53,7 @@ module OpenShiftMigration
       logs_dir = File.join(cartridge_dir, 'logs')
       log_dir = File.join(cartridge_dir, 'standalone/log')
       
-      FileUtils.ln_s(log_dir, logs_dir)
+      FileUtils.ln_sf(log_dir, logs_dir)
       
       repo_deployments_dir = File.join(user.homedir, 'app-root/runtime/repo/deployments/')
       active_deployments_dir = File.join(cartridge_dir, 'standalone/deployments')
