@@ -165,6 +165,13 @@ module OpenShiftMigration
     filesystem, quota, quota_soft, quota_hard, inodes, inodes_soft, inodes_hard = OpenShift::Node.get_quota(uuid)
     begin
       progress.log 'Beginning V1 -> V2 migration'
+
+      if detect_malformed_gear(progress, gear_home)
+        progress.log 'Deleting migration metadata because this gear appears not to have any cartridges'
+        progress.done
+        return [progress.report, exitcode]
+      end
+
       inspect_gear_state(progress, uuid, gear_home)
       detect_switchyard(progress, uuid, gear_home)
       progress.log "Beginning quota blocks: #{quota_hard}  inodes: #{inodes_hard}"
@@ -213,6 +220,20 @@ module OpenShiftMigration
   def self.v2_gear?(gear_home)
     migration_metadata = Dir.glob(File.join(gear_home, 'app-root', 'data', '.migration_complete*'))
     (OpenShift::Utils::Sdk.new_sdk_app?(gear_home) && migration_metadata.size == 0)
+  end
+
+  def self.detect_malformed_gear(progress, gear_home)
+    if progress.incomplete? 'detect_malformed_gear'
+      v1_carts = v1_cartridges(gear_home)
+
+      if v1_carts.values.empty?
+        return true
+      end
+
+      progress.mark_complete 'detect_malformed_gear'
+    end
+
+    return false
   end
 
   def self.inspect_gear_state(progress, uuid, gear_home)
