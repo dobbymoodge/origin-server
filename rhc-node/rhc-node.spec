@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.9.13
+Version: 1.9.14
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -244,6 +244,9 @@ fi
 
 
 %changelog
+* Wed Jun 05 2013 Adam Miller <admiller@redhat.com> 1.9.14-1
+- Use force when creating symlinks in migrations (ironcladlou@gmail.com)
+
 * Wed Jun 05 2013 Adam Miller <admiller@redhat.com> 1.9.13-1
 - Don't retry request on exception (dmcphers@redhat.com)
 
