@@ -664,8 +664,8 @@ module OpenShiftMigration
               # ignore it
             end
 
-            # Give the app a chance to start fully
-            if (!response || response.code == '503') && num_tries < 5
+            # Give the app a chance to start fully but ignore request failures (due to timeout/etc)
+            if response && response.code == '503' && num_tries < 5
               sleep num_tries
             else
               break
@@ -673,7 +673,7 @@ module OpenShiftMigration
             num_tries += 1
           end
 
-          progress.log "Post-migration response code: #{response.code}"
+          progress.log "Post-migration response code: #{response ? response.code : 'nil' }"
         end
 
         problem, status = cart_model.gear_status
