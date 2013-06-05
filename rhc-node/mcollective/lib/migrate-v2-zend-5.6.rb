@@ -68,7 +68,7 @@ module OpenShiftMigration
 
       output << "copying zend 5.6 config files\n"
       FileUtils.mkdir_p(File.join(cartridge_dir, 'configuration/etc/conf.d'))
-      FileUtils.cp_r(Dir.glob(File.join(cartridge_dir, 'versions/5.6/configuration/etc/*')), File.join(cartridge_dir, 'configuration/etc/'))
+      FileUtils.cp_r(Dir.glob(File.join(cartridge_dir, 'versions/5.6/configuration/etc/*')), File.join(cartridge_dir, 'configuration/etc/'), :remove_destination => true)
 
       FileUtils.ln_sf('/usr/lib64/httpd/modules', File.join(cartridge_dir, 'modules'))
       FileUtils.mkdir_p(File.join(cartridge_dir, 'conf'))
