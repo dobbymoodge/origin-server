@@ -58,7 +58,7 @@ module OpenShift
 
       Dir[PathUtils.join(@user.homedir, "*")].each do |cart_dir|
         next if cart_dir.end_with?('app-root') || cart_dir =~ /-\d/ || cart_dir.end_with?('git') ||
-            (not File.directory? cart_dir) || (File.symlink? cart_dir)
+            (not File.directory? cart_dir) || (File.symlink? cart_dir) || !File.exist?(PathUtils.join(cart_dir, "metadata", "manifest.yml"))
         yield cart_dir
       end
 
