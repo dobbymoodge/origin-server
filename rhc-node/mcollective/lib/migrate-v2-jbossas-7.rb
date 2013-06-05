@@ -20,6 +20,21 @@ module OpenShiftMigration
       java_home = Util.get_env_var_value(user.homedir, 'JAVA_HOME')
       m2_home = Util.get_env_var_value(user.homedir, 'M2_HOME')
 
+      if !java_home
+        if File.exists?(File.join(user.homedir, "app-root", "repo", ".openshift", "markers", "java7"))
+          java_home="/etc/alternatives/java_sdk_1.7.0"
+        else
+          java_home="/etc/alternatives/java_sdk_1.6.0"
+        end
+
+        Util.add_gear_env_var(user, "JAVA_HOME", java_home)
+      end
+
+      if !m2_home
+        m2_home="/etc/alternatives/maven-3.0"
+        Util.add_gear_env_var(user, "M2_HOME", m2_home)
+      end
+
       # Move vars from the gear to the cart
       xfer_cart_vars = %w(JAVA_HOME M2_HOME OPENSHIFT_JBOSSAS_CLUSTER OPENSHIFT_JBOSSAS_CLUSTER_REMOTING)
       Util.move_gear_env_var_to_cart(user, cart_name, xfer_cart_vars)

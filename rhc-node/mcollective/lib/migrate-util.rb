@@ -37,7 +37,11 @@ module OpenShiftMigration
     end
     
     def self.get_env_var_value(app_home, env_var_name)
-      file_contents = file_to_string("#{app_home}/.env/#{env_var_name}").chomp
+      fn = "#{app_home}/.env/#{env_var_name}"
+
+      return nil unless File.exists?(fn)
+
+      file_contents = file_to_string(fn).chomp
       eq_index = file_contents.index('=')
 
       return file_contents unless eq_index
