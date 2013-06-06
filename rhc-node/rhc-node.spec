@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.9.14
+Version: 1.9.15
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -244,6 +244,16 @@ fi
 
 
 %changelog
+* Thu Jun 06 2013 Adam Miller <admiller@redhat.com> 1.9.15-1
+- Merge pull request #1557 from pmorie/stg/fix1
+  (dmcphers+openshiftbot@redhat.com)
+- We can't guarantee a user won't break their own start or a cart writer
+  creates an invalid start (dmcphers@redhat.com)
+- Change working directory to GEAR_BASE_DIR for libra mcol agent
+  (pmorie@gmail.com)
+- Make migration copy operations reentrant (ironcladlou@gmail.com)
+- Detect gears without cartridges in V1 -> V2 migration (pmorie@gmail.com)
+
 * Wed Jun 05 2013 Adam Miller <admiller@redhat.com> 1.9.14-1
 - Use force when creating symlinks in migrations (ironcladlou@gmail.com)
 
