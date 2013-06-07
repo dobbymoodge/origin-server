@@ -18,7 +18,10 @@ function blogs_taxonomy_default_vocabularies() {
       'weight' => '0',
       'nodes' => array(
         'blog' => 'blog',
+        'event' => 'event',
+        'knowledge_base' => 'knowledge_base',
         'page' => 'page',
+        'video' => 'video',
       ),
     ),
   );

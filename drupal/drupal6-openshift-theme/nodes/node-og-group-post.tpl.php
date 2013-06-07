@@ -60,18 +60,8 @@ $do = og_comment_perms_do();
 ?>
 <div id="node-<?php print $node->nid; ?>" class="thread node node-og-group-post<?php if ($sticky) { print ' sticky'; } ?><?php if (!$status) { print ' node-unpublished'; } ?>">
 
-  <?php if ($forum) { ?>
-    <ul class="forum-navigation-links">
-      <li><a href="<?php print base_path(); ?>forums"><?php print t('Main List of Forums'); ?></a></li>
-      <li><a href="<?php print base_path(); ?>forums/<?php print $forum['id'] ?>"><?php print $forum['title']; ?></a></li>
-    </ul><?php
-  } ?>
-
 <div class="clearfix" id="thread-intro">
 	<?php print theme('user_picture', $node); ?>
-
-  <h2><?php print $title ?></h2>
-  
 
   <div class="meta thread-author">
   <?php if ($submitted): ?>

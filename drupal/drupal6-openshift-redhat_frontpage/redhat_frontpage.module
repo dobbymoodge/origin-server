@@ -1,5 +1,9 @@
 <?php
 
+function redhat_frontpage_install() {
+  db_query("UPDATE {system} SET weight = 50 where type = 'module' and name = 'redhat_frontpage'");
+}
+
 function redhat_frontpage_menu() {
 
   $not_found = array(
@@ -36,6 +40,70 @@ function redhat_frontpage_menu() {
   return $items;
 }
 
+function redhat_frontpage_form_menu_configure_alter(&$form, &$form_state) {
+  $form['reset_primary_nav_fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Reset primary link blocks'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE, 
+  );
+  $form['reset_primary_nav_fieldset']['reset_primary_nav'] = array (
+    '#type' => 'submit',
+    '#value' => 'Reset',
+    '#submit' => array('redhat_reset_nav_map'),
+    '#prefix'=> '<div class="description">Reset the cached map of the primary link megamenu custom blocks.  Megamenu custom blocks have titles that match the pattern megamenu_custom_/path where /path is the external href of the primary link.</div>'
+  );
+}
+
+function redhat_frontpage_form_search_form_alter(&$form, &$form_state) {
+  # we don't need CSRF checking for the search form, remove it to allow for cached views
+  # with embedded search forms
+  unset($form['#token']);
+}
+
+/**
+ * Implementation of hook_context_page_condition().
+ */
+function redhat_frontpage_context_page_condition() {
+  $map = context_condition_map();
+  #watchdog('redhat_frontpage', '=== Init ===');
+  if (!empty($map['context_active']) && $plugin = context_get_plugin('condition', 'context_active')) {
+    $plugin->execute();
+  }
+}
+
+/**
+ * Implementation of hook_context_plugins().
+ */
+function redhat_frontpage_context_plugins() {
+  $plugins = array();
+  $plugins['context_condition_context_active'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'redhat_frontpage') . '/plugins',
+      'file' => 'context_condition_context_active.inc',
+      'class' => 'context_condition_context_active',
+      'parent' => 'context_condition',
+    ),
+  );
+  return $plugins;
+}
+
+/**
+ * Implementation of hook_context_registry().
+ */
+function redhat_frontpage_context_registry() {
+  return array(
+    'conditions' => array(
+      'context_active' => array(
+        'title' => t('Active Context'),
+        'description' => t('Activate this context only if other contexts are live or not'),
+        'plugin' => 'context_condition_context_active',
+      ),
+    ),
+  );
+}
+
+
 function redhat_page_not_found() {
   $content = ' <section class="row">
                   <div class="span12">
@@ -55,7 +123,7 @@ function redhat_page_access_denied() {
   global $user;
   if (user_is_anonymous()) {
     header('Location: ' . url('user', array('query' => drupal_get_destination(), 'absolute' => TRUE)), TRUE, 302);
-    drupal_exit();
+    exit;
     #drupal_goto('user', drupal_get_destination());
   }
   $content = ' <section class="row">
@@ -111,6 +179,20 @@ function redhat_page_community(){
   $content .= views_embed_view('faq_frontpage');
 
   return $content;
+}
+
+function redhat_reset_nav_map($form, &$form_state) {
+  $menuMap = array();
+  $result = db_query("SELECT bid, info FROM {boxes} WHERE info LIKE '%s%'", "megamenu_custom_");
+  if ($result) {
+    while($row = db_fetch_array($result)) {
+      $info = $row['info'];
+      $path = substr($info, 16);
+      $menuMap[$path] = $row['bid'];
+    }
+  }
+  variable_set("megamenu_custom_blocks", $menuMap);
+  drupal_goto("admin/build/menu/settings");
 }
 
 function _redhat_frontpage_load_tweets() {

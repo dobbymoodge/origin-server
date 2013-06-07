@@ -73,14 +73,6 @@ function user_profile_user_default_permissions() {
     ),
   );
 
-  // Exported permission: access eazylaunch
-  $permissions['access eazylaunch'] = array(
-    'name' => 'access eazylaunch',
-    'roles' => array(
-      '0' => 'administrator',
-    ),
-  );
-
   // Exported permission: access site reports
   $permissions['access site reports'] = array(
     'name' => 'access site reports',

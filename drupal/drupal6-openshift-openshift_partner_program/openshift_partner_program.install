@@ -1,0 +1,184 @@
+<?php
+
+/**
+ * @file
+ * Install file for the Openshift partner program.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function openshift_partner_program_install() {
+  // Create FILES subdir for partner program.
+  $filepath = file_directory_path() . '/partner';
+  if (!file_exists($filepath)) {
+    mkdir($filepath, 0777);
+    chmod($filepath, 0777);
+  }
+  if (!file_exists($filepath)) {
+    // Create subdir for logos.
+    mkdir($filepath . '/logos', 0777);
+    chmod($filepath . '/logos', 0777);
+  }
+  drupal_install_schema('openshift_partner_program');
+  _openshift_partner_program_add_profile_fields();
+  _openshift_partner_program_install_vocabulary();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function openshift_partner_program_uninstall() {
+  drupal_uninstall_schema('openshift_partner_program');
+  _openshift_partner_program_remove_profile_fields();
+}
+
+/**
+ * Implements hook_schema().
+ */
+function openshift_partner_program_schema() {
+  $schema['openshift_partner_program_partners'] = array(
+    'description' => 'Partner information.',
+    'fields' => array(
+      'uid' => array(
+        'description' => 'The user UID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'company' => array(
+        'description' => 'Company Name',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'company_description' => array(
+        'description' => 'Company Description',
+        'type' => 'text',
+        'not null' => FALSE,
+      ),
+      'logo' => array(
+        'description' => 'Path to logo',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'expertise_tags' => array(
+        'description' => 'Selected Expertise Tags',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+    ),
+  );
+  return $schema;
+}
+
+/**
+ * Adds required profile fields.
+ */
+function _openshift_partner_program_add_profile_fields() {
+  $result = db_query("SELECT * FROM {profile_fields} WHERE title = '%s'", 'user_state');
+  $exists = db_fetch_array($result);
+  if (!$exists) {
+    db_query("INSERT INTO {profile_fields} (title, name, explanation, category, page, type, weight, required, register, visibility, autocomplete, options) VALUES ('user_state', 'profile_user_state', 'New partners must still sign the partner agreements, active partners have already signed the agreement.', 'Partner Program', '', 'selection', 0, 0, 0, 2, 0, 'Not a partner\r\nNew partner\r\nActive partner')");
+  }
+
+  $result = db_query("SELECT * FROM {profile_fields} WHERE title = '%s'", 'Partner Level');
+  $exists = db_fetch_array($result);
+  if (!$exists) {
+    db_query("INSERT INTO {profile_fields} (title, name, explanation, category, page, type, weight, required, register, visibility, autocomplete, options) VALUES ('Partner Level', 'profile_partner_level', 'Ready or Advanced', 'Partner Program', '', 'selection', 0, 0, 0, 2, 0, 'Ready Partner\r\nAdvanced Partner')");
+  }
+}
+
+/**
+ * Removes required profile fields.
+ */
+function _openshift_partner_program_remove_profile_fields() {
+  db_query("DELETE FROM {profile_fields} WHERE title = '%s'", 'user_state');
+  db_query("DELETE FROM {profile_fields} WHERE title = '%s'", 'Partner Level');
+}
+
+/**
+ * Adds schema.
+ */
+function openshift_partner_program_update_6001() {
+  drupal_install_schema('openshift_partner_program');
+}
+
+/**
+ * Adds vocabulary for partners.
+ */
+function openshift_partner_program_update_6004() {
+  _openshift_partner_program_install_vocabulary();
+}
+
+/**
+ * Adds vocabulary for partners.
+ */
+function _openshift_partner_program_install_vocabulary() {
+  $vocab = taxonomy_get_vocabularies('Partner');
+  if (!$vocab) {
+    $vocab = array(
+      'name' => 'Partner Program',
+      'multiple' => 1,
+      'required' => 0,
+      'hierarchy' => 1,
+      'relations' => 0,
+      'nodes' => array('partner' => 'partner'),
+    );
+    taxonomy_save_vocabulary($vocab);
+    $terms = array(
+      'APM',
+      'app_engine',
+      'Application Performance',
+      'Application Performance Monitoring',
+      'Analytics',
+      'Big Data',
+      'blog',
+      'CI',
+      'Continuous Integration',
+      'cms',
+      'css3',
+      'Datastore',
+      'drupal',
+      'Email',
+      'framework',
+      'google',
+      'Hosted Datastore',
+      'html5',
+      'IDE',
+      'instant_app',
+      'java',
+      'javascript',
+      'java_ee',
+      'jboss',
+      'jee',
+      'Load Testing',
+      'Log Management',
+      'messaging',
+      'Middleware',
+      'Mobile',
+      'Node.js',
+      'NoSQL',
+      'not_scalable',
+      'partner',
+      'php',
+      'presentations',
+      'python',
+      'rails',
+      'ruby',
+      'saas',
+      'test',
+      'wordpress',
+    );
+    foreach ($terms as $term) {
+      $tag = array(
+        'vid' => $vocab['vid'],
+        'name' => $term,
+      );
+      taxonomy_save_term($tag);
+    }
+
+  }
+}

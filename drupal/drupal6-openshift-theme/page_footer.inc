@@ -1,52 +1,13 @@
     <footer>
       <div id="footer-nav">
         <div class="container">
-          <div class="row">
-            <nav class="span3">
-              <header>
-                <h3><a href="/developers">Developers</a></h3>
-              </header>
-              <ul class="unstyled">
-                <li><a href="/get-started">Get Started</a></li>
-                <li><a href="<?php print openshift_user_guide_url(); ?>">User Guide</a></li>
-                <li><a href="/faq">FAQ</a></li>
-                <li><a href="/developers/pricing">Pricing</a></li>
-              </ul>
-            </nav>
-            <nav class="span3">
-              <header>
-                <h3><a href="/community">Community</a></h3>
-              </header>
-              <ul class="unstyled">
-                <li><a href="/blogs">Blog</a></li>
-                <li><a href="/forums/">Forum</a></li>
-                <li><a href="http://webchat.freenode.net/?randomnick=1&amp;channels=openshift&amp;uio=d4">IRC Channel</a></li>
-                <li><a href="mailto:openshift@redhat.com">Feedback</a></li>
-              </ul>
-            </nav>
-            <nav class="span3">
-              <header>
-                <h3><a href="/get-involved">Get Involved</a></h3>
-              </header>
-              <ul class="unstyled">
-                <li><a href="/open-source">Open Source</a></li>
-                <li><a href="/partners">Partners</a></li>
-                <li><a href="https://github.com/openshift">OpenShift on GitHub</a></li>
-                <li><a href="/newsletter/signup">Newsletter sign up</a></li>
-              </ul>
-            </nav>
-            <nav class="span3">
-              <header>
-                <h3><a href="<?php print $openshift_server_url; ?>/app/account">Account</a></h3>
-              </header>
-              <ul class="unstyled">
-                <li><a href="/legal/services_agreement">Terms of Service</a></li>
-                <li><a href="/legal/openshift_privacy">Privacy Policy</a></li>
-                <li><a href="/policy/security">Security Policy</a></li>
-                <li><a href="/developers/pricing">Plans</a></li>
-              </ul>
-            </nav>
-          </div>
+          <?php if ($footer){ print $footer; } ?>
+          <?php
+            $menu = menu_tree_page_data('menu-top-footer-menu');
+            if ($menu) {
+              print openshift_flat_menu_tree_output($menu);
+            }
+          ?>
         </div>
       </div>
       <section id="copyright">

@@ -1,102 +1,299 @@
+//
+// Navbars (Redux)
+// --------------------------------------------------
 
-/* This is site specific branding */
+// COMMON STYLES
+// -------------
+
+// Base class and wrapper
 .navbar {
-  position: relative;
+  overflow: visible;
+  margin: 50px 0 5px;
+  color: $navbarText;
 
+  // Fix for IE7's bad z-indexing so dropdowns don't appear below content that follows the navbar
+  *position: relative;
+  *z-index: 2;
+}
+
+// Inner for background effects
+// Gradient is applied to its own element because overflow visible is not honored by IE when filter is present
+.navbar-inner {
+  min-height: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  // Prevent floats from breaking the navbar
+  @include clearfix();
+}
+
+
+// Override the default collapsed state
+.nav-collapse.collapse {
+  //height: auto;
+}
+
+
+// Brand: website or project name
+// -------------------------
+.navbar {
   .brand {
-    /* reset styles */
-    float: none;
-    margin: 0;
-    padding: 0;
-    font-size: 17px;
-    font-family: $headerFontFamily;
-
-    word-wrap: normal;
-    text-transform: uppercase;
-    font-size: 19px;
-    letter-spacing: 1px;
-  }
-
-  .brand-image {
-    background: image-url('logo-medium.png') no-repeat 49% 0;
-    height: $logoHeight;
-    margin-bottom: 10px;
-  }
-
-  .brand > a {
+    float: left;
     display: block;
-    color: #fff;
-    text-decoration:none;
-    > .brand-image {
-      @include transition-property(transform);
-      @include transition-duration(0.2s);
-    }
-    > .brand-text {
-      border-bottom: 2px solid transparent;
-      padding-bottom: 2px;
-      color: white;
-      text-align: center;
-    }
-
-    &:hover {
-      > .brand-image {
-        @include transform(rotate(-9deg));
+    color: $navbarBrandColor;
+    font-family: $headerFontFamily;
+    position: relative;
+    a {
+      display: block;
+      &:hover .brand-text {
+        display: block;
+        border-bottom: 2px solid $openshiftBrightRed;  
       }
-      > .brand-text {
-      	border-bottom: 2px solid #EB0011;
+      .brand-image {
+        background: image-url("openshift-logo-horizontal.svg") no-repeat;
+        background-size: 100%;
+        transition: none;
+        width: 270px;
+        height: 41px;
+        margin-bottom: 0;
       }
-    }
-  }
-
-  .nav {
-    /* reset styles */
-    float: none;
-    width: 100%;
-    font-size: 14px; 
-
-    > li {
-      float: left;
-      width: 20%;
-      text-align: center;
-
-      > a {
-        color: white; 
-        text-transform: uppercase; 
-        font-weight: bold;
-        font-family: OverpassNormal, $headerFontFamily;
-        /* reset styles */
-        padding: 15px 0;
-        border-radius: 0;
-        text-shadow:0 1px 1px rgba(0, 0, 0, 0.5)
+      .brand-text {
+        display: none;
+        margin-left: 63px;
+        margin-top: -19px;
+        text-indent: -9999px;
+        overflow: hidden;
       }
     }
-
-    > li:nth-child(1) { text-align: left; }
-    > li:nth-last-child(1) { text-align: right; }
-
-    /* needs fixing */
-    > .active > a,
-    > .active > a:hover,
-    > li > a:hover {
+    .nav {
       /* reset styles */
-      background: transparent;
-      border: 0;
-      box-shadow: none;
-      text-decoration: none;
-      
-      > span {
-        padding-bottom: 3px;
-        border-bottom: 2px solid white;
-      }
-    }
-    
-    > li > a:focus {
-    	outline: thin dotted;
-  		outline: 5px auto -webkit-focus-ring-color;
-  		outline-offset: 12px;
+      float: none;
+      width: 100%;
+      font-size: $baseFontSize;
     }
   }
 }
+
+
+
+// Plain text in topbar
+// -------------------------
+.navbar-text {
+  margin-bottom: 0;
+}
+
+
+// Buttons in navbar
+// -------------------------
+.navbar .btn,
+.navbar .btn-group {
+  @include navbarVerticalAlign(30px); // Vertically center in navbar
+}
+.navbar .btn-group .btn,
+.navbar .input-prepend .btn,
+.navbar .input-append .btn {
+  margin-top: 0; // then undo the margin here so we don't accidentally double it
+}
+
+// Navbar forms
+// -------------------------
+.navbar-form {
+  margin-bottom: 0; // remove default bottom margin
+  @include clearfix();
+  input,
+  select,
+  .radio,
+  .checkbox {
+    @include navbarVerticalAlign(30px); // Vertically center in navbar
+  }
+  input,
+  select,
+  .btn {
+    display: inline-block;
+    margin-bottom: 0;
+  }
+  input[type="image"],
+  input[type="checkbox"],
+  input[type="radio"] {
+    margin-top: 3px;
+  }
+  .input-append,
+  .input-prepend {
+    margin-top: 6px;
+    white-space: nowrap; // preven two items from separating within a .navbar-form that has .pull-left
+    input {
+      margin-top: 0; // remove the margin on top since it's on the parent
+    }
+  }
+}
+
+// Navbar search
+// -------------------------
+.navbar-search {
+  position: relative;
+  float: left;
+  @include navbarVerticalAlign(30px); // Vertically center in navbar
+  margin-bottom: 0;
+  .search-query {
+    margin-bottom: 0;
+    padding: 4px 14px;
+    @include font-sans-serif(13px, normal, 1);
+    @include border-radius(15px); // redeclare because of specificity of the type attribute
+  }
+}
+
+
+
+// Static navbar
+// -------------------------
+
+.navbar-static-top {
+  position: static;
+  width: 100%;
+  margin-bottom: 0; // remove 18px margin for default navbar
+  .navbar-inner {
+    @include border-radius(0);
+  }
+}
+
+
+
+// Fixed navbar
+// -------------------------
+
+// Shared (top/bottom) styles
+.navbar-fixed-top,
+.navbar-fixed-bottom {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: $zindexFixedNavbar;
+  margin-bottom: 0; // remove 18px margin for default navbar
+}
+.navbar-fixed-top .navbar-inner,
+.navbar-static-top .navbar-inner {
+  border-width: 0 0 1px;
+}
+.navbar-fixed-bottom .navbar-inner {
+  border-width: 1px 0 0;
+}
+.navbar-fixed-top .navbar-inner,
+.navbar-fixed-bottom .navbar-inner {
+  padding-left: 0;
+  padding-right: 0;
+  @include border-radius(0);
+}
+
+// Reset container width
+// Required here as we reset the width earlier on and the grid mixins don't override early enough
+.navbar-static-top .container,
+.navbar-fixed-top .container,
+.navbar-fixed-bottom .container {
+  //@include grid-core-span($gridColumns, $gridColumnWidth, $gridGutterWidth);
+}
+
+// Fixed to top
+.navbar-fixed-top {
+  top: 0;
+}
+.navbar-fixed-top,
+.navbar-static-top {
+  .navbar-inner {
+    @include box-shadow(#{inset 0 -1px 0 rgba(0,0,0,.1), 0 1px 10px rgba(0,0,0,.1)});
+  }
+}
+
+// Fixed to bottom
+.navbar-fixed-bottom {
+  bottom: 0;
+  .navbar-inner {
+    @include box-shadow(#{inset 0 1px 0 rgba(0,0,0,.1), 0 -1px 10px rgba(0,0,0,.1)});
+  }
+}
+
+
+
+// NAVIGATION
+// ----------
+
+.navbar .nav-primary {
+  position: relative;
+  left: 0;
+  display: block;
+  float: right;
+  margin: 0 -30px 0 0;
+}
+.navbar .nav.pull-right {
+  float: right; // redeclare due to specificity
+  margin-right: 0; // remove margin on float right nav
+}
+.navbar .nav-primary > li {
+  float: left;
+}
+
+// Links
+.navbar .nav-primary > li > a {
+  float: none;
+  // Vertically center the text given $navbarHeight
+  padding: 18px 30px;
+  color: $navbarLinkColor;
+  font-size: 18px; // header special case
+  font-weight: normal;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5)
+}
+.navbar .nav .dropdown-toggle .caret {
+  margin-top: 8px;
+}
+
+// Hover
+//.navbar .nav > li > a:focus,
+.navbar .nav > li > a:hover {
+  background-color: transparent;
+  @include border-radius(0);
+  > span {
+    color:white;
+  }
+}
+
+// Active nav items
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:hover,
+.navbar .nav > .active > a:focus {
+  color: white;
+  text-decoration: none;
+  > span {
+    border-bottom: 2px solid $openshiftBrightRed;
+    padding-bottom: 2px;
+  }
+}
+
+// Navbar button for toggling navbar items in responsive layouts
+// These definitions need to come after '.navbar .btn'
+/* Default styles
+.navbar .btn-navbar {
+  display: none;
+  float: right;
+  padding: 7px 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+
+}
+.navbar .btn-navbar .icon-bar {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background-color: #f5f5f5;
+  @include border-radius(1px);
+  @include box-shadow(#{0 1px 0 rgba(0,0,0,.25)});
+}
+.btn-navbar .icon-bar + .icon-bar {
+  margin-top: 3px;
+}
+*/
+
 
 .column-navbar {
 	display:none;
@@ -106,7 +303,7 @@
   background-image: none;
   //@include gradient-vertical($startColor: #282828, $endColor: #121212);
   display: none;
-  font-size: 12px;
+  font-size: $smallFontSize;
   text-transform: uppercase;
   font-weight:normal;
   margin: 0 0 0 -20px;
@@ -117,8 +314,13 @@
   text-align:left;
   width: 100%;
   text-shadow: -1px -1px 2px rgba(0, 0, 0, 0.25);
+  @include border-radius(0);
+  &.btn:hover {
+  	@include box-shadow(none);
+  }
   
-  &:hover {
+  &:hover,
+  &:active {
   	color:#eee;
   	background-color:#4f4f4f;
   	background-image:none;
@@ -140,130 +342,474 @@
 	}
 }
 
+.column-navbar-secondary {
+  width: 100%;
+}
+
 @media (max-width:767px) {
 	.column-navbar {
 		background: #000;
 		display:block;
 		margin: 0 -20px;
     padding:0 20px;
+
 		> h3 {
 			float:left;
 			color: #fff;
 			margin: 8px 20px 0;
 		}
+    
 		.btn-navbar {
     	display: block;
   	}
 	}
+
+  .column-navbar-secondary {
+    display: block;
+    margin: 0 -20px !important;
+  }
+}
+
+
+
+// Dropdown menus
+// --------------
+
+// Menu position and menu carets
+.navbar .nav > li > .dropdown-menu {
+  &:before {
+    content: '';
+    display: inline-block;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #ccc;
+    border-bottom-color: black;
+    position: absolute;
+    top: -7px;
+    left: 9px;
+  }
+  &:after {
+    content: '';
+    display: inline-block;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid white;
+    position: absolute;
+    top: -6px;
+    left: 10px;
+  }
+  &.dropdown-menu-mega {
+    &:before {
+      border-width: 10px;
+      border-bottom-color: #F5F5F5;
+      top: -10px;
+      left: 50%;
+      margin-left: -10px;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+}
+// Menu position and menu caret support for dropups via extra dropup class
+.navbar-fixed-bottom .nav > li > .dropdown-menu {
+  &:before {
+    border-top: 7px solid #ccc;
+    border-top-color: black;
+    border-bottom: 0;
+    bottom: -7px;
+    top: auto;
+  }
+  &:after {
+    border-top: 6px solid white;
+    border-bottom: 0;
+    bottom: -6px;
+    top: auto;
+  }
+}
+
+// Remove background color from open dropdown
+.navbar .nav li.dropdown.open > .dropdown-toggle,
+.navbar .nav li.dropdown.active > .dropdown-toggle,
+.navbar .nav li.dropdown.open.active > .dropdown-toggle {
+  
+}
+.navbar .nav li.dropdown > .dropdown-toggle .caret {
+  border-top-color: $navbarLinkColor;
+  border-bottom-color: $navbarLinkColor;
+}
+.navbar .nav li.dropdown.open > .dropdown-toggle .caret,
+.navbar .nav li.dropdown.active > .dropdown-toggle .caret,
+.navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
+  border-top-color: white;
+  border-bottom-color: white;
+}
+
+// Right aligned menus need alt position
+.navbar .pull-right > li > .dropdown-menu,
+.navbar .nav > li > .dropdown-menu.pull-right {
+  left: auto;
+  right: 0;
+  &:before {
+    left: auto;
+    right: 12px;
+  }
+  &:after {
+    left: auto;
+    right: 13px;
+  }
+  .dropdown-menu {
+    left: auto;
+    right: 100%;
+    margin-left: 0;
+    margin-right: -1px;
+    @include border-radius(6px 0 6px 6px);
+  }
+}
+
+// Responsive styles
+// --------------------------
+
+@media (max-width: 1239px) {
+  .navbar {
+    .nav-primary {
+      margin-right: -18px;
+      > li > a {
+        padding: 18px 15px;
+        font-size: 16.5px; // responsive special case
+      }
+    }
+  }
+}
+@media (max-width: 979px) {
+  .navbar {
+    margin-top: 40px;
+    .brand {
+      margin-left: 0;
+      padding: 0;
+      a {
+        &:hover {
+          .brand-text {
+            margin-left: 45px;
+            margin-top: -29px;
+          }
+        }
+        .brand-image {
+          width: 194px;
+        }
+      }
+    }
+    .nav-primary {
+      margin-right: -10px;
+      > li > a {
+        padding: 10px;
+        font-size: 14.75px; // responsive special case
+      }
+    }
+  }
+}
+
+// Dedent the last menu item
+@media (max-width: 850px) {
+  .navbar .nav > li:last-child {
+    > .dropdown-menu.dropdown-menu-mega {
+      // move 45px left from -90px to avoid going off the right edge of the screen
+      margin-left: -135px;
+    }
+    > .dropdown-menu.dropdown-menu-mega:before {
+      // move 45px right from -10px
+      margin-left: 35px;
+    }
+  }
 }
 
 @media (max-width: 767px) {
   .navbar {
-    padding-top: 15px;
-    min-height: $logoHeight + $logoSeparation;
-
+    margin: 20px 0 0 0;
     .brand {
-      float: left;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    .nav {
-      margin-left: 95px; 
-      margin-top: 5px; /* centers navigation text on the logo */
-      width: inherit;
-
-      > li {
-        float: left !important;
-        width: 50% !important;
-        text-align: center !important;
-
-        > a {
-          padding: 10px 0;
-      		font-size: 14px;
-      		font-weight: normal;
+      margin-left: 2.5%;
+      a {
+        display: block;
+        text-decoration: none;
+        &:hover {
+          .brand-text {
+            margin-left: 0;
+            margin-top: -23px;
+            position: absolute;
+            width: 100%;
+          }
+        }
+        .brand-image {
+          background: image-url("openshift-logo-vertical.svg") no-repeat;
+          background-size: 100%;
+          transition: none;
+          height: 85px;
+          width: 80px;
+          margin-bottom: 5px;
+        }
+        .brand-text {
+          //display: block;
+          border-bottom: 2px solid transparent;
+          color: white;
+          text-align: center;
+          font-size: 12.5px; // navbar special case
+          letter-spacing: 1px;
+          position: inherit;
         }
       }
-      > li.divider {
-        display: none;
+    }
+    .nav-primary {
+      margin-left: 25%;
+      width: inherit;
+      float: none;
+      > li {
+        float: left;
+        text-align: left;
+        width: 33%;
+        > a {
+          padding: 10px 0;
+          font-size: 14px; // navbar special case
+          margin-bottom: 0;
+        }
       }
     }
-    .brand-image {
-  	  background: url('../images/OSlogo57.png') center top no-repeat transparent;
-  	  height: 60px;
-  	  margin-bottom: 5px;
-  	  margin-top: 5px;
-  	}
+
+    .nav > li > .dropdown-menu.dropdown-menu-mega {
+      // move 45px left from -90px to avoid going off the right edge of the screen
+      margin-left: -135px;
+      // Move the menu left, since the text is now left-aligned
+      left: 30%;
+      &:before {
+        border-width: 7px;
+        top: -7px;
+        // move 45px right from -10px
+        margin-left: 35px;
+      }
+    }    
   }
 }
-@media (min-width: 768px) {
+@media (max-width: 480px) {
   .navbar {
-    padding-top: 30px;
-    min-height: $logoHeight + $logoSeparation + 30px;
-
     .brand {
-      z-index: 1;
-      position: absolute;
-      left: 50%;
-      top: 24px;
-    }
-    .brand > a {
-      position: relative;
-      left: -50%;
-      height: 125px;
+      margin-left: 0;
+      a .brand-image {
+        width: 70px;
+        height: 73px;
+      }
     }
     .nav {
-      margin-top: 20px; /* centers navigation text on the logo */
-    }
-  }
-}
-
-
-@media (max-width: 480px) {
-	#learn .action-call {
-    font-size: 11px;
-  }
-  .navbar {
-  	.navbar {
-			min-height: 90px;
-		}
-    .brand {
-      > a:hover > .brand-image {
-        -moz-transform: rotate(0);
-        -webkit-transform: rotate(0);
-        transform: rotate(0);
+      margin-left: 32%;
+      li {
+        width: 50%;
+        a {
+          padding: 0 0 4.25px;
+          font-size: 12.5px;
+        }
       }
     }
-    .nav > li > a {
-      font-weight: normal;
-      font-size: 12px;
-      //padding: 5px 0;
+  }
+}
+
+/* ie conditionals */
+
+.ie8 .navbar .brand a .brand-image {
+  background: image-url("logo-wide-white.png") no-repeat;
+  }
+
+@media (max-width: 979px) {
+.ie8 .navbar .brand a .brand-image {
+  background: image-url("openshift-logo-horizontal194.png") no-repeat;
+  }
+}
+@media (max-width: 767px) {
+  .ie8 .navbar .brand a .brand-image {
+    background: image-url("openshift-logo-vertical86.png") center top no-repeat;
+    height: 86px;
+    padding-bottom: 3px;
+    width: 86px;
+  }
+}
+
+// Secondary tabs
+// --------------------------
+
+$tabPaddingTop: 18px;
+$tabPaddingTopNarrow: 14px;
+$tabPaddingTopTablet: 10px;
+$tabPaddingSide: 24px;
+$tabPaddingSideNarrow: 18px;
+
+.nav.nav-tabs.nav-tabs-secondary {
+  background-color: #f0f0f0;
+  border-bottom: 0;
+  display: block;
+  float: right;
+  margin-top: -$tabPaddingTop;
+  padding: 0 14px;
+  position: relative;
+  z-index: 2;
+
+  &:before {
+    border-bottom: 6px solid rgba(0, 0, 0, 0.35);
+    border-left: 6px solid rgba(0, 0, 0, 0.35);
+    content: "";
+    height: 32px;
+    left: -6px;
+    position: absolute;
+    top: 18px;
+    width: 100%;
+    display: block;
+  }
+  > li {
+    display: inline-block;
+    text-align: center;
+    margin: 0;
+    $navUnderlineLeftRight: 25px;
+    $navUnderlineBottom: 13px;
+    &.active,
+    &.active:hover {
+      opacity: 1;
+      color: #000;
+      a:after {
+        background-color: $openshiftBrightRed;
+        bottom: $navUnderlineBottom;
+        content: "";
+        display: block;
+        height: 2px;
+        left: $navUnderlineLeftRight;
+        right: $navUnderlineLeftRight;
+        position: absolute;
+      }
+    }
+    &:hover {
+      a:after {
+        background-color: $grayLight;
+        bottom: $navUnderlineBottom;
+        content: "";
+        display: block;
+        height: 2px;
+        left: $navUnderlineLeftRight;
+        right: $navUnderlineLeftRight;
+        position: absolute;
+      }
+    }
+    a {
+      padding: $tabPaddingTop $tabPaddingSide;
+      color: inherit;
+      opacity: .8;
+      font-size: $h4FontSize;
+      white-space: nowrap;
+      position: relative;
+      border: 0;
+      background-color: transparent;
+      @include border-radius(0);
+      &:hover {
+        opacity: 1;
+        background-color: transparent;
+      }
     }
   }
 }
 
 
+// Responsive styles
+// --------------------------
+
+@media (max-width: 1239px) {
+  $navUnderlineLeftRight: 18px;
+  
+  .nav.nav-tabs.nav-tabs-secondary {
+    padding: 0 8px;
+    > li {
+      &.active,
+      &.active:hover {
+        a:after {
+          left: $navUnderlineLeftRight;
+          right: $navUnderlineLeftRight;
+        }
+      }
+      &:hover {
+        a:after {
+          left: $navUnderlineLeftRight;
+          right: $navUnderlineLeftRight;
+        }
+      }
+      a {
+        padding: $tabPaddingTop $tabPaddingSideNarrow;
+      }
+    }
+  }
+}
 
 
-/* ie conditionals */
-.ie8 .navbar {
-    min-height: 130px;
-    padding-top: 30px;
+@media (max-width: 979px) {
+  .nav.nav-tabs.nav-tabs-secondary {
+    margin-top: -$tabPaddingTopNarrow;
+    margin-right: 1px;
+    padding: 0 6px;
+    &:before {
+      height: 28px;
+      top: 14px;
+    }
+    > li {
+      $navUnderlineLeftRight: 15px;
+      $navUnderlineBottom: 10px;
+      &.active,
+      &.active:hover {
+        a:after {
+          bottom: $navUnderlineBottom;
+          left: $navUnderlineLeftRight;
+          right: $navUnderlineLeftRight;
+        }
+      }
+      &:hover {
+        a:after {
+          bottom: $navUnderlineBottom;
+          left: $navUnderlineLeftRight;
+          right: $navUnderlineLeftRight;
+        }
+      }
+      a {
+        padding: $tabPaddingTopNarrow 14px;
+        font-size: $baseFontSize;
+      }
+    }
+  }
 }
-.ie8 .navbar .brand {
-    left: 50%;
-    position: absolute;
-    top: 24px;
-    z-index: 1;
-}
-.ie8 .navbar .brand > a {
-    height: 125px;
-    left: -50%;
-    position: relative;
-    width: 111px;
-}
-.ie8 .navbar .nav {
-    margin-top: 20px;
-}
+@media (max-width: 767px) {
+  .nav.nav-tabs.nav-tabs-secondary {
+    margin: 0;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #E8E8E8;
+    float: none;
 
+    &:before {
+      display: none;
+    }
 
+    > li {
+      &.active,
+      &.active:hover {
+        a:after {
+          bottom: 7px;
+          left: 16px;
+          right: 16px;
+        }
+      }
+      &:hover {
+        a:after {
+          bottom: 7px;
+          left: 16px;
+          right: 16px;
+        }
+      }
+      a {
+        padding: $tabPaddingTopTablet 16px;
+        font-size: 14px // responsive special case
+      }
+    }
+  }
+}
+@media (max-width: 480px) {
+}

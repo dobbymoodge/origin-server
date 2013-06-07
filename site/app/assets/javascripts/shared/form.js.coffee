@@ -27,6 +27,9 @@ $ = jQuery
     error.insertAfter(el)
 
 $ ->
+  $('[data-toggle=collapse]').click ->
+    $(this).toggleClass('in')
+
   # Get the value from one of the form's meta tags
   $.fn.form_meta_value = (name) ->
     $(this).closest('form').find("meta[name=#{name}]").attr('content')

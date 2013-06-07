@@ -1,0 +1,141 @@
+.dropdown-menu {
+  @include border-radius(0);
+}
+
+.dropdown-toggle {
+  &:hover {
+    .dropdown-menu {
+      display: block;
+      &.dropdown-menu-mega {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+}
+
+.dropdown-menu-mega {
+  background: none repeat scroll 0 0 #F5F5F5;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.65);
+  border: none;
+  left: 50%;
+  margin-left: -90px;
+  position: absolute;
+  width: 140px;
+  min-width: 140px;
+  padding: 20px;
+  opacity: .75;
+  visibility: hidden;
+  transition: all 0.092s ease-in 0s;
+  display: inline-block;
+
+  .nav-list {
+    padding: 0;
+    margin: 0;
+  }
+
+  &.dropdown-menu-two-column {
+    width: 320px;
+    margin-left: -180px;
+
+    &:before {
+      left: 170px;
+    }
+
+    > ul {
+      float: left;
+      width: 50%;
+
+      &:first-child { 
+        border-right: 1px solid #DFDFDF;
+      }
+
+      + ul {
+        padding-left: 10%;
+        width: 39%;
+      }
+    }
+  }
+
+  .nav-list {
+    > li > a {
+      color: #111111;
+      padding: 0;
+      margin: 0;
+
+      &.active {
+        text-decoration: underline;
+      }
+
+      &:hover {
+        color: #111111;
+        background: none;
+        text-decoration: underline;
+      }
+    }
+
+    .nav-list > li > a { 
+      padding: 0;
+    }
+  }
+
+  &:after {
+   clear: both;
+   content: ".";
+   display: block;
+   height: 0;
+   visibility: hidden;
+  }
+    
+  > ul {
+    margin: 0;
+
+    > li {
+      text-align: left;
+      margin-bottom: 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul.nav-list {
+      font-family: $headerFontFamily;
+      font-size: $smallFontSize;
+      margin-left: 10px;
+      margin-top: 6px;
+
+      li {
+        margin-bottom: 4px;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .dropdown-menu-mega {
+    display: none;
+    &.dropdown-menu-two-column {
+      width: 120px;
+      > ul {
+        float: none;
+        width: auto;
+
+        &:first-child { 
+          border-right: none;
+        }        
+
+        + ul {
+          width: auto;
+          margin-top: 10px;
+          border-left: none;
+          padding-left: 0;
+        }
+      }
+    }
+  }
+}
+// Hide for phones, landscape and smaller
+@media (max-width: 568px) {
+  .dropdown-toggle:hover .dropdown-menu.dropdown-menu-mega {display: none; }
+}

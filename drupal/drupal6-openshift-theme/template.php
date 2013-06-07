@@ -110,7 +110,7 @@ function openshift_preprocess_page(&$vars) {
   // FIXME replace with better integration with drupal site nav and taxonomies
   $vars['heading'] = _openshift_heading($vars);
   if ($vars['is_front']) {
-    $vars['body_classes'] .= ' home';
+    $vars['body_classes'] .= ' home2';
   }
 
   _openshift_whitelist_css($vars);
@@ -163,7 +163,18 @@ function openshift_social_sharing($url, $title = NULL) {
       '<a target="_blank" href="http://twitter.com/intent/tweet?text='. $tweet_text .'" aria-hidden="true" data-icon="&#xee04;" title="Post to Twitter"> </a>'.
       '<a target="_blank" href="http://www.facebook.com/sharer.php?u='. $share_url .'&t='. urlencode($title) .'" aria-hidden="true" data-icon="&#xee05;" title="Post to Facebook"> </a>'.
       '<a target="_blank" href="https://plus.google.com/share?url='. $share_url .'" aria-hidden="true" data-icon="&#xee06;" title="Post to Google+"> </a>'.
-    '</div>';
+    '</p';
+}
+
+function openshift_wrap_region($s) {
+  $is_row = strpos($s, "<!--row-fluid-->"); 
+  if ($is_row) { 
+    print "<div class=\"row-fluid\">"; 
+  } 
+  print $s; 
+  if ($is_row) { 
+    print "</div>"; 
+  } 
 }
 
 function openshift_pager($tags = array(), $limit = 10, $element = 0, $parameters = array(), $quantity = 9) {
@@ -277,8 +288,14 @@ function _openshift_heading(&$vars) {
   }
   elseif ($item['path'] == 'node/%' && $item['page_arguments'] && $item['page_arguments'][0]) {
     $node = $item['page_arguments'][0];
-    $type = $node->type;
-    $title = $node->title;
+    if ($node->nid == 9435) { // developers page
+      $type = "developers";
+      $title = $node->title;
+    }
+    else {
+      $type = $node->type;
+      $title = $node->title;
+    }
   }
   elseif ($item['path'] == 'comment/reply/%' && $item['page_arguments'] && $item['page_arguments'][0]) {
     $node = $item['page_arguments'][0];
@@ -287,6 +304,12 @@ function _openshift_heading(&$vars) {
   elseif ($item['link_path'] == 'user' && $user->uid == 0) {
     $title = '';
   }
+  elseif ($item['module'] == 'book' && $vars['node'] && $vars['node']->type == 'book') {
+    $node = $vars['node'];
+    $data = menu_tree_all_data($item['menu_name']);
+    $data = reset($data);
+    $title = $data['link']['title'];
+  }
   elseif ($item['link_path']) {
     $type = $item['link_path'];
     $title = $page_title;
@@ -294,15 +317,13 @@ function _openshift_heading(&$vars) {
       $title = $item['title'];
     }
   }
-  elseif ($item['path'] == 'quickstarts') {
-    $type = 'quickstarts';
+  elseif ($item['path'] == 'developers') {
+    $type = 'developers';
   }
   elseif ($item['page_callback'] == 'taxonomy_term_page') {
     if ($term = taxonomy_get_term($item['page_arguments'][0])) {
-      #$vocab = taxonomy_vocabulary_load($term->vid);
       if ($term->vid == 4) {
         $title = "QuickStarts Tagged with '".$term->name."'";
-        #drupal_set_title($title);
         $vars['head_title'] = $title;
       } else {
         $title = "Content Tagged with ".$term->name;
@@ -312,66 +333,53 @@ function _openshift_heading(&$vars) {
     }
     $type = '';
   }
-  elseif ($item['path'] == 'community') {
-    $type = 'community';
-  }
   switch ($type) {
   case 'home': $heading = "Overview"; break;
-  case 'ideas':
-  case 'idea': $heading = "Vote on Features"; break;
+  case 'ideas': $heading = "Vote on Features"; break;
   case 'poll':
   case 'polls': $heading = "Polls"; break;
-  case 'wiki_page':
   case 'wikis': $heading = "Open Source Wiki"; break;
-  case 'discussion':
-  case 'groups':
-  case 'group': $heading = "Forum"; break;
-  #case 'documentation': $heading = "Documentation"; break; // no title for some reason
-  case 'community': $heading = "Welcome to OpenShift"; break; // override the default link title
+  case 'group':
+  case 'groups': $heading = "Forum"; break;
+  case 'developers': $heading = NULL; break;
   case 'calendar':
-  #case 'event':
-  #case 'events': $heading = "Upcoming Events"; break; // no title for some reason
-  case 'knowledge_base':
-  case 'kb': $heading = "Knowledge Base"; break; // no title for some reason
-  case 'blogs': // no title for some reason
-  case 'blog': $heading = "OpenShift Blog"; break;
-  case 'quickstarts':
-  case 'quickstart': $heading = "QuickStarts"; break;
-  case 'faq': $heading = "Frequently Asked Questions"; break;
-  #case 'videos': // no title for some reason
-  #case 'video': $heading = "Videos"; break;
   default:
     $heading = $title;
   }
-  //print "<!-- final heading: ".$heading."-->";
   return $heading;
 }
 
 function openshift_breadcrumb($breadcrumb) {
-  if (!empty($breadcrumb) && count($breadcrumb) > 2) {
-    //array_unshift($breadcrumb, "<a href='http://openshift.redhat.com/app' class='active'>OpenShift</a>");
-    array_shift($breadcrumb);
+  if (!empty($breadcrumb) && count($breadcrumb) > 1) {
+    #array_shift($breadcrumb);
     return '<div class="breadcrumb">' . implode('<span class="divider"> /</span>', $breadcrumb) . '</div>';
   }
 }
 
-function openshift_menu_tree__menu_block__2($tree) {
-  return '<ul class="menu nav nav-tabs">'. $tree .'</ul>';
-}
-
-function openshift_menu_tree($tree) {
-  return '<ul class="menu nav nav-list">'. $tree .'</ul>';
-}
-
-function openshift_menu_item($link, $has_children, $menu = '', $in_active_trail = FALSE, $extra_class = NULL) {
-  $class = ($menu ? 'expanded' : ($has_children ? 'collapsed' : 'leaf'));
-  if (!empty($extra_class)) {
-    $class .= ' '. $extra_class;
+function openshift_flat_menu_tree_output($tree) {
+  $output = '';
+  $items = array();
+  foreach ($tree as $data) {
+    if (!$data['link']['hidden'] && $data['link']['expanded'] && $data['link']['has_children']) {
+      $items[] = $data;
+    }
   }
-  if ($in_active_trail) {
-    $class .= ' active';
+  $num_items = count($items);
+  $class = 'span' . (12 / $num_items);
+  $output .= '<div class="row-fluid">';
+  foreach ($items as $i => $data) {
+    $output .= '<nav class="' . $class . '">' . '<header><h3>' . check_plain($data['link']['title']) . '</h3></header>';
+    $output .= '<ul class="unstyled">';
+    $children = $data['below'];
+    foreach ($children as $child) {
+      if ($child['link']['hidden']) { continue; }
+      $link = $child['link'];
+      $output .= '<li>' . l($link['title'], $link['href']) . '</li>';
+    }
+    $output .= '</ul></nav>';
   }
-  return '<li class="'. $class .'">'. $link . $menu ."</li>\n";
+  $output .= '</div>';
+  return $output;
 }
 
 function openshift_preprocess_node(&$vars) {
@@ -412,8 +420,8 @@ function openshift_preprocess_node(&$vars) {
 function _openshift_theme_subscription_links(&$links) {
   $links = str_replace('<em>', '', $links);
   $links = str_replace('</em>', '', $links);
-  $links = str_replace('Subscribe to: This post', 'Subscribe to this thread', $links);
-  $links = str_replace('Unsubscribe from: This post', 'Unsubscribe from this thread', $links);
+  $links = str_replace('Subscribe to: This post', 'Subscribe to this', $links);
+  $links = str_replace('Unsubscribe from: This post', 'Unsubscribe from this', $links);
   $links = str_replace('Subscribe to: Discussion posts in', 'Subscribe to ', $links);
   $links = str_replace('Unsubscribe from: Discussion posts in', 'Unsubscribe from ', $links);
   $links = str_replace('Subscribe to: Posts by ', 'Subscribe to ', $links);
@@ -749,7 +757,7 @@ function openshift_menu_local_tasks() {
   $output = '';
 
   if ($primary = menu_primary_local_tasks()) {
-    $output .= "<ul class=\"nav nav-tabs primary\">\n". $primary ."</ul>\n";
+    $output .= "<ul class=\"nav nav-pills primary\">\n". $primary ."</ul>\n";
   }
   if ($secondary = menu_secondary_local_tasks()) {
     $output .= "<ul class=\"nav nav-tabs secondary\">\n". $secondary ."</ul>\n";
@@ -760,9 +768,9 @@ function openshift_menu_local_tasks() {
 
 function openshift_preprocess_views_view(&$vars) {
 
-  if ($vars['view']->name === 'knowledge_base') {
-    drupal_add_js(drupal_get_path('theme', 'redhat') .'/js/redhat.js', 'theme');
-  }
+  #if ($vars['view']->name === 'knowledge_base') {
+  #  drupal_add_js(drupal_get_path('theme', 'redhat') .'/js/redhat.js', 'theme');
+  #}
   
   // We are displaying a thread list from a group.
   if ($vars['view']->name === 'og_ghp_thread_list') {
@@ -835,4 +843,281 @@ function openshift_ends_with($s, $substr)
     $length = strlen($substr);
     $start  = -1 * $length;
     return (substr($s, $start) === $substr);
+}
+
+function openshift_primary_link_custom_block($path) {
+  $menuMap = variable_get("megamenu_custom_blocks", array());
+  $block = array();
+  if(is_array($menuMap) && $menuMap[$path]) {
+    $mockedBlock = (object)array('module'=>'block', 'delta'=>$menuMap[$path], 'cache'=>BLOCK_CACHE_GLOBAL);
+    if(($cid = _block_get_cache_id($mockedBlock)) && ($cache = cache_get($cid, 'cache_block'))) {
+      $block = $cache->data;
+    }
+    else {
+      $block = module_invoke($mockedBlock->module, 'block', 'view', $mockedBlock->delta);
+      if (isset($cid)) {
+        cache_set($cid, $block, 'cache_block', CACHE_TEMPORARY);
+      }
+    }
+  }
+  return $block;
+}
+
+function openshift_primary_link_megamenu($link, $visibleChildren) {
+  $path = url($link['href']);
+  $block = openshift_primary_link_custom_block($path);
+  if($block['content']) {
+    return $block['content'];
+  }
+  else if(!empty($visibleChildren)){
+    $content = '<div class="dropdown-menu dropdown-menu-mega"><ul class="nav nav-list">';
+    foreach( $visibleChildren as $key=>$child) {
+      $sublink = $child["link"];                                 
+      $sublink['options']['html'] = TRUE;
+      unset($sublink['options']['attributes']['title']);
+      $content .= '<li>' . l($sublink['title'], $sublink['href'], $sublink['options']) . '</li>';
+    }
+    return $content . '</ul></div>';
+  }
+}
+
+/*
+ * Source: http://drupalcode.org/project/menu_block.git/blob_plain/refs/heads/6.x-2.x:/menu_block.module
+ * function menu_tree_build($config)
+ */
+function openshift_menu_tree_build($config) {
+  // Retrieve the active menu item from the database.
+  if ($config['menu_name'] == MENU_TREE__CURRENT_PAGE_MENU) {
+    // Retrieve the list of available menus.
+    $menu_order = variable_get('menu_block_menu_order', array('primary-links' => '', 'secondary-links' => ''));
+
+    // Check for regular expressions as menu keys.
+    $patterns = array();
+    foreach (array_keys($menu_order) as $pattern) {
+      if ($pattern[0] == '/') {
+        $patterns[$pattern] = NULL;
+      }
+    }
+
+    // Retrieve all the menus containing a link to the current page.
+    $result = db_query("SELECT menu_name FROM {menu_links} WHERE link_path = '%s'", $_GET['q'] ? $_GET['q'] : '<front>');
+    while ($item = db_fetch_array($result)) {
+      // Check if the menu is in the list of available menus.
+      if (isset($menu_order[$item['menu_name']])) {
+        // Mark the menu.
+        $menu_order[$item['menu_name']] = MENU_TREE__CURRENT_PAGE_MENU;
+      }
+      else {
+        // Check if the menu matches one of the available patterns.
+        foreach (array_keys($patterns) as $pattern) {
+          if (preg_match($pattern, $item['menu_name'])) {
+            // Mark the menu.
+            $menu_order[$pattern] = MENU_TREE__CURRENT_PAGE_MENU;
+            // Store the actual menu name.
+            $patterns[$pattern] = $item['menu_name'];
+          }
+        }
+      }
+    }
+    // Find the first marked menu.
+    $config['menu_name'] = array_search(MENU_TREE__CURRENT_PAGE_MENU, $menu_order);
+    // If a pattern was matched, use the actual menu name instead of the pattern.
+    if (!empty($patterns[$config['menu_name']])) {
+      $config['menu_name'] = $patterns[$config['menu_name']];
+    }
+    $config['parent_mlid'] = 0;
+
+    // If no menu link was found, don't display the block.
+    if (empty($config['menu_name'])) {
+      return array();
+    }
+  }
+
+  // Get the default block name.
+  $menu_names = menu_block_get_all_menus();
+  menu_block_set_title(t($menu_names[$config['menu_name']]));
+
+  if ($config['expanded'] || $config['parent_mlid']) {
+    // Get the full, un-pruned tree.
+    $tree = menu_tree_all_data($config['menu_name']);
+    // And add the active trail data back to the full tree.
+    menu_tree_add_active_path($tree);
+
+    // ADDED
+    if ($config['require_active_trail']) {
+      $found_active_trail = FALSE;
+      foreach (array_keys($tree) as $key) {
+        if ($tree[$key]['link']['in_active_trail']) {
+          $found_active_trail = TRUE;
+          break;
+        }
+      }
+      if (!$found_active_trail) {
+        return NULL;
+      }
+    }
+    // END ADDED  
+  }
+  else {
+    // Get the tree pruned for just the active trail.
+    $tree = menu_tree_page_data($config['menu_name']);
+  }
+
+  // Allow other modules to alter the tree before we begin operations on it.
+  $alter_data = &$tree;
+  // Also allow modules to alter the config.
+  $alter_data['__drupal_alter_by_ref'] = array(&$config);
+  drupal_alter('menu_block_tree', $alter_data);
+
+  // Localize the tree.
+  if (module_exists('i18nmenu')) {
+    i18nmenu_localize_tree($tree);
+  }
+
+  // Prune the tree along the active trail to the specified level.
+  if ($config['level'] > 1 || $config['parent_mlid']) {
+    if ($config['parent_mlid']) {
+      $parent_item = menu_link_load($config['parent_mlid']);
+      menu_tree_prune_tree($tree, $config['level'], $parent_item);
+    }
+    else {
+      menu_tree_prune_tree($tree, $config['level']);
+    }
+  }
+
+  // Prune the tree to the active menu item.
+  if ($config['follow']) {
+    menu_tree_prune_active_tree($tree, $config['follow']);
+  }
+
+  // If the menu-item-based tree is not "expanded", trim the tree to the active path.
+  if ($config['parent_mlid'] && !$config['expanded']) {
+    menu_tree_trim_active_path($tree);
+  }
+
+  // Trim the branches that extend beyond the specified depth.
+  if ($config['depth'] > 0) {
+    menu_tree_depth_trim($tree, $config['depth']);
+  }
+
+  // Sort the active path to the top of the tree.
+  if ($config['sort']) {
+    menu_tree_sort_active_path($tree);
+  }
+
+  return $tree;
+}
+
+function openshift_menu_tree_block_output($tree, $config) {
+  // Render the tree.
+  $data = array();
+  $data['subject'] = menu_block_get_title($config['title_link'], $config);
+  $data['content'] = openshift_menu_block_tree_output($tree, $config);
+  if ($data['content']) {
+    $hooks = array();
+    $hooks[] = 'menu_block_wrapper__' . str_replace('-', '_', $config['delta']);
+    $hooks[] = 'menu_block_wrapper__' . str_replace('-', '_', $config['menu_name']);
+    $hooks[] = 'menu_block_wrapper';
+    $data['content'] = theme($hooks, $data['content'], $config, $config['delta']);
+  }
+
+  return $data;
+}
+
+
+function openshift_menu_block_tree_output(&$tree, $config = array(), $nested = 0, $parent = NULL) {
+  $output = '';
+
+  // Create context if no config was provided.
+  if (empty($config)) {
+    $config['delta'] = 0;
+    // Grab any menu item to find the menu_name for this tree.
+    $menu_item = current($tree);
+    $config['menu_name'] = $menu_item['link']['menu_name'];
+  }
+
+  $hook_delta = str_replace('-', '_', $config['delta']);
+  $hook_menu_name = str_replace('-', '_', $config['menu_name']);
+
+  $items = array();
+  foreach (array_keys($tree) as $key) {
+    $item = $tree[$key];
+    if (!$item['link']['hidden']) {
+      $items[$key] = array(
+        'link' => $item['link'],
+        'below' => !empty($item['below']) ? openshift_menu_block_tree_output($item['below'], $config, $nested + 1, $item) : '',
+      );
+    }
+  }
+
+  $is_drupal_front = drupal_is_front_page();
+  $get_q = $_GET['q'];
+
+  $num_items = count($items);
+
+  $i = 1;
+  foreach (array_keys($items) as $key) {
+    // Render the link.
+    $link_class = array();
+    $item = $items[$key];
+    $link = $item['link'];
+
+    $active = $link['href'] == $get_q || ($link['href'] == '<front>' && $is_drupal_front);
+    $in_active_trail = $link['in_active_trail'] || $active;
+    $collapsible = $item['below'] && $config['collapsible']['from_depth'] && $link['depth'] >= ($config['collapsible']['from_depth'] + 1);
+
+    if (!empty($link['localized_options']['attributes']['class'])) {
+      $link_class[] = $link['localized_options']['attributes']['class'];
+    }
+    if (!empty($link_class)) {
+      $link['localized_options']['attributes']['class'] = implode(' ', $link_class);
+    }
+    if ($config['hide_titles']) {
+      unset($link['localized_options']['attributes']['title']);
+    }
+
+    $link = l($link['title'], $link['href'], $link['localized_options']);
+
+    // Render the menu item.
+    $extra_class = array();
+    if (!empty($link['leaf_has_children'])) {
+      $extra_class[] = 'has-children';
+    }
+
+    if ($active || $in_active_trail && $config['highlight_active_trail']) { 
+      $extra_class[] = 'active';
+    }
+
+    if ($collapsible) {
+      $extra_class[] = 'collapsible';
+      $link = '<a data-target="#m'. $item['link']['mlid'] .'" data-toggle="collapse" class="'. ($in_active_trail ? 'in' : '') .'">Toggle</a>' . $link;
+    }
+
+    $output .= '<li class="'. implode(' ', $extra_class).'">' . $link . $item['below'] . '</li>';
+
+    $i++;
+  }
+
+  if (!$output) {  
+    return ''; 
+  }
+
+  $render_classes = ($nested > 0 ? $config['sub_menu_class'] : $config['menu_class']);
+  if ($render_classes) {
+    $in_active_trail = $parent['link']['in_active_trail'];
+    $collapsible = $parent['link']['mlid'] && $nested >= $config['collapsible']['from_depth'];
+    if ($collapsible && $in_active_trail) {
+      $render_classes = $render_classes . " " . $config['collapsible']['expanded_menu_class'];
+    } elseif ($collapsible) {
+      $render_classes = $render_classes . " " . $config['collapsible']['collapse_menu_class'];
+    }
+    return '<ul ' . ($collapsible ? 'id="m'. $parent['link']['mlid'] .'" ' : '') . 'class="'. $render_classes .'">' . $output . '</ul>';
+  }
+
+  $hooks = array();
+  $hooks[] = 'menu_tree__menu_block__' . $hook_delta;
+  $hooks[] = 'menu_tree__menu_block__' . $hook_menu_name;
+  $hooks[] = 'menu_tree__menu_block';
+  $hooks[] = 'menu_tree';
+  return theme($hooks, $output);
 }
