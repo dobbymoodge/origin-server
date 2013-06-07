@@ -5,8 +5,8 @@
 %global modname partner_program
 
 Name: drupal%{drupal_release}-openshift-%{modname}
-Version: 0.0.3
-Release: 4%{?dist}
+Version: 0.0.4
+Release: 1%{?dist}
 Summary: OpenShift Partner Program Drupal Content
 Group: Applications/Publishing
 License: GPLv2+
@@ -41,6 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %{drupal_modules}/%{modname}
 
 %changelog
+* Fri Jun 07 2013 Dan McPherson <dmcphers@redhat.com> 0.0.4-1
+- new package built with tito
+
 * Fri Jun 07 2013 Adam Miller 0.0.3-4
 - Bump spec for mass drupal rebuild
 
