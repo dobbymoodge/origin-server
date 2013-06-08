@@ -8,7 +8,7 @@
 
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
-Version: 1.9.12
+Version: 1.9.13
 Release:   1%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
@@ -195,6 +195,12 @@ fi
 %{sitedir}/public
 
 %changelog
+* Fri Jun 07 2013 Adam Miller <admiller@redhat.com> 1.9.13-1
+- Site summit changes, backported from bbe7f47f293c826be00ead46457377f475b810b7
+  in master (ccoleman@redhat.com)
+- Backport stage tests to stage now that packages are tagged
+  (ccoleman@redhat.com)
+
 * Sat Jun 01 2013 Dan McPherson <dmcphers@redhat.com> 1.9.12-1
 - Merge pull request #1501 from nhr/STAGE_remove_tos_link
   (dmcphers+openshiftbot@redhat.com)
