@@ -1,11 +1,10 @@
 <article id="node-<?php print $node->nid; ?>" class="blog-post node<?php if ($sticky) { print ' sticky'; } ?><?php if (!$status) { print ' node-unpublished'; } ?> node-blog">
-<h1 class="title"><?php print $title; ?></h1>
-<div class="metadata"><span class="created"><?php print format_date($node->created, $type='custom', $format = 'F j, Y \a\t H:i A'); ?></span>
-<?php 
-$author_nid = $field_author[0]['nid'];
-print views_embed_view('author_profile_box', 'block_1', $author_nid);
-?>
-</div>
+  <div class="metadata"><span class="created"><?php print format_date($node->created, $type='custom', $format = 'F j, Y \a\t H:i A'); ?></span>
+  <?php 
+    $author_nid = $field_author[0]['nid'];
+    print views_embed_view('author_profile_box', 'block_1', $author_nid);
+  ?>
+  </div>
 
   <div class="content clearfix">
     <?php print $content ?>

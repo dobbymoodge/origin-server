@@ -7,19 +7,30 @@
                 <div class="brand-text"><strong>Open</strong>Shift</div>
               </a>
             </div>
-            <ul class="nav">
-                <?php $i = 0; foreach( $primary_links as $key=>$link) {
-                if ($i++ == 2) {
-                  print '<li class="divider">&nbsp;</li>';
-                }
-                $link['options']['html'] = TRUE;
-              ?>
-                <li class="<?php print strpos($key,'active-trail') ? "active" : ""; ?>"><?php print l("<span>" . $link['title'] . "</span>", $link['href'], $link['options']); ?></li>
-              <?php } ?>
+            <ul class="nav nav-primary">
+                <?php foreach( menu_tree_page_data('primary-links') as $key=>$item) {
+                $link = $item["link"];
+                if (!$link['hidden']) {
+                  $link['options']['html'] = TRUE;
+                  unset($link['options']['attributes']['title']);
+
+                  $visibleChildren = array();
+                  if ($item['below']) {
+                    foreach($item['below'] as $childkey=>$child) {
+                      if(!$child['link']['hidden']) {
+                        $visibleChildren[$childkey] = $child;
+                      }
+                    }
+                  }
+                  $hasChildren = !empty($visibleChildren);
+                    ?>
+                    <li class="<?php print $hasChildren ? "dropdown dropdown-toggle " : ""; ?><?php print $link['in_active_trail'] ? "active" : ""; ?>"><?php print l("<span>" . $link['title'] . "</span>", $link['href'], $link['options']); ?>
+                      <?php print openshift_primary_link_megamenu($link, $visibleChildren); ?>
+                    </li>
+              <?php }} ?>
             </ul>
           </div>
         </div>
 
         <?php print $messaging; ?>
-
       </div>

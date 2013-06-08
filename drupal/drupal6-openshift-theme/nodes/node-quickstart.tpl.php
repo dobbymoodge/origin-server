@@ -1,7 +1,6 @@
 <article id="node-<?php print $node->nid; ?>" class="quickstart node<?php if ($sticky) { print ' sticky'; } ?><?php if (!$status) { print ' node-unpublished'; } ?> node-quickstart">
 
   <?php if ($node->field_quickstart_icon[0]){ ?><div class="pull-right"><?php print $node->field_quickstart_icon[0]['view']; ?></div><?php } ?>
-  <h2 class="title"><?php print $title; ?></h2>
   <div class="metadata"><?php 
   $trust = $node->field_quickstart_trust[0]; 
   if (!empty($trust['value'])) {

@@ -1365,70 +1365,57 @@ print application_quickstarts_summary($data->node_data_field_cartridges_list_fie
   $handler->override_option('header_empty', 1);
   $handler->override_option('use_pager', '1');
   $handler->override_option('link_display', 'page_2');
-  $handler->override_option('style_plugin', 'table');
+  $handler->override_option('style_plugin', 'semanticviews_default');
   $handler->override_option('style_options', array(
     'grouping' => '',
-    'override' => 0,
-    'sticky' => 0,
-    'order' => 'asc',
-    'summary' => '',
-    'columns' => array(
-      'nid' => 'nid',
-      'value' => 'value',
-      'vud_node_widget' => 'vud_node_widget',
-      'title' => 'title',
-      'teaser' => 'title',
-      'phpcode' => 'title',
-      'name' => 'name',
-      'created' => 'created',
-      'field_cartridges_list_value' => 'field_cartridges_list_value',
-      'field_git_repository_url_value' => 'field_git_repository_url_value',
-      'field_code_language_value' => 'field_code_language_value',
+    'group' => array(
+      'element_type' => 'h3',
+      'class' => '',
     ),
-    'info' => array(
-      'nid' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'value' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'vud_node_widget' => array(
-        'separator' => '',
-      ),
+    'list' => array(
+      'element_type' => 'ul',
+      'class' => 'unstyled',
+    ),
+    'row' => array(
+      'element_type' => 'li',
+      'class' => 'tile',
+      'last_every_nth' => '0',
+      'first_class' => 'first',
+      'last_class' => 'last',
+      'striping_classes' => 'odd even',
+    ),
+  ));
+  $handler->override_option('row_plugin', 'semanticviews_fields');
+  $handler->override_option('row_options', array(
+    'semantic_html' => array(
       'title' => array(
-        'sortable' => 0,
-        'separator' => '<br/>',
+        'element_type' => 'h3',
+        'class' => '',
       ),
       'teaser' => array(
-        'separator' => '',
+        'element_type' => '',
+        'class' => '',
+        'label_element_type' => 'label',
+        'label_class' => '',
       ),
       'phpcode' => array(
-        'separator' => '',
+        'element_type' => 'div',
+        'class' => '',
       ),
       'name' => array(
-        'sortable' => 1,
-        'separator' => '',
+        'element_type' => '',
+        'class' => '',
+        'label_element_type' => 'label',
+        'label_class' => '',
       ),
       'created' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'field_cartridges_list_value' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'field_git_repository_url_value' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'field_code_language_value' => array(
-        'sortable' => 0,
-        'separator' => '',
+        'element_type' => '',
+        'class' => '',
+        'label_element_type' => '',
+        'label_class' => '',
       ),
     ),
-    'default' => '-1',
+    'skip_blank' => 0,
   ));
   $handler = $view->new_display('block', 'Popular QuickStarts', 'block_1');
   $handler->override_option('fields', array(
@@ -1509,7 +1496,7 @@ print application_quickstarts_summary($data->node_data_field_cartridges_list_fie
     'title' => array(
       'label' => '',
       'alter' => array(
-        'alter_text' => 1,
+        'alter_text' => 0,
         'text' => '<h3>[title]</h3>',
         'make_link' => 1,
         'path' => 'node/[nid]',
@@ -2014,14 +2001,30 @@ print application_quickstarts_summary($data->node_data_field_cartridges_list_fie
   $handler->override_option('footer_empty', 0);
   $handler->override_option('use_ajax', TRUE);
   $handler->override_option('use_pager', '0');
-  $handler->override_option('style_plugin', 'default');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-  ));
   $handler->override_option('row_options', array(
-    'inline' => array(),
-    'separator' => '',
-    'hide_empty' => 1,
+    'semantic_html' => array(
+      'field_quickstart_icon_fid' => array(
+        'element_type' => '',
+        'class' => '',
+      ),
+      'title' => array(
+        'element_type' => 'h3',
+        'class' => '',
+      ),
+      'created' => array(
+        'element_type' => '',
+        'class' => '',
+      ),
+      'teaser' => array(
+        'element_type' => '',
+        'class' => '',
+      ),
+      'tid' => array(
+        'element_type' => '',
+        'class' => '',
+      ),
+    ),
+    'skip_blank' => 0,
   ));
   $handler->override_option('block_description', '');
   $handler->override_option('block_caching', -1);
@@ -2104,7 +2107,7 @@ print application_quickstarts_summary($data->node_data_field_cartridges_list_fie
     'title' => array(
       'label' => '',
       'alter' => array(
-        'alter_text' => 1,
+        'alter_text' => 0,
         'text' => '<h3>[title]</h3>',
         'make_link' => 1,
         'path' => 'node/[nid]',
@@ -2610,14 +2613,30 @@ print application_quickstarts_summary($data->node_data_field_cartridges_list_fie
   $handler->override_option('footer_empty', 0);
   $handler->override_option('use_ajax', TRUE);
   $handler->override_option('use_pager', '0');
-  $handler->override_option('style_plugin', 'default');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-  ));
   $handler->override_option('row_options', array(
-    'inline' => array(),
-    'separator' => '',
-    'hide_empty' => 1,
+    'semantic_html' => array(
+      'field_quickstart_icon_fid' => array(
+        'element_type' => '',
+        'class' => '',
+      ),
+      'title' => array(
+        'element_type' => 'h3',
+        'class' => '',
+      ),
+      'created' => array(
+        'element_type' => '',
+        'class' => '',
+      ),
+      'teaser' => array(
+        'element_type' => '',
+        'class' => '',
+      ),
+      'tid' => array(
+        'element_type' => '',
+        'class' => '',
+      ),
+    ),
+    'skip_blank' => 0,
   ));
   $handler->override_option('block_description', '');
   $handler->override_option('block_caching', -1);
@@ -3146,6 +3165,7 @@ print application_quickstarts_summary($data->node_data_field_quickstart_trust_fi
   $handler->override_option('sorts', array());
   $handler->override_option('title', 'All Quickstarts');
   $handler->override_option('items_per_page', 50);
+  $handler->override_option('style_plugin', 'table');
   $handler->override_option('style_options', array(
     'grouping' => '',
     'override' => 1,
@@ -3220,6 +3240,8 @@ print application_quickstarts_summary($data->node_data_field_quickstart_trust_fi
     ),
     'default' => 'value',
   ));
+  $handler->override_option('row_plugin', 'fields');
+  $handler->override_option('row_options', array());
   $handler->override_option('path', 'quickstarts/all');
   $handler->override_option('menu', array(
     'type' => 'none',
@@ -3314,7 +3336,7 @@ print application_quickstarts_summary($data->node_data_field_quickstart_trust_fi
     'title' => array(
       'label' => '',
       'alter' => array(
-        'alter_text' => 1,
+        'alter_text' => 0,
         'text' => '<h3>[title]</h3>',
         'make_link' => 1,
         'path' => 'node/[nid]',
@@ -3581,7 +3603,7 @@ print application_quickstarts_summary($data->node_data_field_quickstart_trust_fi
       'hide_empty' => 0,
       'empty_zero' => 0,
       'hide_alter_empty' => 1,
-      'exclude' => 1,
+      'exclude' => 0,
       'id' => 'teaser',
       'table' => 'node_revisions',
       'field' => 'teaser',
@@ -3866,9 +3888,26 @@ print application_quickstarts_summary($data->node_data_field_quickstart_trust_fi
   $handler->override_option('use_ajax', TRUE);
   $handler->override_option('items_per_page', 3);
   $handler->override_option('use_pager', '0');
-  $handler->override_option('style_plugin', 'default');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
+  $handler->override_option('row_options', array(
+    'semantic_html' => array(
+      'field_quickstart_icon_fid' => array(
+        'element_type' => '',
+        'class' => '',
+      ),
+      'title' => array(
+        'element_type' => 'h3',
+        'class' => '',
+      ),
+      'created' => array(
+        'element_type' => '',
+        'class' => '',
+      ),
+      'tid' => array(
+        'element_type' => '',
+        'class' => '',
+      ),
+    ),
+    'skip_blank' => 0,
   ));
   $handler->override_option('block_description', '');
   $handler->override_option('block_caching', -1);

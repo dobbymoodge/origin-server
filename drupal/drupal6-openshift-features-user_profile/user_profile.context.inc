@@ -37,6 +37,41 @@ function user_profile_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'get-involved-blocks';
+  $context->description = '';
+  $context->tag = '';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'get-involved' => 'get-involved',
+        'developers/get-involved' => 'developers/get-involved',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-content_list-block_1' => array(
+          'module' => 'views',
+          'delta' => 'content_list-block_1',
+          'region' => 'content_suffix',
+          'weight' => 0,
+        ),
+        'views-content_list-block_2' => array(
+          'module' => 'views',
+          'delta' => 'content_list-block_2',
+          'region' => 'content_suffix',
+          'weight' => 1,
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+  $export['get-involved-blocks'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'menu-active-blogs';
   $context->description = '';
   $context->tag = '';
@@ -274,6 +309,28 @@ function user_profile_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'menu-active-user';
+  $context->description = '';
+  $context->tag = '';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'user' => 'user',
+        'user/' => 'user/',
+        'user/*' => 'user/*',
+        '~user/login' => '~user/login',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'menu' => 'node/9515',
+  );
+  $context->condition_mode = 1;
+  $export['menu-active-user'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'menu-active-videos';
   $context->description = '';
   $context->tag = '';
@@ -324,142 +381,13 @@ function user_profile_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
-  $context->name = 'messaging-community';
-  $context->description = '';
-  $context->tag = '';
-  $context->conditions = array(
-    'path' => array(
-      'values' => array(
-        'community' => 'community',
-      ),
-    ),
-  );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'user_profile-community-messaging' => array(
-          'module' => 'user_profile',
-          'delta' => 'community-messaging',
-          'region' => 'messaging',
-          'weight' => 0,
-        ),
-      ),
-    ),
-  );
-  $context->condition_mode = 1;
-  $export['messaging-community'] = $context;
-
-  $context = new stdClass;
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
-  $context->api_version = 3;
-  $context->name = 'messaging-developer-center';
-  $context->description = '';
-  $context->tag = '';
-  $context->conditions = array(
-    'path' => array(
-      'values' => array(
-        'developers' => 'developers',
-      ),
-    ),
-  );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'block-3' => array(
-          'module' => 'user_profile',
-          'delta' => 'developer-center-messaging',
-          'region' => 'messaging',
-          'weight' => 0,
-        ),
-      ),
-    ),
-  );
-  $context->condition_mode = 1;
-  $export['messaging-developer-center'] = $context;
-
-  $context = new stdClass;
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
-  $context->api_version = 3;
-  $context->name = 'messaging-get-started';
-  $context->description = '';
-  $context->tag = '';
-  $context->conditions = array(
-    'path' => array(
-      'values' => array(
-        'get-started' => 'get-started',
-      ),
-    ),
-  );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'user_profile-get-started-messaging' => array(
-          'module' => 'user_profile',
-          'delta' => 'get-started-messaging',
-          'region' => 'messaging',
-          'weight' => 0,
-        ),
-      ),
-    ),
-  );
-  $context->condition_mode = 1;
-  $export['messaging-get-started'] = $context;
-
-  $context = new stdClass;
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
-  $context->api_version = 3;
   $context->name = 'messaging-home';
   $context->description = '';
   $context->tag = '';
-  $context->conditions = array(
-    'path' => array(
-      'values' => array(
-        '<front>' => '<front>',
-      ),
-    ),
-  );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'user_profile-home-messaging' => array(
-          'module' => 'user_profile',
-          'delta' => 'home-messaging',
-          'region' => 'messaging',
-          'weight' => 0,
-        ),
-      ),
-    ),
-  );
-  $context->condition_mode = 1;
-  $export['messaging-home'] = $context;
-
-  $context = new stdClass;
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
-  $context->api_version = 3;
-  $context->name = 'messaging-learn-more';
-  $context->description = '';
-  $context->tag = '';
-  $context->conditions = array(
-    'path' => array(
-      'values' => array(
-        'paas' => 'paas',
-      ),
-    ),
-  );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'user_profile-learn-more-messaging' => array(
-          'module' => 'user_profile',
-          'delta' => 'learn-more-messaging',
-          'region' => 'messaging',
-          'weight' => 0,
-        ),
-      ),
-    ),
-  );
+  $context->conditions = array();
+  $context->reactions = array();
   $context->condition_mode = 0;
-  $export['messaging-learn-more'] = $context;
+  $export['messaging-home'] = $context;
 
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
@@ -495,23 +423,7 @@ function user_profile_context_default_contexts() {
   $context->name = 'recent-changes-sidebar';
   $context->description = '';
   $context->tag = '';
-  $context->conditions = array(
-    'menu' => array(
-      'values' => array(
-        'documentation' => 'documentation',
-        'faq' => 'faq',
-        'kb' => 'kb',
-        'node/10295' => 'node/10295',
-        'node/10863' => 'node/10863',
-        'node/5085' => 'node/5085',
-        'node/5475' => 'node/5475',
-        'node/9435' => 'node/9435',
-        'node/9445' => 'node/9445',
-        'node/9515' => 'node/9515',
-        'node/9525' => 'node/9525',
-      ),
-    ),
-  );
+  $context->conditions = array();
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
@@ -519,7 +431,7 @@ function user_profile_context_default_contexts() {
           'module' => 'views',
           'delta' => 'nodes_by_category-block_3',
           'region' => 'sidebar_left',
-          'weight' => 20,
+          'weight' => 0,
         ),
       ),
     ),
@@ -550,7 +462,7 @@ function user_profile_context_default_contexts() {
         'views-user_profile_box-block_1' => array(
           'module' => 'views',
           'delta' => 'user_profile_box-block_1',
-          'region' => 'sidebar_left',
+          'region' => 'sidebar_right',
           'weight' => 10,
         ),
       ),
@@ -602,35 +514,116 @@ function user_profile_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'viewing-book';
+  $context->description = '';
+  $context->tag = '';
+  $context->conditions = array();
+  $context->reactions = array();
+  $context->condition_mode = 0;
+  $export['viewing-book'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'viewing-developer-center';
+  $context->description = '';
+  $context->tag = '';
+  $context->conditions = array(
+    'context' => array(
+      'values' => array(
+        'menu-active-quickstarts' => 'menu-active-quickstarts',
+      ),
+    ),
+    'menu' => array(
+      'values' => array(
+        'documentation' => 'documentation',
+        'https://access.redhat.com/knowledge/docs/en-US/OpenShift/2.0/html/User_Guide/index.html' => 'https://access.redhat.com/knowledge/docs/en-US/OpenShift/2.0/html/User_Guide/index.html',
+        'node/10295' => 'node/10295',
+        'node/10863' => 'node/10863',
+        'node/10866' => 'node/10866',
+        'node/11066' => 'node/11066',
+        'node/11129' => 'node/11129',
+        'node/11158' => 'node/11158',
+        'node/11327' => 'node/11327',
+        'node/11422' => 'node/11422',
+        'node/12009' => 'node/12009',
+        'node/12010' => 'node/12010',
+        'node/12036' => 'node/12036',
+        'node/12037' => 'node/12037',
+        'node/12038' => 'node/12038',
+        'node/12255' => 'node/12255',
+        'node/12420' => 'node/12420',
+        'node/14083' => 'node/14083',
+        'node/5085' => 'node/5085',
+        'node/5475' => 'node/5475',
+        'node/9445' => 'node/9445',
+        'node/9525' => 'node/9525',
+        'quickstarts' => 'quickstarts',
+        'videos' => 'videos',
+      ),
+    ),
+    'node' => array(
+      'values' => array(
+        'quickstart' => 'quickstart',
+        'video' => 'video',
+      ),
+      'options' => array(
+        'node_form' => '1',
+      ),
+    ),
+    'path' => array(
+      'values' => array(
+        'developers/extend' => 'developers/extend',
+        'developers/cartridge-authors-guide' => 'developers/cartridge-authors-guide',
+        'developers/mysql' => 'developers/mysql',
+        'developers/perl' => 'developers/perl',
+        'developers/postgresql' => 'developers/postgresql',
+      ),
+    ),
+  );
+  $context->reactions = array();
+  $context->condition_mode = 0;
+  $export['viewing-developer-center'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'viewing-hierarchy';
+  $context->description = '';
+  $context->tag = '';
+  $context->conditions = array();
+  $context->reactions = array();
+  $context->condition_mode = 0;
+  $export['viewing-hierarchy'] = $context;
+
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'viewing-page';
   $context->description = '';
   $context->tag = '';
   $context->conditions = array(
     'path' => array(
       'values' => array(
+        '*' => '*',
         '~admin' => '~admin',
         '~admin/*' => '~admin/*',
-        '~<front>' => '~<front>',
-        '~get-started' => '~get-started',
-        '~_errors/*' => '~_errors/*',
-        '*' => '*',
+        '~user' => '~user',
+      ),
+    ),
+    'user_page' => array(
+      'values' => array(
+        'form' => 'form',
+        'view' => 'view',
+      ),
+      'options' => array(
+        'mode' => 'all',
       ),
     ),
   );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'menu_block-1' => array(
-          'module' => 'menu_block',
-          'delta' => 1,
-          'region' => 'sidebar_left',
-          'weight' => 0,
-        ),
-      ),
-    ),
-  );
+  $context->reactions = array();
   $context->condition_mode = 0;
-  $export['viewing-hierarchy'] = $context;
+  $export['viewing-page'] = $context;
 
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
@@ -638,39 +631,9 @@ function user_profile_context_default_contexts() {
   $context->name = 'viewing-poll';
   $context->description = '';
   $context->tag = '';
-  $context->conditions = array(
-    'path' => array(
-      'values' => array(
-        'forums/*' => 'forums/*',
-        'community' => 'community',
-        'ideas' => 'ideas',
-        'videos' => 'videos',
-        'ideas/*' => 'ideas/*',
-        'events' => 'events',
-        'events/*' => 'events/*',
-        'blogs' => 'blogs',
-        'get-involved' => 'get-involved',
-      ),
-    ),
-    'user' => array(
-      'values' => array(
-        'authenticated user' => 'authenticated user',
-      ),
-    ),
-  );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'poll-0' => array(
-          'module' => 'poll',
-          'delta' => 0,
-          'region' => 'sidebar_left',
-          'weight' => 15,
-        ),
-      ),
-    ),
-  );
-  $context->condition_mode = 1;
+  $context->conditions = array();
+  $context->reactions = array();
+  $context->condition_mode = 0;
   $export['viewing-poll'] = $context;
 
   return $export;

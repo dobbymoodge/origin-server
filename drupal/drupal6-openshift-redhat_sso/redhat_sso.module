@@ -25,6 +25,7 @@ function redhat_sso_menu() {
 function redhat_sso_menu_alter(&$items) {
   $items['user']['type'] = MENU_CALLBACK;
   $items['user']['title callback'] = '_redhat_sso_title_page_user';
+  $items['user']['page callback'] = '_redhat_sso_page_user';
   $items['user/register']['type'] = MENU_CALLBACK;
   $items['user/register']['access callback'] = TRUE;
   $items['user/register']['page callback'] = '_redhat_sso_page_register';
@@ -97,12 +98,10 @@ function _redhat_sso_page_register() {
 function _redhat_sso_page_user() {
   global $user;
   if ($user->uid) {
-    menu_set_active_item('user/' . $user->uid);
-    return menu_execute_active_handler();
+    drupal_goto('user/' . $user->uid);
   }
   else if ($_GET['q'] == 'user/login') {
     drupal_goto('user');
-    exit;
   }
   else {
     return drupal_get_form('user_login');
@@ -187,6 +186,7 @@ function _redhat_sso_external_login_register($existing_uid, $rhlogin, $module) {
   }
   if ($existing_user && isset($existing_user->uid)) {
     $user = $existing_user;
+    return $user;
   }
   else {
     // Register this new user.

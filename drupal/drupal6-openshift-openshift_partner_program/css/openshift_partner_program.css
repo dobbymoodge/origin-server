@@ -1,0 +1,114 @@
+#portal-welcome{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#portal-marketing,
+#portal-get-started,
+#portal-submit {
+    padding-top: 3em;
+    padding-bottom: 3em;
+}
+
+.portal-upload{
+    background: url('../images/upload.png') no-repeat;
+    padding-left: 55px;
+    height: 49px;
+    line-height: 4em;
+    width: 43%;
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.portal-download{
+    background: url('../images/download.png') no-repeat;
+    padding-left: 55px;
+    height: 49px;
+    line-height: 4em;
+    width: 43%;
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.portal-paas {
+    background: url('../images/management_button.png') no-repeat;
+    background-size: 50px;
+    padding-left: 55px;
+    height: 49px;
+    line-height: 4em;
+    width: 27%;
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.portal-blog-content {
+    background: url('../images/laptop_button.png') no-repeat;
+    background-size: 50px;
+    padding-left: 55px;
+    height: 49px;
+    line-height: 4em;
+    width: 27%;
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.portal-social-media-posts {
+    background: url('../images/multimedia_button.png') no-repeat;
+    background-size: 50px;
+    padding-left: 55px;
+    height: 49px;
+    line-height: 4em;
+    width: 27%;
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.portal-story {
+    background: url('../images/Groups_button.png') no-repeat;
+    background-size: 50px;
+    padding-left: 55px;
+    height: 49px;
+    line-height: 4em;
+    width: 27%;
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.portal-upgrade {
+    background: url('../images/unlock_button.png') no-repeat;
+    background-size: 50px;
+    padding-left: 55px;
+    height: 49px;
+    line-height: 4em;
+    width: 27%;
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.portal-materials {
+    background: url('../images/tool-box_button.png') no-repeat;
+    background-size: 50px;
+    padding-left: 55px;
+    height: 49px;
+    line-height: 4em;
+    width: 27%;
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#portal-questions {
+    margin-top: 6em;
+}
+
+#-openshift-partner-program-tc textarea {
+    color: white;
+}

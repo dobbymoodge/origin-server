@@ -1,0 +1,4 @@
+name = Openshift Partner Program
+description = Openshift Partner Program for Red Hat
+core = 6.x
+package = Openshift

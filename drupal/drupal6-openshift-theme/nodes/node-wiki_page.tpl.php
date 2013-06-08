@@ -1,9 +1,5 @@
 <div id="node-<?php print $node->nid; ?>" class="<?php print $node->type; ?> node<?php if ($sticky) { print ' sticky'; } ?><?php if (!$status) { print ' node-unpublished'; } ?>">
 
-  <?php if ($title != $heading): ?>
-  <h2><?php print $title ?></h2>
-  <?php endif; ?>
-
   <div class="content clearfix">
     <?php print $content ?>
   </div>

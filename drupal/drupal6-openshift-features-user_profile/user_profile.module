@@ -2,6 +2,40 @@
 
 include_once('user_profile.features.inc');
 
+function user_profile_filter($op, $delta=0, $format=-1, $text='', $cache_id=0) {
+  switch ($op) {
+    case 'list':
+      return array(0 => t('Bootstrap Markup'), 1 => t('Code-fenced blocks'));
+    case 'description':
+      switch ($delta) {
+        case 1:
+          return t('Transforms code fenced blocks (```) to <blockquote> for use with GeSHiFilter');
+        case 0:
+          return t('Adds standard bootstrap classes to base markup');
+      }
+    case 'prepare':
+      switch ($delta) {
+        case 1:
+          return preg_replace('/`{3}(?:(.*$)\n)?([\s\S]+?)`{3}/m', "<blockcode language=\"$1\">$2</blockcode>", $text);
+        default:
+          return $text;
+      }
+    case 'process':
+      switch ($delta) {
+        case 0:
+          return str_ireplace('<table>', '<table class="table">', $text);
+        default:
+          return $text;
+      }
+    default:
+      return $text;
+  }
+}
+
+/**
+ * DEPRECATED - these are no longer used
+ *
+ */
 function user_profile_block($op = 'list', $delta = '', $edit = array()) {
   global $user;
   switch ($op) {
@@ -42,8 +76,8 @@ function user_profile_block($op = 'list', $delta = '', $edit = array()) {
     case 'home-messaging':
       $block['content'] = 
         '<div class="messaging messaging-home"><div class="container">'.
-        '<h1 class="primary headline">Develop and Scale <strong id="technology-rotate">Apps</strong> in the Cloud</h1>'.
-        '<h2 class="secondary">OpenShift is Red Hat\'s free, auto-scaling Platform as a Service (PaaS) for applications.  As an application platform in the cloud, OpenShift manages the stack so you can focus on your code.</h2>'.
+        '<h1 class="primary headline">Build, run, &amp; scale apps fast '.
+        '<small>in an easy-to-use cloud environment</small></h1>'.
         '</div></div>';
       break;
     case 'developer-center-messaging':

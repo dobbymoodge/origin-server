@@ -131,143 +131,46 @@ function user_profile_views_default_views() {
   $handler->override_option('cache', array(
     'type' => 'none',
   ));
-  $handler->override_option('css_class', 'partner-list');
-  $handler->override_option('header', '<p class="larger">At Red Hat OpenShift, our approach to partnering is designed with the customer in mind. Our customers demand choice and hence our goal is to work broadly with partners to make available complementary partner technologies and products along with Red Hat’s own offerings to satisfy the needs of our customers.</p>
-
-<!-- break -->
-
-<style>
-.row-fluid > .partner { margin-bottom: 10px; }
-p.summary { padding-top: 13px; font-style: italic; }
-/* .partner .action-call { position: absolute; bottom: -15px; } */
-.featured .partner .action-call { position: static; }
-.program img { width: 150px; }
-.partner-list { 
+  $handler->override_option('css_class', 'partner-blocklist');
+  $handler->override_option('header', '<style type="text/css">
+.media-youtube {
+position: relative;
+padding-bottom: 56.25%;
+height: 0;
+overflow: hidden;
 }
-.partner-list li {
-  margin: 30px 0;
-  min-height: 75px;
-  overflow:hidden;
-}  
-.partner-list a {
-  color: black;
-}
-.partner-list a:hover {
-  color: black;
-  text-decoration: none;
-}
-.partner-list .partner-image {
-  text-align: right;
-  clear: left;
-}
-
-.partner-list .views-row {
-  margin: 30px 0;
-}
-
-.partner-list .partner-image > div {
-  margin-right: 10px;
-  margin-left: auto;
-}
-
-@media (max-width: 768px) {
-  .partner .action-call { position: static; }
-  .partner-list .partner-image { text-align: left; }
-}
-
-
-.content * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+.media-youtube iframe,
+.media-youtube object,
+.media-youtube embed {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+} 
 
 </style>
-
-<h2>Our Partners</h2>
-
-<div class="featured row" id="zend" style="margin-bottom: 20px">
-<div class="partner span9" style="background: rgba(20, 20, 20, 0.9); color: white; position:relative">
-<div style="padding:25px">
-<h2 style="color: white; padding: 20px 0 0;">
-<img src="/sites/default/files/images/zend_logo_2c_cmyk_vector.png" style="float: left; margin: -20px 20px 20px 0; image-rendering:crisp-edges; " /> 
-Zend</h2>
-<a class="partner-home" href="http://zend.com" style="font-weight: bold; color: #9ECBD6;">zend.com</a>
-<p class="summary">Zend is the PHP company. They provide an Enterprise-class PHP runtime, framework, and IDE, in addition to training and certification.</p>
-<p class="relationship larger" style="clear:left">Zend worked with OpenShift to give PHP developers a premier technology platform for PHP with Zend Server, combined with an advanced coding, debugging, and profiling experience with Zend studio all backed by a team of operational and security experts at Red Hat.</p>
-
-<a href="https://openshift.redhat.com/app/console/application_types/cart!zend-5.6" class="action-call">
-<div>Try <strong>Zend Server</strong> on OpenShift</div>
-<div class="highlight-arrow">&gt;</div></a>
-</div>
-</div>
-</div><!-- /row -->
-
-<div class="row-fluid">
-<div class="partner span6" style="background: rgba(20, 20, 20, 0.9); color: white; position:relative">
-<div style="padding: 25px">
-<h3 style="color: white; padding: 25px 0 0;">
-<img src="/sites/default/files/images/mongo-leaf-small.png" style="max-width:75px; max-height: 75px; float: left; margin-right: 10px; image-rendering:crisp-edges; margin-top: -20px;" />
-10Gen</h3>
-<a class="partner-home" href="http://10gen.com" style="font-weight: bold; color: #9ECBD6;">10gen.com</a> <a class="partner-home" href="http://mongodb.org" style="font-weight: bold; color: #9ECBD6;">mongodb.org</a>
-<p class="summary">10gen is the MongoDB company. MongoDB is an open source document-oriented database built to be agile, scalable, and enterprise-ready.</p>
-<p class="relationship larger">When OpenShift was looking for a NoSQL datastore for its users, we immediately thought of MongoDB, with its built-in scalablility, and host of developer-friendly features. 10gen worked with us to ensure that our MongoDB support is top-notch, and that their Mongo Monitoring Service is baked into OpenShift.</p>
-
-<a href="/developers/mongodb" class="action-call" style="">
-<div>Learn about <strong>MongoDB</strong> on OpenShift</div>
-<div class="highlight-arrow">&gt;</div></a>
-</div>
-</div>
-
-<div class="partner span6" style="background: rgba(20, 20, 20, 0.9); color: white; position:relative">
-<div style="padding: 25px">
-<h3 style="color: white; padding: 13px 0 0;">
-<img style="float: left; margin-right: 20px; background: none repeat scroll 0% 0% white; padding: 10px; max-width: 160px; margin-top: -10px;" src="/sites/default/files/images/SendGrid_logo_trans300x77.png">
-SendGrid</h3>
-<a class="partner-home" href="http://sendgrid.com/" style="font-weight: bold; color: #9ECBD6;">sendgrid.com</a>
-<p class="summary">SendGrid\'s cloud-based email infrastructure 
-relieves OpenShift users of the cost and complexity of maintaining custom email 
-systems. SendGrid provides reliable delivery, scalability and real-time 
-analytics along with flexible API\'s that make custom integration a breeze.</p>
-<p class="relationship larger">OpenShift\'s flexible, multi-language platform combined with SendGrid\'s robust email solution and industry leading support
-allows developers to focus on what is most important - building amazing apps.
+<div class="row">
+<div class="span7">
+<p class="lead">An OpenShift by Red Hat Partner has proven their expertise in building and integrating into the OpenShift platform.  These solutions are tested and validated by Red Hat to ensure seamless integration.</p>
+<p class="larger">
+Two OpenShift Partner tiers demonstrate the partner\'s integration with OpenShift.  With OpenShift Ready Partner QuickStarts and OpenShift Advanced Partner cartridges.
 </p>
-
-<a href="http://sendgrid.com/partners/openshift.htm" class="action-call" style="">
-<div>Sign up for <strong>SendGrid</strong> on OpenShift</div>
-<div class="highlight-arrow">&gt;</div></a>
+<section><a class="action-call" href="mailto:openshift-partners@redhat.com?subject=Become a Partner"><div>Become a partner</div><div class="highlight-arrow"></div></a></section>
+</div>
+<div class="span5">
+<div class="media-youtube">
+  <iframe width="450" height="253" src="http://www.youtube.com/embed/0om0g8363SM?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+<p class="right"><small>Quickstarts or Cartridges - which is best for your business?</small></p>
 </div>
 </div>
-</div>');
+<h2>Find a Partner</h2>');
   $handler->override_option('header_format', '46');
   $handler->override_option('header_empty', 1);
-  $handler->override_option('footer', '<h2 style="clear: both; border-top: 3px solid #CCCCCC; padding-top: 30px">
-Partner Programs
-</h2>
-
-<p style="font-size: medium">
-For more information on the OpenShift Partner Program contact us at <a href="mailto:openshift@redhat.com">openshift@redhat.com</a>. Check out our existing <a href="https://github.com/search?q=%22openshift-quickstart%22&type=Repositories&s=">partner quickstarts on GitHub</a> to get started today!</p>
-
-<div class="row-fluid">
-
-<div class="span6">
-<div id="community" class="program" style="">
-<h3 style="padding: 0 0 15px">Community Partners</h3>
-<p class="larger">Building a community quickstart or cartridge is the first step for any partner interested in engaging with OpenShift. A cartridge is essentially a configuration template or script that enables a third-party addition or extension to OpenShift. Partners looking to engage with OpenShift can start by understanding the <a href="/wiki/introduction-to-cartridge-building">steps required to create a cartridge</a> and can begin developing in collaboration with OpenShift through the open source <a href="/open-source">OpenShift Origin</a> project at the Community Partner level.</p>
-<p class="larger"> Inclusion in the Community Partner program will allow partners to reach a quickly growing base of developers. Through this program, Community Partners will be able to maintain a preferred presence in the OpenShift properties to help broaden their exposure.</p>
-</div></div>
-
-<div class="span6">
-<div id="supported" class="program" style="">
-<h3 style="padding: 0 0 15px">Certified Partners</h3>
-<p class="larger">This program is for partners with complementary solutions to OpenShift Online or Enterprise such as development tools, frameworks, datastores, IDEs and Management tools. Partner solutions may integrate and run directly within OpenShift through the OpenShift Cartridge APIs or through web APIs in the case of partner hosted service offerings. By being presented and featured in OpenShift, certified partners will benefit from exposure to potential customers and commercial engagements.  </p>
-</div></div>
-</div>
-
-<div id="poweredby" class="program" style="">
-<h3 style="padding: 0 0 15px">Powered by OpenShift</h3>
-<p class="larger">Partners in the Powered by OpenShift Partner Program are actively using OpenShift to power their own Software-as-a-Service (SaaS) applications and solutions and will gain the opportunity for expanded market reach and close alignment with the OpenShift roadmap by participating in this program category. Current Powered by OpenShift Partners are already leveraging the OpenShift online service available at openshift.redhat.com and will be able to also utilize OpenShift Enterprise.</p>
-</div>
-
-<script type="text/javascript">
-  $(function() {$(\'div[class|="image-attach-node"]\').removeAttr(\'style\');});
-</script>');
+  $handler->override_option('footer', '<section>
+<a href="/partners/become-a-partner" class="action-more">Learn more about the OpenShift Partner Program</a>
+</section>');
   $handler->override_option('footer_format', '46');
   $handler->override_option('footer_empty', 1);
   $handler->override_option('style_options', array(
@@ -275,44 +178,6 @@ For more information on the OpenShift Partner Program contact us at <a href="mai
   ));
   $handler = $view->new_display('page', 'Partners', 'page_1');
   $handler->override_option('fields', array(
-    'image_attach_images' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '[field_website_url]',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'image_derivative' => '_original',
-      'as_link' => 'none',
-      'exclude' => 1,
-      'id' => 'image_attach_images',
-      'table' => 'node',
-      'field' => 'image_attach_images',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
     'field_website_url' => array(
       'label' => '',
       'alter' => array(
@@ -363,7 +228,7 @@ For more information on the OpenShift Partner Program contact us at <a href="mai
         'alter_text' => 0,
         'text' => '',
         'make_link' => 0,
-        'path' => '',
+        'path' => '[field_website_url]',
         'absolute' => 0,
         'link_class' => '',
         'alt' => '',
@@ -372,8 +237,8 @@ For more information on the OpenShift Partner Program contact us at <a href="mai
         'suffix' => '',
         'target' => '',
         'help' => '',
-        'trim' => 0,
-        'max_length' => '',
+        'trim' => 1,
+        'max_length' => '200',
         'word_boundary' => 1,
         'ellipsis' => 1,
         'html' => 0,
@@ -392,11 +257,11 @@ For more information on the OpenShift Partner Program contact us at <a href="mai
       ),
       'relationship' => 'none',
     ),
-    'markup' => array(
+    'image_attach_images' => array(
       'label' => '',
       'alter' => array(
         'alter_text' => 1,
-        'text' => '<div class="row-fluid"><div class="span4 partner-image">[image_attach_images]</div><div class="span8"><p>[body]</p></div></div>',
+        'text' => '[image_attach_images]<div class="partner-summary">[body]</div>',
         'make_link' => 1,
         'path' => '[field_website_url]',
         'absolute' => 0,
@@ -417,30 +282,52 @@ For more information on the OpenShift Partner Program contact us at <a href="mai
       'empty' => '',
       'hide_empty' => 0,
       'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'value' => '',
-      'format' => '1',
+      'hide_alter_empty' => 1,
+      'link_to_node' => 0,
+      'image_derivative' => '_original',
+      'as_link' => 'none',
       'exclude' => 0,
-      'id' => 'markup',
-      'table' => 'customfield',
-      'field' => 'markup',
+      'id' => 'image_attach_images',
+      'table' => 'node',
+      'field' => 'image_attach_images',
       'override' => array(
         'button' => 'Use default',
       ),
       'relationship' => 'none',
     ),
   ));
-  $handler->override_option('title', 'Partner Programs');
+  $handler->override_option('title', 'Find a Partner');
   $handler->override_option('items_per_page', 50);
   $handler->override_option('use_pager', '1');
-  $handler->override_option('row_options', array(
-    'inline' => array(
-      'image_attach_images' => 'image_attach_images',
-      'title' => 'title',
-      'body' => 'body',
+  $handler->override_option('style_plugin', 'semanticviews_default');
+  $handler->override_option('style_options', array(
+    'grouping' => '',
+    'group' => array(
+      'element_type' => 'h3',
+      'class' => 'title',
     ),
-    'separator' => '',
-    'hide_empty' => 0,
+    'list' => array(
+      'element_type' => 'ul',
+      'class' => 'row-fluid row-block',
+    ),
+    'row' => array(
+      'element_type' => 'li',
+      'class' => 'span4',
+      'last_every_nth' => '0',
+      'first_class' => 'first',
+      'last_class' => 'last',
+      'striping_classes' => 'odd even',
+    ),
+  ));
+  $handler->override_option('row_plugin', 'semanticviews_fields');
+  $handler->override_option('row_options', array(
+    'semantic_html' => array(
+      'image_attach_images' => array(
+        'element_type' => 'div',
+        'class' => 'partner',
+      ),
+    ),
+    'skip_blank' => 0,
   ));
   $handler->override_option('path', 'partners');
   $handler->override_option('menu', array(

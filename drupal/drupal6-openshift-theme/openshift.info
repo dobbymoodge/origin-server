@@ -5,22 +5,9 @@ version = 3.0
 core = 6.x
 engine = phptemplate
 
-; stylesheets[all][] = css/reset.css
-;stylesheets[all][] = css/text.css
-;stylesheets[all][] = css/style.css
-;stylesheets[all][] = css/legacy.css
-;stylesheets[all][] = css/style.css
-
-;scripts[] = js/universal.js
-;scripts[] = js/modernizr.min.js
-;scripts[] = js/s_code.js
-;scripts[] = js/rails.js
-;scripts[] = js/plugins.js
+;stylesheets[all][] = css/reset.css
 ;scripts[] = js/script.js
 
-;regions[header_left] = Header Left
-;regions[header_right] = Header Right
-;regions[header_menu] = Header Menu
 regions[messaging] = Messaging
 regions[title_bar] = Title Bar
 regions[content_prefix] = Content Prefix
@@ -29,5 +16,4 @@ regions[content_header] = Content Header
 regions[content_suffix] = Content Suffix
 regions[sidebar_left] = Left Column
 regions[sidebar_right] = Right Column
-;regions[footer_top] = Top Footer
-;regions[footer_bottom] = Bottom Footer
+regions[footer] = Footer

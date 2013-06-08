@@ -1,0 +1,300 @@
+<?php
+
+/**
+ * @file
+ * Openshift Partner Program Main File.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function openshift_partner_program_theme($existing, $type, $theme, $path) {
+  return array(
+    'openshift_partner_program_portal' => array(
+      'template'    => 'templates/openshift_partner_program_portal',
+      'arguments'  => array('partner_level' => NULL),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function openshift_partner_program_menu() {
+  $items['partner/tc'] = array(
+    'title' => 'Terms and Conditions',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_openshift_partner_program_tc'),
+    'access callback' => '_openshift_partner_program_tc_access',
+    'file' => 'openshift_partner_program.page.inc',
+  );
+  $items['partner/portal'] = array(
+    'title' => 'Partner Self Service Portal',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => '_openshift_partner_program_portal',
+    'access callback' => '_openshift_partner_program_portal_access',
+    'file' => 'openshift_partner_program.page.inc',
+  );
+  $items['partner/portal/upgrade'] = array(
+    'title' => 'Upgrade Partner Level',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_openshift_partner_program_portal_upgrade'),
+    'access callback' => '_openshift_partner_program_portal_upgrade_access',
+    'file' => 'openshift_partner_program.page.inc',
+  );
+  $items['partner/portal/customer-story'] = array(
+    'title' => 'Customer Story',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_openshift_partner_program_portal_customer_story'),
+    'access callback' => '_openshift_partner_program_portal_access',
+    'file' => 'openshift_partner_program.page.inc',
+  );
+  $items['partner/portal/request-assistance'] = array(
+    'title' => 'Request Assistance',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_openshift_partner_program_portal_request_assistance'),
+    'access callback' => '_openshift_partner_program_portal_access',
+    'file' => 'openshift_partner_program.page.inc',
+  );
+  $items['partner/portal/company-info'] = array(
+    'title' => 'Upload Company Info',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_openshift_partner_program_portal_company_info'),
+    'access callback' => '_openshift_partner_program_portal_access',
+    'file' => 'openshift_partner_program.page.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_user().
+ *
+ * Redirects partner program users to partner agreement or self service
+ * portal depending on user state.
+ */
+function openshift_partner_program_user($op, &$edit, &$account, $category = NULL) {
+  global $user;
+  $login = ($user->uid == $account->uid && $account->uid > 1);
+  if ($op == 'login' && $login) {
+    profile_load_profile($account);
+    if (isset($account->profile_user_state)) {
+      if ($account->profile_user_state == 'New partner') {
+        // Go to T & C Page.
+        drupal_goto('partner/tc');
+      }
+      elseif ($account->profile_user_state == 'Active partner') {
+        // Go to Self Service Portal Page.
+        drupal_goto('partner/portal');
+      }
+    }
+  }
+}
+
+/**
+ * Access to the partner agreement.
+ *
+ * @return bool
+ *   TRUE iff the profile_user_state is New Partner.
+ */
+function _openshift_partner_program_tc_access() {
+  global $user;
+  profile_load_profile($user);
+  return isset($user->profile_user_state) && $user->profile_user_state == 'New partner';
+}
+
+/**
+ * Access to the partner program self service portal.
+ *
+ * @return bool
+ *   TRUE iff the profile_user_state is an Active Partner.
+ */
+function _openshift_partner_program_portal_access() {
+  global $user;
+  profile_load_profile($user);
+  return isset($user->profile_user_state) && $user->profile_user_state == 'Active partner';
+}
+
+/**
+ * Access to the partner program self service portal.
+ *
+ * @return bool
+ *   TRUE iff the profile_user_state is an Active Partner and
+ * profile_partner_level is Ready Partner.
+ */
+function _openshift_partner_program_portal_upgrade_access() {
+  global $user;
+  profile_load_profile($user);
+  return isset($user->profile_user_state) && $user->profile_partner_level == 'Ready Partner' &&
+    _openshift_partner_program_portal_access();
+}
+
+/**
+ * Implements hook_mail().
+ */
+function openshift_partner_program_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'openshift_partner_program_request_assistance':
+      $message['subject'] = $params['company_name'] . t(' has submitted a request for assistance');
+      foreach ($params as $k => $value) {
+        $message['body'][] = "$k : $value";
+      }
+      break;
+
+    case 'openshift_partner_program_customer_story':
+      $message['subject'] = $params['name'] . t(' has submitted a customer story request');
+      foreach ($params as $k => $value) {
+        $message['body'][] = "$k : $value";
+      }
+      break;
+
+    case 'openshift_partner_program_partner_upgrade':
+      $message['subject'] = $params['name'] . t(' has submitted a partner level upgrade request');
+      foreach ($params as $k => $value) {
+        $message['body'][] = "$k : $value";
+      }
+      break;
+
+    case 'openshift_partner_program_tc':
+      $message['subject'] = $params['customer_name'] . t(' has accepted the partner agreement');
+      $message['body'] = array(
+        t('OpenShift Partner Team-'),
+        $params['customer_name'] . t(' has accepted the Partner Agreement and now has access to the self service portal.'),
+        t('Thanks.'),
+      );
+      break;
+  }
+}
+
+/**
+ * Returns the info for the partner with given uid.
+ *
+ * @param int $uid
+ *   The uid of the user to lookup, defaults to current user.
+ *
+ * @return array|bool|null
+ *   The array of info or FALSE if no info.
+ */
+function openshift_partner_program_partner_info($uid = 0) {
+  global $user;
+  if ($uid == 0) {
+    $uid = $user->uid;
+  }
+  $result = db_query("SELECT * FROM {openshift_partner_program_partners} WHERE uid = %d", $uid);
+  $result_arr = db_fetch_array($result);
+  return $result_arr;
+}
+
+/**
+ * Updates or inserts program partner info for the user with uid.
+ *
+ * @param int $uid
+ *   The user id.
+ * @param string $company
+ *   The company name.
+ * @param string $company_description
+ *   The company description.
+ * @param string $logo
+ *   The logo path.
+ * @param string $expertise_tags
+ *   The selected expertise tags.
+ *
+ * @return bool
+ *   TRUE iff insert or update was successful.
+ */
+function openshift_partner_program_partner_info_upsert($uid, $company, $company_description, $logo, $expertise_tags) {
+  $result = db_query("SELECT * FROM {openshift_partner_program_partners} WHERE uid = %d", $uid);
+  $exists = db_fetch_array($result);
+  if ($exists) {
+    $result = db_query("UPDATE {openshift_partner_program_partners} set company = '%s', company_description = '%s', logo = '%s', expertise_tags = '%s'", $company, $company_description, $logo, $expertise_tags);
+  }
+  else {
+    $result = db_query("INSERT INTO {openshift_partner_program_partners} (uid, company, company_description, logo, expertise_tags) VALUES (%d, '%s', '%s', '%s', '%s')", $uid, $company, $company_description, $logo, $expertise_tags);
+  }
+  return $result;
+}
+
+/**
+ * Updates or inserts program partner info for the user with uid into node of type partner.
+ *
+ * @param int $uid
+ *   The user id.
+ * @param string $company
+ *   The company name.
+ * @param string $company_description
+ *   The company description.
+ * @param string $logo
+ *   The logo path.
+ * @param string $expertise_tags
+ *   The selected expertise tags.
+ *
+ * @return bool
+ *   TRUE iff insert or update was successful.
+ */
+function openshift_partner_program_partner_info_upsert_node($uid, $company, $company_description, $logo, $expertise_tags) {
+  $node = node_load(array('uid' => $uid, 'type' => 'partner'));
+  $vocab = reset(taxonomy_get_vocabularies('Partner'));
+  if (!$node) {
+    // No node found.  Need to create.
+    $node = new stdClass();
+  }
+  $node->type = 'partner';
+  $node->uid = check_plain($uid);
+  $node->status = 1;
+  $node->title = check_plain($company);
+  $node->body = check_plain($company_description);
+  $node->picture = check_plain($logo);
+
+  // Wipe out previous terms if any.
+  $node->taxonomy = NULL;
+
+  $tags = explode(",", $expertise_tags);
+  foreach ($tags as $val) {
+    $term = taxonomy_get_term_by_name($val);
+    foreach ($term as $vterm) {
+      if ($vterm->vid == $vocab->vid) {
+        $node->taxonomy[] = $vterm;
+      }
+    }
+  }
+
+  if ($node = node_submit($node)) {
+    node_save($node);
+  }
+  return $node !== NULL;
+}
+
+/**
+ * Returns an array of partner info.
+ *
+ * @return array
+ *   Array of partner info or NULL if no partners.
+ */
+function openshift_partner_program_partners_list() {
+  $result = db_query("SELECT * FROM {openshift_partner_program_partners}");
+  $modified_row = array();
+  $augmented_result = array();
+  while ($row = db_fetch_array($result)) {
+    // Check to make sure user still exists.
+    $exists = user_load(array('uid' => $row['uid']));
+    if ($exists) {
+      foreach ($row as $key => $value) {
+        if ($key == 'expertise_tags' && $value == '') {
+          $modified_row[$key] = t('partner');
+        }
+        elseif ($key == 'expertise_tags') {
+          $modified_row[$key] = t('partner') . ",$value";
+        }
+        else {
+          $modified_row[$key] = $value;
+        }
+      }
+      $augmented_result[] = $modified_row;
+    }
+  }
+  return $augmented_result;
+}

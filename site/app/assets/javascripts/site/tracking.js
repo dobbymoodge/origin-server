@@ -95,10 +95,12 @@ var _gaq = _gaq || [];
 	
 	if(/openshift\.com$/.test(location.hostname) || /^\/(app\/)?account\/(new|complete)/.test(location.pathname)) {
 		_gaq.push(['_setAccount', 'UA-30752912-5']); // drupal account
-		$("a[href*='openshift.redhat.com']").on('click', function(event){
-			event.preventDefault();
-			var url = $(this).attr("href");
-			_gaq.push(['_link', url]);
+		_gaq.push(function(){
+			$("a[href*='openshift.redhat.com']").on('click', function(event){
+				event.preventDefault();
+				var url = $(this).attr("href");
+				_gaq.push(['_link', url]);
+			});
 		});	
 	} else {
 		_gaq.push(['_setAccount', 'UA-30752912-6']); // app account
@@ -120,8 +122,8 @@ var _gaq = _gaq || [];
 	// Track captcha usage
 	if(/^\/(app\/)?account/.test(location.pathname)) {
 		// We're using the inputs here because we are mixing GET and POST pages
-		captchaType = getInputByName('captcha_type');
-		captchaStatus = getInputByName('captcha_status');
+		var captchaType = getInputByName('captcha_type');
+		var captchaStatus = getInputByName('captcha_status');
 		
 		if(captchaType && captchaStatus) {
 			_gaq.push(['_trackEvent', 'Captcha', captchaType, captchaStatus]);
@@ -135,11 +137,13 @@ var _gaq = _gaq || [];
 	
 	// Track origin downloads
 	if(/^\/open-source\/download-origin/.test(location.pathname)) {
-		$('.action-call').on('click', function(event){
-			event.preventDefault();
-			var url = $(this).attr("href");
-			_gaq.push(['_trackEvent', 'Downloads', 'Origin', url]);
-			setTimeout('document.location = "' + url + '"', 300);
+		_gaq.push(function(){
+			$('.action-call').on('click', function(event){
+				event.preventDefault();
+				var url = $(this).attr("href");
+				_gaq.push(['_trackEvent', 'Downloads', 'Origin', url]);
+				setTimeout('document.location = "' + url + '"', 300);
+			});
 		});
 	}
 	
@@ -154,27 +158,31 @@ var _gaq = _gaq || [];
 	}
 	
 	// Enterprise form links
-	$('a[href*="engage.redhat.com"],a[href*="inexpo.com"]').on("click", function(event){
-		event.preventDefault();
-		
-		var url = $(this).attr("href");
-		_gaq.push(['_trackEvent', 'Outbound Links', 'OpenShift Enterprise', url]);
-		
-		var pixel = new Image;
-		var pixel_src = '//www.googleadservices.com/pagead/conversion/997127018/?value=0&amp;label=SomnCJaDrwQQ6ua72wM&amp;guid=ON';
-		pixel_src += "&amp;url=" + url.substring(0, 256);
-		pixel.src = pixel_src;
-		pixel.onload = function() {};
-		
-		setTimeout('document.location = "' + url + '"', 300);  
+	_gaq.push(function(){
+		$('a[href*="engage.redhat.com"],a[href*="inexpo.com"]').on("click", function(event){
+			event.preventDefault();
+
+			var url = $(this).attr("href");
+			_gaq.push(['_trackEvent', 'Outbound Links', 'OpenShift Enterprise', url]);
+
+			var pixel = new Image;
+			var pixel_src = '//www.googleadservices.com/pagead/conversion/997127018/?value=0&amp;label=SomnCJaDrwQQ6ua72wM&amp;guid=ON';
+			pixel_src += "&amp;url=" + url.substring(0, 256);
+			pixel.src = pixel_src;
+			pixel.onload = function() {};
+
+			setTimeout('document.location = "' + url + '"', 300);  
+		});
 	});
 	
 	// PDF Tracking
-	$("a[href*='.pdf']").on("click", function(event){
-		event.preventDefault();
-		var url = $(this).attr("href");
-		_gaq.push(['_trackEvent', 'Downloads', 'PDF Whitepaper', url]);
-		setTimeout('document.location = "' + url + '"', 300);  
+	_gaq.push(function(){
+		$("a[href*='.pdf']").on("click", function(event){
+			event.preventDefault();
+			var url = $(this).attr("href");
+			_gaq.push(['_trackEvent', 'Downloads', 'PDF Whitepaper', url]);
+			setTimeout('document.location = "' + url + '"', 300);  
+		});
 	});
 	
 	// Site search tracking

@@ -478,6 +478,73 @@ function global_settings_content_default_fields() {
     ),
   );
 
+  // Exported field: field_related_quickstart_tags
+  $fields['page-field_related_quickstart_tags'] = array(
+    'field_name' => 'field_related_quickstart_tags',
+    'type_name' => 'page',
+    'display_settings' => array(
+      'weight' => '32',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => 5,
+      'size' => '60',
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_related_quickstart_tags][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Related QuickStart Tags',
+      'weight' => '32',
+      'description' => 'Plus sign (+) delimited list of term IDs for QuickStart tags related to this page.',
+      'type' => 'text_textfield',
+      'module' => 'text',
+    ),
+  );
+
   // Exported field: field_search_meta_description
   $fields['page-field_search_meta_description'] = array(
     'field_name' => 'field_search_meta_description',
@@ -485,6 +552,17 @@ function global_settings_content_default_fields() {
     'display_settings' => array(
       'weight' => '31',
       'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 1,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 1,
+      ),
       '2' => array(
         'format' => 'default',
         'exclude' => 0,
@@ -495,17 +573,6 @@ function global_settings_content_default_fields() {
       ),
       '4' => array(
         'format' => 'default',
-        'exclude' => 1,
-      ),
-      'label' => array(
-        'format' => 'hidden',
-      ),
-      'teaser' => array(
-        'format' => 'default',
-        'exclude' => 1,
-      ),
-      'full' => array(
-        'format' => 'hidden',
         'exclude' => 1,
       ),
       'token' => array(
@@ -702,6 +769,7 @@ function global_settings_content_default_fields() {
   t('Issue');
   t('Promo Image');
   t('Promo URL');
+  t('Related QuickStart Tags');
   t('Resolution');
   t('Search Description (META)');
 

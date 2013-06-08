@@ -16,7 +16,7 @@
 /* Drupal specific markup, we may want to wrap this with a top level selector on body.drupal or something */
 .views-field-rss { float: right; }
 .views-field-picture { float: left; margin-right: 6px; }
-.views-field-created {font-size: $baseFontSize - 2;}
+.views-field-created {font-size: $smallFontSize;}
 .view-forum-list .views-field-picture { float: right; margin-left: 6px; }
 .block-stats div { display: inline; }
 .views-table .views-field-pageviews { white-space: nowrap; }
@@ -25,8 +25,8 @@
 .column-nav .view-threads-by-popularity .views-table {
   h4 { 
     color: #666; 
-    font-size: 13px; 
-    line-height: 18px; 
+    font-size: $baseFontSize; 
+    line-height: $baseLineHeight; 
   }
   > div { margin-bottom: 15px; }
 }
@@ -41,7 +41,6 @@
   &.inline { 
     a {
       color: $grayLight;
-      font-size: 11.5px;
       margin-right: 20px;
     }
     a[href^="/user"] {
@@ -65,7 +64,7 @@
 }
 
 .community form {
-  fieldset legend { font-size: 14px; line-height: 18px; }
+  fieldset legend { font-size: $baseFontSize; line-height: $baseLineHeight; }
   .fieldset-wrapper { margin-left: 10px; }
 }
 .clear-block { @include clearfix(); }
@@ -90,12 +89,12 @@
     }
 
     > h1 { 
-      font-size: 18px;
+      font-size: $h3FontSize;
       margin-bottom: 0;
     }
 
     > h2 { 
-      font-size: 16px;
+      font-size: $h4FontSize;
     }
  }
 
@@ -115,7 +114,7 @@
     text-align: right;
     padding-bottom: 3px;
     border-bottom: 1px solid #aaa;
-    font-size: 11px;
+    font-size: $tinyFontSize;
     > a {
       color: #888;
     }
@@ -175,12 +174,12 @@
 .forum-list-main {
   
   .views-field-title {
-    font-size:14px;
+    font-size: $baseFontSize;
   }
   
   .views-field-last-comment_timestamp, 
   .views-field-comment-count {
-    font-size:11px;
+    font-size: $tinyFontSize;
     min-width: 100px;
   }
   
@@ -222,7 +221,7 @@
   }
 }
 .search-help {
-  font-size: 11px;
+  font-size: $tinyFontSize;
   margin: 5px 0 20px 0;
 }
 
@@ -238,7 +237,7 @@ form#comment-controls {
     margin-bottom: 0;
   }
   select {
-    font-size: 11.5px;
+    font-size: $tinyFontSize;
     margin: 0;
     padding: 0;
     height: 18px;
@@ -247,12 +246,12 @@ form#comment-controls {
   #edit-submit.btn-primary {
     background-color: #DDDDDD;
     background-image: none;
-    font-size: 11.5px;
+    font-size: $tinyFontSize;
     padding: 0 4px;
     margin-right: 0;
   }
   .description {
-    font-size: 11px;
+    font-size: $tinyFontSize;
   }
 }
 
@@ -265,7 +264,7 @@ form#comment-controls {
   }
 }
 .community #comments .views-field-name {
-  font-size: 16px;
+  font-size: $h4FontSize;
   font-weight: bold;
 }
 .community .thread .thread-author .views-field-name .field-content {
@@ -291,7 +290,7 @@ form#comment-controls {
     padding: 0 4px;
     color: #fff; 
     text-transform: uppercase; 
-    font-size: 11px; 
+    font-size: $tinyFontSize; 
     float: right;
   }
 }
@@ -349,30 +348,18 @@ td.views-field-vud-node-widget {
 {
   float: right;
 }
-.node-og-group-post .vud-widget-updown {
-  padding: 0 2em 0 0;
+.vud-widget-updown {
+  padding: 0 15px 0 0;
 }
 /* Quick fixes to force wrap long strings within table cells */
 .table th, .table td {
-  max-width: 400px;
+  max-width: 550px;
 }
 @media (max-width: 980px) {
   .table th, .table td {
-    max-width: 250px;
+    max-width: 350px;
   }
 } 
-
-
-/* Ideas table generation doesn't generate separate divs because it is using the view Table layout */
-.view-ideas .views-table .views-field-title {
-  font-size: 13px;
-  line-height: 1.4em;
-
-  a:first-child {
-    font-size: 16px;
-    line-height: 1.2em;
-  }
-}
 
 .vud-widget-updown > div.down-active {
   background: $openshiftRed;
@@ -441,7 +428,7 @@ html.js fieldset.collapsible .fieldset-wrapper {
 .author-meta {
   margin-left: 60px;
   strong {
-    font-size: 150%;
+    font-size: 150%; // FIXME
     padding-right: 13px;
     }
 }
@@ -467,13 +454,13 @@ html.js fieldset.collapsible .fieldset-wrapper {
   padding: 0 3px;
   margin: 0;
   color: #fff;
-  font-size: 11px;
+  font-size: $tinyFontSize;
  }
 .rank {
   border: 1px solid #999;
   color: #909090;
   display: inline-block;
-  font-size: 11px;
+  font-size: $tinyFontSize;
   padding: 0;
   white-space: nowrap;
   float: right;
@@ -508,7 +495,7 @@ html.js fieldset.collapsible .fieldset-wrapper {
   z-index: 200;
 }
 .community div.view div.views-admin-links {
-    font-size: xx-small;
+    font-size: $tinyFontSize;
     margin-right: 0;
     margin-top: -10px;
     float: right;
@@ -530,7 +517,7 @@ html.js fieldset.collapsible .fieldset-wrapper {
 .community .meta .view-user-profile-box > div {
   border: 1px solid #666;
   color: #efefef;
-  font-size: 11px;
+  font-size: $tinyFontSize;
   background:#666;
   white-space: nowrap;
 }
@@ -556,7 +543,7 @@ html.js fieldset.collapsible .fieldset-wrapper {
     .flag-wrapper {
       position: absolute;
       right: -30px;
-      font-size: 11px;
+      font-size: $tinyFontSize;
       margin:0;
       
       .flag-action {
@@ -628,14 +615,9 @@ html.js fieldset.collapsible .fieldset-wrapper {
   }
 
   h1 {
-    font-size: 22px;
+    font-size: $h2FontSize;
     line-height: 36px;
     margin-bottom: 8px;
-  }
-
-  > h1.title {
-    font-size: 30px;
-    margin-right: 80px;
   }
 
   > h2+p {
@@ -649,18 +631,30 @@ html.js fieldset.collapsible .fieldset-wrapper {
     width: auto;
   }
 
+  .cartridge-spec {
+    font-weight: bold;
+  }
+}
+
+.community {
   .metadata {
     color: #999;
-    font-size: 12px;
-    margin-bottom: 25px;
+    //font-size: $smallFontSize;
+    margin-bottom: 15px;
     position: relative; 
     .author-bio-box  {
       .author-bio { display: none; }
     }
   }
+  h3 + .metadata {
+    margin-top: -5px;
+  }
+  p + .metadata {
+    margin-top: -10px;
+  }
 
-  .cartridge-spec {
-    font-weight: bold;
+  .tile .metadata {
+    margin-bottom: 5px;
   }
 }
 
@@ -674,30 +668,30 @@ html.js fieldset.collapsible .fieldset-wrapper {
   }
 }
 
+.community {
+  .terms-page {
+    margin-bottom: 20px;
+  }
+  .ribbon + .terms-page {
+    margin-top: -20px;
+  }
+}
+
 .community .provider {
   border: 1px solid #ccc;
   color: #333;
-  font-size: 9.5px;
+  font-size: $tinyFontSize;
   line-height: 1;
   margin: 0 6px 0 0;
   padding: 1px 3px;
   text-transform: uppercase;
 }
+
 .community .view-application-quickstarts-content {
   margin-top: -4px;
 
   + h2 {
     margin-top: 36px;
-  }
-
-  .metadata {
-    color: #999;
-    font-size: 12px;
-    margin-bottom: 5px;
-    position: relative; 
-    .author-bio-box  {
-      .author-bio { display: none; }
-    }
   }
 
   .provider {
@@ -712,7 +706,7 @@ html.js fieldset.collapsible .fieldset-wrapper {
 
   .views-field-tid {
     a {
-      font-size: 11px;
+      font-size: $tinyFontSize;
     }
   }
 
@@ -740,19 +734,19 @@ html.js fieldset.collapsible .fieldset-wrapper {
 
 @media (max-width: 480px) {
   .community article > h1.title {
-    font-size: 26px;
+    font-size: 26px; // simple responsive
     font-weight: bold;
     line-height: 30px;
   }
   .calendar-calendar td {
-    font-size: 11px;
+    font-size: $tinyFontSize;
   }
 }
   
 
 /* Community search */
 .community .search-results dt {
-    font-size: 16px;
+    font-size: $h4FontSize;
     margin: 23px 0 0;
 }
 .community .search-results dt a {
@@ -778,13 +772,15 @@ html.js fieldset.collapsible .fieldset-wrapper {
   margin-bottom: 15px;
   }
 .faq-header {
-  font-size: 18px;
+  font-size: $h3FontSize;
   }
   
 /* Wiki pages */
-#toc { float: right; background: #eee; border: 1px solid #ddd; margin-left: 15px; margin-bottom: 15px; }
-#toc td { font-size: 90%; }
-#toc td ul { list-style: none; margin: 0 0 0 9px; }
+.community {
+  #toc { float: right; background: #eee; border: 1px solid #ddd; margin-left: 15px; margin-bottom: 15px; }
+  #toc td { font-size: $smallFontSize; }
+  #toc td ul { list-style: none; margin: 0 0 0 9px; }
+}
 
 /**
  * Allow limiting of which header levels are shown in a TOC;
@@ -849,7 +845,7 @@ html.js fieldset.collapsible .fieldset-wrapper {
     }
   }
   .date-nav div.date-heading h3 {
-    font-size: 13px;
+    font-size: $baseFontSize;
     white-space: nowrap;
   }
   .calendar-calendar .mini td {
@@ -860,58 +856,56 @@ html.js fieldset.collapsible .fieldset-wrapper {
 /* Events list */
 .view-event-view .views-row {border:0}
 
-.event-listings .event-date {
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  font-family: Overpass;
+.event-date {
+  background: #fcfcfc;
+  @include background-image(linear-gradient(bottom, #eaeaea 0%, #afafaf 100%));
+  @include border-radius(3px);
+  @include box-shadow(0 0 1px #888888);
   color: #9f9f9f;
-  box-shadow: 0 0 1px #888888;
-  width: 52px; 
-  height: 52px; 
-  background: #fcfcfc; 
-  background: linear-gradient(bottom, #eaeaea 0%, #afafaf 100%); 
-  background: -moz-linear-gradient(bottom, #eaeaea 0%, #afafaf 100%); 
-  background: -webkit-linear-gradient(bottom, #eaeaea 0%, #afafaf 100%); 
-  border-radius: 3px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  text-shadow: 1px 1px 6px #EEEEEE, 0 0 0 #DDDDDD;
   float: left; 
+  font-family: $headerFontFamily;
+  font-size: 20px; // events special case
+  font-weight: bold;
+  height: 56px; 
+  margin-right: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+  @include text-shadow(1px 1px 6px #EEEEEE, 0 0 0 #DDDDDD);
+  width: 56px; 
+
+  span {
+    display: block;
+  }
+
+  b {
+    background: #D10000;
+    @include background-image(linear-gradient(center top, #a1000c 0%, #D10000 100%));
+    @include border-radius(3px 3px 0 0);
+    border-bottom: 2px solid #A1000C;
+    color: #FFFFFF;
+    display: block;
+    font-size: $smallFontSize;
+    font-weight: normal;
+    margin-bottom: 6px;
+    padding: 3px 0 0;
+    @include text-shadow(none);
+    text-transform: uppercase;
+  }
 }
-.event-listings .event-date span {
-  display: block;
+
+.event-listings {
+  h3.title, 
+  .views-field-group-location, 
+  .slug {
+    display: block;
+    margin-left: 80px;
+  }
+  .views-field-group-location span {
+    font-size: 15px; // events special case
+  }
 }
-.event-listings .event-date b {
-  display: block;
-  font-size: 12.5px;
-  font-weight: normal;
-  background: #D10000;
-  background: linear-gradient(center top , #a1000c 0%, #D10000 100%); /* $openshiftDarkRed to  */
-  background: -moz-linear-gradient(center top , #a1000c 0%, #D10000 100%); 
-  background: -webkit-linear-gradient(center top , #a1000c 0%, #D10000 100%); 
-  border-radius: 3px 3px 0 0;
-  border-bottom: 2px solid #A1000C;
-  color: #FFFFFF;
-  display: block;
-  padding: 3px 0 0;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  text-shadow: none;
-}
-.event-listings h3:not(.title) {
-  margin-top: 15px;
-  margin-left: 15px;
-}
-.event-listings h3.title, 
-.event-listings .views-field-group-location, 
-.event-listings .slug {
-  display: block;
-  margin-left: 80px;
-}
-.event-listings .views-field-group-location span {
-  font-size: 110%;
-}
+
+
 .nav-pills .active > a, .nav-pills .active > a:hover {
   background-color: #ededed;
   text-decoration: none;
@@ -919,10 +913,6 @@ html.js fieldset.collapsible .fieldset-wrapper {
 }
 .nav-pills .active > a:hover {
   color: #ea0011;
-}
-.field-content {
-  font-size: 15px;
-  font-weight: 300; 
 }
 .slug {
   margin: 10px 0;
@@ -1003,6 +993,10 @@ html.js fieldset.collapsible .fieldset-wrapper {
   .column-content { background: none; }
 }
 
+// Make the menu select dropdown on Contexts more useful
+#edit-conditions-plugins-menu-values.form-select {
+  height: 400px;
+}
 
 @media (max-width: 480px) {
   html  body.admin-menu {
@@ -1012,5 +1006,81 @@ html.js fieldset.collapsible .fieldset-wrapper {
 @media (max-width: 320px) {
   html  body.admin-menu {
     margin-top: 130px !important;
+  }
+}
+
+.partner-blocklist .partner {
+  height: 150px;
+  margin: 0 30px 30px 0;
+  position: relative;
+  padding: 4px 2px 10px;
+
+  a, a:hover, a:active {
+    color: $textColor;
+  }
+
+  img {
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    max-height: 130px;
+    max-width: 190px;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .partner-summary {
+    background: none repeat scroll 0 0 $grayLighter;
+    display: none;
+    padding: 15px;
+    position: absolute;
+    top: 100%;
+    z-index: 1;
+    outline: 2px solid $grayLighter;
+  }
+
+  &:hover {
+    padding: 2px 0 8px;
+    border: 2px solid $grayLighter;
+
+    .partner-summary {
+      display: block;
+    }
+  }
+}
+
+.partner-portal .tile-compact {
+  h3 {
+    vertical-align: sub;
+    display: inline;
+  }
+
+  .font-icon, [class*="icon-"] {
+    margin-right: 10px;
+    margin-top: -2px;
+  }
+
+  .font-icon-block {
+    margin-right: 0;
+    margin-top: 0;
+
+    .icon-scalable-part1,
+    .icon-scalable-part2 {
+      margin-right: 6px;
+    }
+  }
+}
+
+table.version-list {
+  margin-bottom: 20.5px;
+  font-size: $smallFontSize;
+
+  td, th {
+    font-weight: normal;
+    background-color: #F9F9F9;
+    border: 1px solid #EDEDED;
+    padding: 0 6px;
+    text-align: center;
   }
 }
