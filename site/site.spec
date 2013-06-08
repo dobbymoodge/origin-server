@@ -9,7 +9,7 @@
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
 Version: 1.9.13
-Release:   1%{?dist}
+Release:   2%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
 URL:       http://openshift.redhat.com
@@ -195,6 +195,9 @@ fi
 %{sitedir}/public
 
 %changelog
+* Sat Jun 08 2013 Adam Miller 1.9.13-2
+- - Bump spec for site rebuild
+
 * Fri Jun 07 2013 Adam Miller <admiller@redhat.com> 1.9.13-1
 - Site summit changes, backported from bbe7f47f293c826be00ead46457377f475b810b7
   in master (ccoleman@redhat.com)
