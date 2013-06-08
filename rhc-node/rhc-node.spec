@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.9.16
+Version: 1.9.17
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -244,6 +244,9 @@ fi
 
 
 %changelog
+* Sat Jun 08 2013 Dan McPherson <dmcphers@redhat.com> 1.9.17-1
+- V2 cartridge migrations in stage (pmorie@gmail.com)
+
 * Thu Jun 06 2013 Adam Miller <admiller@redhat.com> 1.9.16-1
 - Fix invalid migration FileUtils#cp calls (ironcladlou@gmail.com)
 
