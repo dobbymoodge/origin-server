@@ -44,20 +44,5 @@ rm -rf $RPM_BUILD_ROOT
 * Fri Jun 07 2013 Dan McPherson <dmcphers@redhat.com> 0.0.5-1
 - new package built with tito
 
-* Fri Jun 07 2013 Dan McPherson <dmcphers@redhat.com> 0.0.4-1
-- new package built with tito
-
-* Fri Jun 07 2013 Adam Miller 0.0.3-4
-- Bump spec for mass drupal rebuild
-
-* Thu Jun 06 2013 Adam Miller 0.0.3-3
-- Bump spec for mass drupal rebuild
-
-* Wed Jun 05 2013 Adam Miller 0.0.3-2
-- Bump spec for mass drupal rebuild
-
-* Tue Jun 04 2013 Adam Miller <admiller@redhat.com> 0.0.3-1
-- new package built with tito
-
 * Tue Jun 04 2013 Adam Miller - 0.0.1-1
 - First package for Drupal Partner Program Content
