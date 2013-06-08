@@ -5,7 +5,7 @@
 %global modname partner_program
 
 Name: drupal%{drupal_release}-openshift-%{modname}
-Version: 0.0.5
+Version: 0.0.6
 Release: 1%{?dist}
 Summary: OpenShift Partner Program Drupal Content
 Group: Applications/Publishing
@@ -41,6 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %{drupal_modules}/%{modname}
 
 %changelog
+* Fri Jun 07 2013 Adam Miller <admiller@redhat.com> 0.0.6-1
+- Spec cleanup (dmcphers@redhat.com)
+
 * Fri Jun 07 2013 Dan McPherson <dmcphers@redhat.com> 0.0.5-1
 - new package built with tito
 
