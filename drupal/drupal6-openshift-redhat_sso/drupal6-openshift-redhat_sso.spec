@@ -5,7 +5,7 @@
 %global modname             redhat_sso
 
 Name:    drupal%{drupal_release}-openshift-%{modname}
-Version: 1.6.2
+Version: 1.6.3
 Release: 1%{?dist}
 Summary: Openshift Red Hat Custom SSO Module for Drupal6
 Group:   Applications/Publishing
@@ -41,6 +41,10 @@ rm -rf $RPM_BUILD_ROOT
 %{drupal_modules}/%{modname}
 
 %changelog
+* Fri Jun 07 2013 Adam Miller <admiller@redhat.com> 1.6.3-1
+- Site summit changes, backported from bbe7f47f293c826be00ead46457377f475b810b7
+  in master (ccoleman@redhat.com)
+
 * Thu May 16 2013 Adam Miller <admiller@redhat.com> 1.6.2-1
 - Remove old resources that should not be used, remove comment about secret
   key. (ccoleman@redhat.com)
