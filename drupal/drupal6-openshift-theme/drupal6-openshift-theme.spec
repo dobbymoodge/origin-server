@@ -5,7 +5,7 @@
 %global drupal_themename    openshift-theme
 
 Name:           drupal6-%{drupal_themename}
-Version: 3.17.5
+Version: 3.17.6
 Release:        1%{?dist}
 Summary:        Red Hat Openshift theme for Drupal %{drupal_release}
 
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Jun 09 2013 Adam Miller <admiller@redhat.com> 3.17.6-1
+- Bug 972241 - Bad google+ link (ccoleman@redhat.com)
+
 * Fri Jun 07 2013 Adam Miller <admiller@redhat.com> 3.17.5-1
 - Site summit changes, backported from bbe7f47f293c826be00ead46457377f475b810b7
   in master (ccoleman@redhat.com)
