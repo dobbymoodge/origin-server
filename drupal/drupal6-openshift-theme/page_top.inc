@@ -28,7 +28,7 @@
     <div>
       <div class="text">
         <a href="/blogs">Blog</a>
-        <a class="icon-social" href="http://twitter.com/openshift"><span aria-hidden="true" data-icon="&#xee04;" title="Follow us on Twitter"> </span></a><a class="icon-social" href="http://facebook.com/openshift"><span aria-hidden="true" data-icon="&#xee05;" title="Like us on Facebook"> </span></a><a class="icon-social" href="http://plus.google.com/openshift"><span aria-hidden="true" data-icon="&#xee06;" title="Visit us on Google+"> </span></a>
+        <a class="icon-social" href="http://twitter.com/openshift"><span aria-hidden="true" data-icon="&#xee04;" title="Follow us on Twitter"> </span></a><a class="icon-social" href="http://facebook.com/openshift"><span aria-hidden="true" data-icon="&#xee05;" title="Like us on Facebook"> </span></a><a class="icon-social" href="https://plus.google.com/b/108052331678796731786/108052331678796731786/posts"><span aria-hidden="true" data-icon="&#xee06;" title="Visit us on Google+"> </span></a>
       </div>
     </div>
   </div>
