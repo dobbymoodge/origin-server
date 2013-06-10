@@ -427,7 +427,12 @@ module OpenShiftMigration
       Dir.glob(File.join(gear_home, '.env', '*')).each do |entry|
         next if File.basename(entry) == 'TYPELESS_TRANSLATED_VARS'
 
-        content = IO.read(entry).chomp
+        begin
+          content = IO.read(entry).chomp
+        rescue Exception => e
+          progress.log "Error reading from #{entry}; skipping."
+          next
+        end
 
         if content =~ /^export /
           index          = content.index('=')
