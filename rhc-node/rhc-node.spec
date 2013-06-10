@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.9.17
+Version: 1.9.18
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -244,6 +244,20 @@ fi
 
 
 %changelog
+* Mon Jun 10 2013 Dan McPherson <dmcphers@redhat.com> 1.9.18-1
+- Merge pull request #1601 from pmorie/stg/fix1 (dmcphers@redhat.com)
+- Create data dir if it does not exist from MigrationProgress fixes
+  (pmorie@gmail.com)
+- Add begin/rescue against failed reads in migrate_env_vars_to_raw
+  (pmorie@gmail.com)
+- Create data dir if it does not exist from MigrationProgress
+  (pmorie@gmail.com)
+- Create hooks dir before app repo configure (pmorie@gmail.com)
+- Merge pull request #1599 from ironcladlou/stage (dmcphers@redhat.com)
+- Handle missing gui case with zend migration (dmcphers@redhat.com)
+- Remove copy targets prior to copy during migrations (ironcladlou@gmail.com)
+- Migration issues (dmcphers@redhat.com)
+
 * Sat Jun 08 2013 Dan McPherson <dmcphers@redhat.com> 1.9.17-1
 - V2 cartridge migrations in stage (pmorie@gmail.com)
 
