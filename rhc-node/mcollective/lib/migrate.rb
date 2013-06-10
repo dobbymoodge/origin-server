@@ -40,6 +40,7 @@ require 'openshift-origin-node/utils/sdk'
 require 'openshift-origin-node/utils/cgroups'
 require 'openshift-origin-node/utils/application_state'
 require 'openshift-origin-node/utils/environ'
+require 'openshift-origin-node/utils/selinux'
 require 'openshift-origin-common'
 require 'net/http'
 require 'uri'
@@ -165,6 +166,8 @@ module OpenShiftMigration
     filesystem, quota, quota_soft, quota_hard, inodes, inodes_soft, inodes_hard = OpenShift::Node.get_quota(uuid)
     begin
       progress.log 'Beginning V1 -> V2 migration'
+
+      progress.init_store
 
       if detect_malformed_gear(progress, gear_home)
         progress.log 'Deleting migration metadata because this gear appears not to have any cartridges'
@@ -424,7 +427,12 @@ module OpenShiftMigration
       Dir.glob(File.join(gear_home, '.env', '*')).each do |entry|
         next if File.basename(entry) == 'TYPELESS_TRANSLATED_VARS'
 
-        content = IO.read(entry).chomp
+        begin
+          content = IO.read(entry).chomp
+        rescue Exception => e
+          progress.log "Error reading from #{entry}; skipping."
+          next
+        end
 
         if content =~ /^export /
           index          = content.index('=')
@@ -511,6 +519,12 @@ module OpenShiftMigration
     end
 
     if repo.exists? && progress.incomplete?("reconfigure_git_repo")
+      hooks_dir = File.join(repo.path, 'hooks')
+
+      if !File.exists?(hooks_dir)
+        FileUtils.mkpath(hooks_dir)
+      end
+
       repo.configure
       progress.mark_complete('reconfigure_git_repo')
     end
