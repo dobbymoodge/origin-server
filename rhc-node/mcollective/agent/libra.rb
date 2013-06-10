@@ -46,7 +46,7 @@ module MCollective
                   :license     => "GPLv2",
                   :version     => "0.1",
                   :url         => "https://engineering.redhat.com/trac/Libra",
-                  :timeout     => 240
+                  :timeout     => 360
 
       def before_processing_hook(msg, connection)
         # Set working directory to a 'safe' directory to prevent Dir.chdir

@@ -48,7 +48,7 @@ def migrate_gear(login, app_name, gear_uuid, version)
           server_identity = gear.server_identity
           # gear.node_profile = app.node_profile if gear.node_profile.nil?
           begin
-            Timeout::timeout(240) do
+            Timeout::timeout(420) do
               output = ''
               exit_code = 1
               migrate = MIGRATION_CART_TYPES.nil? 
