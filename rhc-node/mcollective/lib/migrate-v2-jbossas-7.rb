@@ -59,6 +59,8 @@ module OpenShiftMigration
       repo_deployments_dir = File.join(user.homedir, 'app-root/runtime/repo/deployments/')
       active_deployments_dir = File.join(cartridge_dir, 'standalone/deployments')
       
+      FileUtils.rm_rf File.join(active_deployments_dir, '*')
+
       Dir.glob(File.join(repo_deployments_dir, '*')).each do |file|
         FileUtils.cp_r(file, active_deployments_dir, :remove_destination => true)
       end
