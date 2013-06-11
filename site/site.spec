@@ -8,8 +8,8 @@
 
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
-Version: 1.9.14
-Release:   2%{?dist}
+Version: 1.9.15
+Release:   1%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
 URL:       http://openshift.redhat.com
@@ -195,6 +195,9 @@ fi
 %{sitedir}/public
 
 %changelog
+* Tue Jun 11 2013 Unknown name 1.9.15-1
+- Remove AmEx as an accepted payment type (jliggitt@redhat.com)
+
 * Sun Jun 09 2013 Adam Miller 1.9.14-2
 - - Bump spec for site rebuild for summit 2013
 
