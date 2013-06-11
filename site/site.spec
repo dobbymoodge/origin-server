@@ -494,21 +494,3 @@ fi
   (dmcphers+openshiftbot@redhat.com)
 - Bug 955444 - Getting Started page link 404 on account help page
   (jforrest@redhat.com)
-
-* Mon Apr 29 2013 Adam Miller <admiller@redhat.com> 1.8.3-1
-- Merge pull request #1258 from smarterclayton/drupal_fixes
-  (dmcphers+openshiftbot@redhat.com)
-- Unformatted lists should write nothing (ccoleman@redhat.com)
-- Base collections account group only on billing country (hripps@redhat.com)
-- Merge pull request #1246 from fabianofranz/master
-  (dmcphers+openshiftbot@redhat.com)
-- Fixed tests for Maintenance mode (ffranz@redhat.com)
-- Using a dedicated exception to handle server unavailable so we don't have to
-  check status codes more than once (ffranz@redhat.com)
-- Tests for Maintenance mode (ffranz@redhat.com)
-- Tests for Maintenance mode (ffranz@redhat.com)
-- Maintenance mode will now handle login/authorization properly
-  (ffranz@redhat.com)
-- Maintenance mode page, now handling nil responses on server error
-  (ffranz@redhat.com)
-- Maintenance mode for the web console (ffranz@redhat.com)
