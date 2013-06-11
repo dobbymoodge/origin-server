@@ -51,7 +51,7 @@ Rails.application.config.tap do |config|
 
   # Supported Credit Cards
   # Specify accepted cards here. Keys can be found in config/credit_cards.yml
-  config.accepted_cards = [:visa,:mastercard,:amex]
+  config.accepted_cards = Console.config.env(:ARIA_ACCEPTED_CARDS, [:visa,:mastercard])
   # Disable extended credit card validation rules
   config.disable_cc_validation = Console.config.env(:ARIA_DISABLE_CC_VALIDATION, false)
   # Disable JS based address form updates
