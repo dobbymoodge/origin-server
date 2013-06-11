@@ -250,7 +250,7 @@ module OpenShiftMigration
       runtime_dir = File.join(gear_home, 'app-root', 'runtime')
       save_state = File.join(runtime_dir, PREMIGRATION_STATE)
 
-      if !File.exists(runtime_dir)
+      if !File.exists?(runtime_dir)
         FileUtils.mkpath(runtime_dir)
       end
 
