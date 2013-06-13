@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.9.19
+Version: 1.9.20
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -244,6 +244,11 @@ fi
 
 
 %changelog
+* Thu Jun 13 2013 Dan McPherson <dmcphers@redhat.com> 1.9.20-1
+- Merge pull request #1614 from pmorie/stg/fix1 (dmcphers@redhat.com)
+- Fix bug 973740: do not leave migration metadata in place due to gear status
+  (pmorie@gmail.com)
+
 * Tue Jun 11 2013 Dan McPherson <dmcphers@redhat.com> 1.9.19-1
 - Fix for creating runtime dir (pmorie@gmail.com)
 - Remove template directory if it already exists in ruby-1.9 migration
