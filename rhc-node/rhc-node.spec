@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.9.20
+Version: 1.9.21
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -244,6 +244,9 @@ fi
 
 
 %changelog
+* Sat Jun 15 2013 Dan McPherson <dmcphers@redhat.com> 1.9.21-1
+- Handle quota with v2 migration (dmcphers@redhat.com)
+
 * Thu Jun 13 2013 Dan McPherson <dmcphers@redhat.com> 1.9.20-1
 - Merge pull request #1614 from pmorie/stg/fix1 (dmcphers@redhat.com)
 - Fix bug 973740: do not leave migration metadata in place due to gear status
