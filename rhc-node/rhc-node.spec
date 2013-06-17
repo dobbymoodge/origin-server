@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.9.21
+Version: 1.9.22
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -244,6 +244,10 @@ fi
 
 
 %changelog
+* Mon Jun 17 2013 Dan McPherson <dmcphers@redhat.com> 1.9.22-1
+- Fix bug 975174: skip migration for cartridges when manifest does not match
+  gear layout (pmorie@gmail.com)
+
 * Sat Jun 15 2013 Dan McPherson <dmcphers@redhat.com> 1.9.21-1
 - Handle quota with v2 migration (dmcphers@redhat.com)
 
