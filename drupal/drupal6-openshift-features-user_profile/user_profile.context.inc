@@ -408,8 +408,8 @@ function user_profile_context_default_contexts() {
         'menu-menu-moderator-menu' => array(
           'module' => 'menu',
           'delta' => 'menu-moderator-menu',
-          'region' => 'sidebar_left',
-          'weight' => 50,
+          'region' => 'footer',
+          'weight' => 0,
         ),
       ),
     ),

@@ -235,6 +235,7 @@ function user_profile_user_default_permissions() {
     'name' => 'administer menu',
     'roles' => array(
       '0' => 'administrator',
+      '1' => 'page author',
     ),
   );
 
@@ -515,6 +516,7 @@ function user_profile_user_default_permissions() {
     'name' => 'create faq',
     'roles' => array(
       '0' => 'administrator',
+      '1' => 'moderator',
     ),
   );
 
@@ -795,6 +797,7 @@ function user_profile_user_default_permissions() {
     'name' => 'delete faq content',
     'roles' => array(
       '0' => 'administrator',
+      '1' => 'moderator',
     ),
   );
 
@@ -853,6 +856,7 @@ function user_profile_user_default_permissions() {
     'name' => 'delete own faq content',
     'roles' => array(
       '0' => 'administrator',
+      '1' => 'moderator',
     ),
   );
 
@@ -1142,6 +1146,7 @@ function user_profile_user_default_permissions() {
     'name' => 'edit faq',
     'roles' => array(
       '0' => 'administrator',
+      '1' => 'moderator',
     ),
   );
 
@@ -1569,6 +1574,7 @@ function user_profile_user_default_permissions() {
     'name' => 'edit own faq',
     'roles' => array(
       '0' => 'administrator',
+      '1' => 'moderator',
     ),
   );
 
