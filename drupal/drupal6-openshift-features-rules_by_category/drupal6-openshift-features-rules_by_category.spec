@@ -5,8 +5,8 @@
 %global modname             rules_by_category
 
 Name:    drupal%{drupal_release}-openshift-features-%{modname}
-Version: 1.6.1
-Release: 5%{?dist}
+Version: 1.6.2
+Release: 1%{?dist}
 Summary: Openshift Red Hat Custom Rules by Category Feature for Drupal6
 Group:   Applications/Publishing
 License: GPLv2+
@@ -41,6 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %{drupal_modules}/%{modname}
 
 %changelog
+* Fri Jun 28 2013 Adam Miller <admiller@redhat.com> 1.6.2-1
+- Drupal feature export from prod server (jforrest@redhat.com)
+
 * Fri Jun 07 2013 Adam Miller 1.6.1-5
 - Bump spec for mass drupal rebuild
 
