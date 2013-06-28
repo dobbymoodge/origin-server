@@ -5,7 +5,7 @@
 %global modname             forums
 
 Name:    drupal%{drupal_release}-openshift-features-%{modname}
-Version: 1.7.2
+Version: 1.7.3
 Release: 1%{?dist}
 Summary: Openshift Red Hat Custom Forums Feature for Drupal6
 Group:   Applications/Publishing
@@ -41,6 +41,11 @@ rm -rf $RPM_BUILD_ROOT
 %{drupal_modules}/%{modname}
 
 %changelog
+* Fri Jun 28 2013 Adam Miller <admiller@redhat.com> 1.7.3-1
+- bump drupal6-openshift-features-forums to make tito happy
+  (admiller@redhat.com)
+- Drupal feature export from prod server (jforrest@redhat.com)
+
 * Fri Jun 28 2013 Adam Miller <admiller@redhat.com>
 - Drupal feature export from prod server (jforrest@redhat.com)
 
