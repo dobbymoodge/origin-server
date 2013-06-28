@@ -19,17 +19,7 @@ function rules_by_category_rules_defaults() {
         '#status' => 'default',
         '#conditions' => array(
           '0' => array(
-            '#type' => 'condition',
-            '#settings' => array(
-              'type' => array(
-                'faq' => 'faq',
-                'knowledge_base' => 'knowledge_base',
-              ),
-              '#argument map' => array(
-                'node' => 'node',
-              ),
-            ),
-            '#name' => 'rules_condition_content_is_type',
+            '#weight' => 0,
             '#info' => array(
               'label' => 'Commented content is FAQ or Knowledge Base',
               'arguments' => array(
@@ -40,25 +30,25 @@ function rules_by_category_rules_defaults() {
               ),
               'module' => 'Node',
             ),
-            '#weight' => 0,
+            '#name' => 'rules_condition_content_is_type',
+            '#settings' => array(
+              'type' => array(
+                'faq' => 'faq',
+                'knowledge_base' => 'knowledge_base',
+              ),
+              '#argument map' => array(
+                'node' => 'node',
+              ),
+            ),
+            '#type' => 'condition',
           ),
         ),
         '#actions' => array(
           '0' => array(
             '#weight' => 0,
-            '#info' => array(
-              'label' => 'Send a mail to an arbitrary mail address',
-              'module' => 'System',
-              'eval input' => array(
-                '0' => 'subject',
-                '1' => 'message',
-                '2' => 'from',
-                '3' => 'to',
-              ),
-            ),
-            '#name' => 'rules_action_mail',
+            '#type' => 'action',
             '#settings' => array(
-              'to' => 'kshaw@redhat.com,snathan@redhat.com,nduong@redhat.com,sannam@redhat.com',
+              'to' => 'nduong@redhat.com,sannam@redhat.com',
               'from' => '',
               'subject' => 'New comment posted on a [node:type-name] Content type',
               'message' => 'Hello, 
@@ -86,7 +76,17 @@ A user has posted the following comment to the [node:type-name] titled [node:tit
                 ),
               ),
             ),
-            '#type' => 'action',
+            '#name' => 'rules_action_mail',
+            '#info' => array(
+              'label' => 'Send a mail to an arbitrary mail address',
+              'module' => 'System',
+              'eval input' => array(
+                '0' => 'subject',
+                '1' => 'message',
+                '2' => 'from',
+                '3' => 'to',
+              ),
+            ),
           ),
         ),
         '#version' => 6003,
@@ -106,9 +106,19 @@ A user has posted the following comment to the [node:type-name] titled [node:tit
         '#actions' => array(
           '0' => array(
             '#weight' => 0,
-            '#type' => 'action',
+            '#info' => array(
+              'label' => 'Send a mail to an arbitrary mail address',
+              'module' => 'System',
+              'eval input' => array(
+                '0' => 'subject',
+                '1' => 'message',
+                '2' => 'from',
+                '3' => 'to',
+              ),
+            ),
+            '#name' => 'rules_action_mail',
             '#settings' => array(
-              'to' => 'kshaw@redhat.com,snathan@redhat.com,nduong@redhat.com,sannam@redhat.com',
+              'to' => 'nduong@redhat.com,sannam@redhat.com',
               'from' => '',
               'subject' => 'Comment deleted from openshift community site',
               'message' => 'A user with the email [:global:user-mail] has deleted the following comment from node [node:nid] :
@@ -133,17 +143,7 @@ A user has posted the following comment to the [node:type-name] titled [node:tit
                 ),
               ),
             ),
-            '#name' => 'rules_action_mail',
-            '#info' => array(
-              'label' => 'Send a mail to an arbitrary mail address',
-              'module' => 'System',
-              'eval input' => array(
-                '0' => 'subject',
-                '1' => 'message',
-                '2' => 'from',
-                '3' => 'to',
-              ),
-            ),
+            '#type' => 'action',
           ),
         ),
         '#version' => 6003,
@@ -163,19 +163,9 @@ A user has posted the following comment to the [node:type-name] titled [node:tit
         '#actions' => array(
           '0' => array(
             '#weight' => 0,
-            '#info' => array(
-              'label' => 'Send a mail to an arbitrary mail address',
-              'module' => 'System',
-              'eval input' => array(
-                '0' => 'subject',
-                '1' => 'message',
-                '2' => 'from',
-                '3' => 'to',
-              ),
-            ),
-            '#name' => 'rules_action_mail',
+            '#type' => 'action',
             '#settings' => array(
-              'to' => 'kshaw@redhat.com,snathan@redhat.com,nduong@redhat.com,sannam@redhat.com',
+              'to' => 'nduong@redhat.com,sannam@redhat.com',
               'from' => '',
               'subject' => 'Node deleted from Openshift Community',
               'message' => 'Node [node:nid] with title [node:title] has been deleted from the Openshift community site by [user:mail]
@@ -200,7 +190,17 @@ A user has posted the following comment to the [node:type-name] titled [node:tit
                 ),
               ),
             ),
-            '#type' => 'action',
+            '#name' => 'rules_action_mail',
+            '#info' => array(
+              'label' => 'Send a mail to an arbitrary mail address',
+              'module' => 'System',
+              'eval input' => array(
+                '0' => 'subject',
+                '1' => 'message',
+                '2' => 'from',
+                '3' => 'to',
+              ),
+            ),
           ),
         ),
         '#version' => 6003,

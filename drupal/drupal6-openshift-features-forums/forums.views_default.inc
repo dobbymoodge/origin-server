@@ -406,7 +406,7 @@ function forums_views_default_views() {
   ));
   $handler->override_option('sitename_title', FALSE);
   $handler = $view->new_display('page', 'Page', 'page');
-  $handler->override_option('path', 'forums');
+  $handler->override_option('path', 'allforums');
   $handler->override_option('menu', array(
     'type' => 'none',
     'title' => 'Forums',
