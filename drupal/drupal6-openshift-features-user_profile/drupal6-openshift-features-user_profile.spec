@@ -5,7 +5,7 @@
 %global modname             user_profile
 
 Name:    drupal%{drupal_release}-openshift-features-%{modname}
-Version: 1.14.3
+Version: 1.14.4
 Release: 1%{?dist}
 Summary: Openshift Red Hat Custom User Profile Feature for Drupal6
 Group:   Applications/Publishing
@@ -41,6 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %{drupal_modules}/%{modname}
 
 %changelog
+* Fri Jun 28 2013 Adam Miller <admiller@redhat.com> 1.14.4-1
+- Drupal feature export from prod server (jforrest@redhat.com)
+
 * Mon Jun 17 2013 Adam Miller <admiller@redhat.com> 1.14.3-1
 - Merge pull request #1578 from smarterclayton/textarea_fonts
   (dmcphers+openshiftbot@redhat.com)
