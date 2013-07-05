@@ -428,7 +428,7 @@ module OpenShiftMigration
             num_tries += 1
           end
 
-          progress.log "Post-migration response code: #{response.code}"
+          progress.log "Post-migration response code: #{timeout ? 'timed out' : response.code}"
         end
 
         problem, status = cart_model.gear_status
