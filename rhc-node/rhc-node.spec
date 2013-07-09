@@ -7,7 +7,7 @@
 
 Summary:       Multi-tenant cloud management system node tools
 Name:          rhc-node
-Version: 1.10.7
+Version: 1.10.8
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       GPLv2
@@ -243,6 +243,10 @@ fi
 
 
 %changelog
+* Tue Jul 09 2013 Adam Miller <admiller@redhat.com> 1.10.8-1
+- Fix nil reference on post-migration response check timeout
+  (ironcladlou@gmail.com)
+
 * Tue Jun 25 2013 Adam Miller <admiller@redhat.com> 1.10.7-1
 - move migration logging to info (dmcphers@redhat.com)
 
