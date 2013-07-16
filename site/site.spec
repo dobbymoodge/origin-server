@@ -8,7 +8,7 @@
 
 Summary:   OpenShift Site Rails application
 Name:      rhc-site
-Version: 1.11.5
+Version: 1.11.6
 Release:   1%{?dist}
 Group:     Network/Daemons
 License:   ASL 2.0
@@ -198,6 +198,14 @@ fi
 %{sitedir}/public
 
 %changelog
+* Tue Jul 16 2013 Adam Miller <admiller@redhat.com> 1.11.6-1
+- Merge pull request #1741 from
+  liggitt/bug_984850_validate_vat_before_upgrading_stage
+  (dmcphers+openshiftbot@redhat.com)
+- Fix bug 984850 - validate VAT before upgrading streamline
+  (jliggitt@redhat.com)
+- Fix bug 984864 - Hide google marketing comment (jliggitt@redhat.com)
+
 * Fri Jul 12 2013 Adam Miller <admiller@redhat.com> 1.11.5-1
 - Merge branch 'master' of github.com:openshift/li into 708dev
   (sgoodwin@redhat.com)
