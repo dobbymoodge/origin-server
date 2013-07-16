@@ -107,15 +107,14 @@ class AccountUpgradesController < ConsoleController
       # Set in case we show :edit again
       @show_vat = Rails.configuration.vies_countries.present? ? :dynamic : false
 
-      # Validate so we see all errors if promotion fails
-      @contact_info.valid?
-      @billing_info.valid?
-
       @full_user = Streamline::FullUser.new(
         {:postal_code => user_params[:aria_billing_info][:zip], :state => user_params[:aria_billing_info][:region]}.
         merge!(user_params[:streamline_full_user]).
         merge!(user_params[:aria_billing_info].slice(:address1, :address2, :address3, :city, :country))
       )
+
+      # Validate first before promoting, so we don't lock bad values in streamline
+      render :edit and return unless @billing_info.valid? and @contact_info.valid?
 
       render :edit and return unless @full_user.promote(user)
     end
