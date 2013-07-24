@@ -12,7 +12,7 @@ module Online
         Rails.logger.debug "DEBUG: Sending to Nurture:application: app_uuid='#{app_uuid}' action='#{action}'"
         # Why curl?  So I could & at the end.  We don't want this blocking requests
         # Please fix if you can :)  - mmcgrath
-        spawn('curl', '-s', '-O', '/dev/null', '-X', 'POST', '-u', "#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}", "#{Rails.configuration.analytics[:nurture][:url]}applications",
+        pid = spawn('curl', '-s', '-O', '/dev/null', '-X', 'POST', '-u', "#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}", "#{Rails.configuration.analytics[:nurture][:url]}applications",
                 '--data-urlencode', "application[action]=#{action}",
                 '--data-urlencode', "application[user_name]=#{login}",
                 '--data-urlencode', "application[user_agent]=#{user_agent}",
@@ -23,6 +23,7 @@ module Online
                 '--data-urlencode', "application[version]=na",
                 '--data-urlencode', "application[components]=#{type}",
                 '--data-urlencode', "application[user_type]=express")
+        Process.detach(pid)
       end
 
       #
@@ -42,14 +43,16 @@ module Online
           data += " --data-urlencode 'application[#{column_name}][#{app_uuid}]=#{column_value}'"
           if count==1000
             curl_cmd = cmd + data
-            spawn(curl_cmd)
+            pid = spawn(curl_cmd)
+            Process.detach(pid)
             data = ""
             count = 0
           end
         }
         if count > 0
           curl_cmd = cmd + data
-          spawn(curl_cmd)
+          pid = spawn(curl_cmd)
+          Process.detach(pid)
         end
       end
 
@@ -61,11 +64,12 @@ module Online
         Rails.logger.debug "DEBUG: Sending to Nurture:application_update: app_uuid='#{app_uuid}' action='#{action}'"
         # Why curl?  So I could & at the end.  We don't want this blocking requests
         # Please fix if you can :)  - mmcgrath
-        spawn("curl -s -O /dev/null -X POST -u '#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}' '#{Rails.configuration.analytics[:nurture][:url]}applications' \
+        pid = spawn("curl -s -O /dev/null -X POST -u '#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}' '#{Rails.configuration.analytics[:nurture][:url]}applications' \
                 --data-urlencode 'application[action]=#{action}' \
                 --data-urlencode 'application[guid]=#{app_uuid}' \
                 --data-urlencode 'application[version]=na' \
                 --data-urlencode 'application[user_type]=express'")
+        Process.detach(pid)
       end
 
       #
@@ -76,12 +80,13 @@ module Online
         Rails.logger.debug "User namespace #{user_namespace}"
         user_namespace = "" if not user_namespace
         Rails.logger.debug "DEBUG: Sending to Nurture:libra_contact: login='#{login}' namespace='#{user_namespace}' action='#{action}'"
-        spawn("curl -s -O /dev/null -X POST -u '#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}' '#{Rails.configuration.analytics[:nurture][:url]}libra_contact' \
+        pid = spawn("curl -s -O /dev/null -X POST -u '#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}' '#{Rails.configuration.analytics[:nurture][:url]}libra_contact' \
                 --data-urlencode 'user_type=express' \
                 --data-urlencode 'user[uuid]=#{uuid}' \
                 --data-urlencode 'user[action]=#{action}' \
                 --data-urlencode 'user[user_name]=#{login}' \
                 --data-urlencode 'user[namespace]=#{user_namespace}'")
+        Process.detach(pid)
       end
     end
   end
