@@ -15,7 +15,7 @@ class PlansController < BaseController
     id = params[:id]
     OpenShift::BillingService.instance.get_plans.each do |key, value|
       return render_success(:ok, "plan",
-                            RestPlan.new(key, value[:name], value[:plan_no], value[:capabilities], value[:usage_rates], get_url, nolinks)) if key == id.to_sym
+                            RestPlan.new(key, value[:name], value[:plan_no], value[:capabilities], value[:usage_rates], get_url, nolinks)) if key.to_s == id
     end
     render_error(:not_found, "Plan not found.", 150)
   end

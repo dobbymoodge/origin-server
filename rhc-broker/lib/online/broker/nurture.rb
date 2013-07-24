@@ -12,17 +12,17 @@ module Online
         Rails.logger.debug "DEBUG: Sending to Nurture:application: app_uuid='#{app_uuid}' action='#{action}'"
         # Why curl?  So I could & at the end.  We don't want this blocking requests
         # Please fix if you can :)  - mmcgrath
-        system("curl -s -O /dev/null -X POST -u '#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}' '#{Rails.configuration.analytics[:nurture][:url]}applications' \
-                --data-urlencode 'application[action]=#{action}' \
-                --data-urlencode 'application[user_name]=#{login}' \
-                --data-urlencode 'application[user_agent]=#{user_agent}' \
-                --data-urlencode 'application[guid]=#{app_uuid}' \
-                --data-urlencode 'application[uuid]=#{user_uuid}' \
-                --data-urlencode 'application[name]=#{app_name}' \
-                --data-urlencode 'application[initial_git_url]=#{init_git_url}' \
-                --data-urlencode 'application[version]=na' \
-                --data-urlencode 'application[components]=#{type}' \
-                --data-urlencode 'application[user_type]=express' &")
+        spawn('curl', '-s', '-O', '/dev/null', '-X', 'POST', '-u', "#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}", "#{Rails.configuration.analytics[:nurture][:url]}applications",
+                '--data-urlencode', "application[action]=#{action}",
+                '--data-urlencode', "application[user_name]=#{login}",
+                '--data-urlencode', "application[user_agent]=#{user_agent}",
+                '--data-urlencode', "application[guid]=#{app_uuid}",
+                '--data-urlencode', "application[uuid]=#{user_uuid}",
+                '--data-urlencode', "application[name]=#{app_name}",
+                '--data-urlencode', "application[initial_git_url]=#{init_git_url}",
+                '--data-urlencode', "application[version]=na",
+                '--data-urlencode', "application[components]=#{type}",
+                '--data-urlencode', "application[user_type]=express")
       end
 
       #
@@ -42,14 +42,14 @@ module Online
           data += " --data-urlencode 'application[#{column_name}][#{app_uuid}]=#{column_value}'"
           if count==1000
             curl_cmd = cmd + data
-            system("#{curl_cmd} &")
+            spawn(curl_cmd)
             data = ""
             count = 0
           end
         }
         if count > 0
           curl_cmd = cmd + data
-          system("#{curl_cmd} &")
+          spawn(curl_cmd)
         end
       end
 
@@ -61,11 +61,11 @@ module Online
         Rails.logger.debug "DEBUG: Sending to Nurture:application_update: app_uuid='#{app_uuid}' action='#{action}'"
         # Why curl?  So I could & at the end.  We don't want this blocking requests
         # Please fix if you can :)  - mmcgrath
-        system("curl -s -O /dev/null -X POST -u '#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}' '#{Rails.configuration.analytics[:nurture][:url]}applications' \
+        spawn("curl -s -O /dev/null -X POST -u '#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}' '#{Rails.configuration.analytics[:nurture][:url]}applications' \
                 --data-urlencode 'application[action]=#{action}' \
                 --data-urlencode 'application[guid]=#{app_uuid}' \
                 --data-urlencode 'application[version]=na' \
-                --data-urlencode 'application[user_type]=express' &")
+                --data-urlencode 'application[user_type]=express'")
       end
 
       #
@@ -76,12 +76,12 @@ module Online
         Rails.logger.debug "User namespace #{user_namespace}"
         user_namespace = "" if not user_namespace
         Rails.logger.debug "DEBUG: Sending to Nurture:libra_contact: login='#{login}' namespace='#{user_namespace}' action='#{action}'"
-        system("curl -s -O /dev/null -X POST -u '#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}' '#{Rails.configuration.analytics[:nurture][:url]}libra_contact' \
+        spawn("curl -s -O /dev/null -X POST -u '#{Rails.configuration.analytics[:nurture][:username]}:#{Rails.configuration.analytics[:nurture][:password]}' '#{Rails.configuration.analytics[:nurture][:url]}libra_contact' \
                 --data-urlencode 'user_type=express' \
                 --data-urlencode 'user[uuid]=#{uuid}' \
                 --data-urlencode 'user[action]=#{action}' \
                 --data-urlencode 'user[user_name]=#{login}' \
-                --data-urlencode 'user[namespace]=#{user_namespace}' &")
+                --data-urlencode 'user[namespace]=#{user_namespace}'")
       end
     end
   end
