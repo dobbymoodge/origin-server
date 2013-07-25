@@ -896,7 +896,7 @@ function daemon_as_user {
         then
             cd "$APP_HOME"
         fi
-        daemon --user="$uuid" runcon -r system_r -t openshift_t -l $mcs_level "$@"
+        daemon --user="$uuid" runcon -u unconfined_u -r system_r -t openshift_t -l $mcs_level "$@"
     )
 }
 
