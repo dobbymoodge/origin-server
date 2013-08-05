@@ -3,6 +3,15 @@
 #
 # rhc-watchman - restart an application that has been killed by cgroups
 # Runs as a daemon and monitors /var/log/messags for notifications of cgroups killing applications 
+#
+# The cgroups throttling subsystem logging can be configured via /etc/openshift/node.conf using
+# the following keys:
+#
+#  WATCHMAN_CGROUPS_LOG_FILE        (default: /var/log/openshift/node/cgroups.log)
+#  WATCHMAN_CGROUPS_LOG_LEVEL       (default: INFO)
+#  WATCHMAN_CGROUPS_TRACE_LOG_FILE  (default: /var/log/openshift/node/cgroups-trace.log)
+#  WATCHMAN_CGROUPS_TRACE_LOG_LEVEL (default: ERROR)
+#
 
 require 'pathname'
 require 'date'
@@ -21,12 +30,22 @@ class Watchman
   ##
   # monitor +message_file+ every +period+ seconds for cgroups kill messages
   def initialize(message_file = '/var/log/messages', period = 20, daemon=true, epoch = DateTime.now, libra_var_lib = '/var/lib/openshift', retries = 10)
-    config = OpenShift::Config.new(nil,{
-      'PLATFORM_LOG_FILE' => File.join(File::SEPARATOR, %w{var log openshift node cgroups.log}),
-      'PLATFORM_TRACE_LOG_FILE' => File.join(File::SEPARATOR, %w{var log openshift node cgroups-trace.log}),
-    })
+    logger_profiles = {
+      :standard => {
+        file_config:   'WATCHMAN_CGROUPS_LOG_FILE',
+        level_config:  'WATCHMAN_CGROUPS_LOG_LEVEL',
+        default_file:  File.join(File::SEPARATOR, %w{var log openshift node cgroups.log}),
+        default_level: Logger::INFO
+      },
+      :trace    => {
+        file_config:   'WATCHMAN_CGROUPS_TRACE_LOG_FILE',
+        level_config:  'WATCHMAN_CGROUPS_TRACE_LOG_LEVEL',
+        default_file:  File.join(File::SEPARATOR, %w{var log openshift node cgroups-trace.log}),
+        default_level: Logger::ERROR
+      }
+    }
 
-    logger = OpenShift::Runtime::NodeLogger::SplitTraceLogger.new(config, OpenShift::Runtime::NodeLogger.context)
+    logger = OpenShift::Runtime::NodeLogger::SplitTraceLogger.new(OpenShift::Config.new, OpenShift::Runtime::NodeLogger.context, logger_profiles)
 
     OpenShift::Runtime::NodeLogger.set_logger(logger)
 
