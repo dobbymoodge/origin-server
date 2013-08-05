@@ -280,7 +280,7 @@ function openshift_pager($tags = array(), $limit = 10, $element = 0, $parameters
 function _openshift_heading(&$vars) {
   global $user;
   $page_title = $vars['title'];
-  $title = $page_title;
+  $title = check_plain($page_title);
   $item = end(menu_get_active_trail());
   #print_r($item);
   if ($vars['forum']['new-topic']) {
@@ -290,11 +290,11 @@ function _openshift_heading(&$vars) {
     $node = $item['page_arguments'][0];
     if ($node->nid == 9435) { // developers page
       $type = "developers";
-      $title = $node->title;
+      $title = check_plain($node->title);
     }
     else {
       $type = $node->type;
-      $title = $node->title;
+      $title = check_plain($node->title);
     }
   }
   elseif ($item['path'] == 'comment/reply/%' && $item['page_arguments'] && $item['page_arguments'][0]) {
@@ -308,13 +308,12 @@ function _openshift_heading(&$vars) {
     $node = $vars['node'];
     $data = menu_tree_all_data($item['menu_name']);
     $data = reset($data);
-    $title = $data['link']['title'];
+    $title = check_plain($data['link']['title']);
   }
   elseif ($item['link_path']) {
     $type = $item['link_path'];
-    $title = $page_title;
     if (empty($title)) {
-      $title = $item['title'];
+      $title = check_plain($item['title']);
     }
   }
   elseif ($item['path'] == 'developers') {
@@ -323,10 +322,10 @@ function _openshift_heading(&$vars) {
   elseif ($item['page_callback'] == 'taxonomy_term_page') {
     if ($term = taxonomy_get_term($item['page_arguments'][0])) {
       if ($term->vid == 4) {
-        $title = "QuickStarts Tagged with '".$term->name."'";
+        $title = "QuickStarts Tagged with '". check_plain($term->name) ."'";
         $vars['head_title'] = $title;
       } else {
-        $title = "Content Tagged with ".$term->name;
+        $title = "Content Tagged with ". check_plain($term->name);
       }
     } else {
       $title = "Tagged Content";
