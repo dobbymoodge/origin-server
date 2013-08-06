@@ -5,7 +5,7 @@
 %global drupal_themename    openshift-theme
 
 Name:           drupal6-%{drupal_themename}
-Version: 3.20.3
+Version: 3.20.4
 Release:        1%{?dist}
 Summary:        Red Hat Openshift theme for Drupal %{drupal_release}
 
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Aug 06 2013 Adam Miller <admiller@redhat.com> 3.20.4-1
+- Bug 990431 - community XSS vulnerability in page header (jforrest@redhat.com)
+
 * Fri Jul 26 2013 Adam Miller <admiller@redhat.com> 3.20.3-1
 - Merge pull request #1765 from
   jwforres/community_login_redirect_with_account_create
