@@ -9,7 +9,7 @@
 
 Summary:       Cloud Development Common
 Name:          rubygem-%{gem_name}
-Version: 1.8.12
+Version: 1.8.13
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -106,6 +106,10 @@ cp bin/man/*.8 %{buildroot}%{_root_mandir}/man8/
 %doc %{gem_docdir}
 
 %changelog
+* Wed Aug 14 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.8.13-1
+- <broker> improve Gemfile loading + bug 993252 (lmeyer@redhat.com)
+- oo-diagnostics: test_node_containerization_plugin (miciah.masters@gmail.com)
+
 * Wed Jul 10 2013 Chris Alfonso <calfonso@redhat.com> 1.8.12-1
 - Add ssl_to_gear option. (mrunalp@gmail.com)
 - origin_runtime_138 - Add SSL_ENDPOINT variable and filter whether carts use
