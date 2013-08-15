@@ -11,8 +11,8 @@
 
 Summary:       OpenShift plugin for remote-user authentication
 Name:          rubygem-%{gem_name}
-Version: 1.8.1
-Release:       1.1%{?dist}
+Version: 1.8.2
+Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
 URL:           http://www.openshift.com
@@ -99,6 +99,10 @@ then
 fi
 
 %changelog
+* Thu Aug 15 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.8.2-1
+- Bug 978660 - KrbLocalUserMapping enables conversion to local users.
+  (jpazdziora@redhat.com)
+
 * Wed Jun 12 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.8.1-1.1
 - Bumping release
 
