@@ -15,7 +15,7 @@
 
 Summary:       The OpenShift Management Console
 Name:          openshift-origin-console
-Version:       1.5.23
+Version:       1.5.24
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
@@ -241,6 +241,10 @@ _EOF
 /sbin/fixfiles -R %{?scl:%scl_prefix}mod_passenger restore
 /sbin/restorecon -R -v /var/run
 %changelog
+* Thu Aug 15 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.5.24-1
+- Bug 978660 - KrbLocalUserMapping enables conversion to local users.
+  (jpazdziora@redhat.com)
+
 * Thu Jul 18 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.5.23-1
 - Bug 985656 - minor improvement for consistency in broker and console spec
   files (bleanhar@redhat.com)
