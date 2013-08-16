@@ -1,6 +1,6 @@
 Summary:       Openshift PAM module
 Name:          pam_openshift
-Version: 1.6.3
+Version: 1.6.4
 Release:       1%{?dist}
 Group:         System Environment/Base
 License:       GPLv2
@@ -41,6 +41,10 @@ install -D -m 644 oo-namespace-init.8 %{buildroot}/%{_mandir}/man8/oo-namespace-
 %attr(0750,root,root) %{_sbindir}/oo-namespace-init
 
 %changelog
+* Fri Aug 16 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.6.4-1
+- Bug 977936, Bug 977938 - /usr/sbin/oo-namespace-init needs a man page
+  (bleanhar@redhat.com)
+
 * Fri Jul 12 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.6.3-1
 - require attr from pam_openshift (calfonso@redhat.com)
 
