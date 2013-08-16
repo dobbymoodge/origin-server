@@ -6,7 +6,7 @@
 %global cartridgedir %{_libexecdir}/openshift/cartridges/v2/ruby
 
 Name:          openshift-origin-cartridge-ruby
-Version:       0.4.10.2
+Version:       0.4.10.3
 Release:       1%{?dist}
 Summary:       Ruby cartridge
 Group:         Development/Languages
@@ -168,6 +168,10 @@ Ruby cartridge for OpenShift. (Cartridge Format V2)
 %doc %{cartridgedir}/LICENSE
 
 %changelog
+* Fri Aug 16 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.10.3-1
+- Bug 981148 - missing facter dependency for cartridge installation
+  (bleanhar@redhat.com)
+
 * Fri Jul 19 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.10.2-1
 - <ruby cart> bug 977918 remove broken symlinks (lmeyer@redhat.com)
 
