@@ -16,7 +16,7 @@
 
 Summary:       OpenShift Origin broker components
 Name:          openshift-origin-broker
-Version:       1.5.7
+Version:       1.5.8
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
@@ -228,6 +228,10 @@ chcon -R -t httpd_var_run_t %{brokerdir}/httpd/run
 /sbin/restorecon -R -v /var/run
 
 %changelog
+* Fri Aug 16 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.5.8-1
+- Bug 986300 - Remove the unused Broker configuration directory
+  (bleanhar@redhat.com)
+
 * Wed Aug 14 2013 Luke Meyer <lmeyer@redhat.com> 1.5.7-1
 - <broker> improve Gemfile loading + bug 993252 (lmeyer@redhat.com)
 - Bug 985656 - minor improvement for consistency in broker and console spec
