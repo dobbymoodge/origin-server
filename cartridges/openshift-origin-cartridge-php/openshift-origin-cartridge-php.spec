@@ -1,8 +1,8 @@
 %global cartridgedir %{_libexecdir}/openshift/cartridges/v2/php
 
 Name:          openshift-origin-cartridge-php
-Version:       0.4.9
-Release:       1.1%{?dist}
+Version:       0.4.9.2
+Release:       1%{?dist}
 Summary:       Php cartridge
 Group:         Development/Languages
 License:       ASL 2.0
@@ -80,6 +80,14 @@ sed -i 's/#DefaultRuntimeDir/DefaultRuntimeDir/g' %{buildroot}%{cartridgedir}/ve
 %doc %{cartridgedir}/LICENSE
 
 %changelog
+* Fri Aug 16 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.9.2-1
+- Bug 981148 - missing facter dependency for cartridge installation
+  (bleanhar@redhat.com)
+
+* Fri Aug 16 2013 Brenton Leanhardt <bleanhar@redhat.com>
+- Bug 981148 - missing facter dependency for cartridge installation
+  (bleanhar@redhat.com)
+
 * Wed Jun 12 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.9-1.1
 - PHP configuration fixes. (mrunalp@gmail.com)
 - Eliminate noisy output from php control script (ironcladlou@gmail.com)
