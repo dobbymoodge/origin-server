@@ -9,7 +9,7 @@
 
 Summary:       Cloud Development Common
 Name:          rubygem-%{gem_name}
-Version: 1.8.14
+Version: 1.8.15
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -106,6 +106,10 @@ cp bin/man/*.8 %{buildroot}%{_root_mandir}/man8/
 %doc %{gem_docdir}
 
 %changelog
+* Fri Aug 16 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.8.15-1
+- Bug 995525 - backporting the 'params' method for OpenShift::Config
+  (bleanhar@redhat.com)
+
 * Thu Aug 15 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.8.14-1
 - Bug 997325 - oo-* admin commands which require 'openshift-origin-common'
   failed to work (bleanhar@redhat.com)
