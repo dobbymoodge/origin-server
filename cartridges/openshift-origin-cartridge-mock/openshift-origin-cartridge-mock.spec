@@ -2,7 +2,7 @@
 
 Summary:       Mock cartridge for V2 Cartridge SDK
 Name:          openshift-origin-cartridge-mock
-Version:       0.4.8
+Version:       0.4.9
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -41,6 +41,10 @@ test platform functionality. (Cartridge Format V2)
 %doc %{cartridgedir}/LICENSE
 
 %changelog
+* Fri Aug 16 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.9-1
+- Bug 981148 - missing facter dependency for cartridge installation
+  (bleanhar@redhat.com)
+
 * Wed Jul 10 2013 Chris Alfonso <calfonso@redhat.com> 0.4.8-1
 - Add ssl_to_gear option. (mrunalp@gmail.com)
 
