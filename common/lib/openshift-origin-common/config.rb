@@ -49,6 +49,10 @@ module OpenShift
       val
     end
 
+    def params                                                                                                 
+      @conf.get_params                                                                                         
+    end
+
     def get_bool(name, default=nil)
       # !! is used to normalise the value to either a 1 (true) or a 0 (false).
       !!(get(name, default) =~ /^(true|t|yes|y|1)$/i)
