@@ -41,11 +41,11 @@ case "$1" in
     ;;
 
   startuser)
-	  /usr/sbin/oo-admin-ctl-cgroups startuser $2
+    /usr/sbin/oo-admin-ctl-cgroups startuser $2
     ;;
 
   stopuser)
-	  /usr/sbin/oo-admin-ctl-cgroups stopuser $2
+    /usr/sbin/oo-admin-ctl-cgroups stopuser $2
     ;;
 
   *)
@@ -53,4 +53,10 @@ case "$1" in
     exit 1
 esac
 
+rc=$?
+if [ $rc -eq 0 ]; then
+   success
+else
+   failure
+fi
 exit $RETVAL
