@@ -16,7 +16,7 @@
 
 Summary:       Cloud Development Node
 Name:          rubygem-%{gem_name}
-Version: 1.9.14.1
+Version: 1.9.14.2
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -304,6 +304,11 @@ fi
 %attr(0755,-,-) /etc/cron.monthly/openshift-origin-cron-monthly
 
 %changelog
+* Tue Aug 20 2013 Chris Alfonso <calfonso@redhat.com> 1.9.14.2-1
+- Bug 985132 - openshift-cgroups service prints to stdout (calfonso@redhat.com)
+- NodeTestCase was pulled in from upstream (from v1 cart elimination
+  refactoring), changing to V2SdkTestCase (jdetiber@redhat.com)
+
 * Wed Jul 24 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.14.1-1
 - Bug 975183, Bug 987726 -  nested submodule repository cannot be found
   (jhonce@redhat.com)
