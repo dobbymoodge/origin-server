@@ -65,7 +65,7 @@ for arg in $kvargs; do
         flock 200
         curr_server_gears[$gear_name]="$ep"
         if grep "server gear-$gear_name" "$haproxy_cfg" > /dev/null 2>&1; then
-            sed -i "/\s*server\s*gear-${gear_name}\s.*/d" $haproxy_cfg
+            sed -i "/\s*server\s*gear-${gear_name}\s.*/d" "$haproxy_cfg"
         fi
 
         echo "    server gear-$gear_name $ep check fall 2 rise 3 inter 2000 cookie $gear_name" >> "$haproxy_cfg"
@@ -79,10 +79,9 @@ done
 srvgears=$(grep -E "server\s*gear" "$haproxy_cfg" |  \
            sed "s/\s*server\s*gear-\([A-Za-z0-9\-]*\)\s.*/\\1/g" | tr "\n" " ")
 flock 200
-cp -f "$haproxy_cfg" /tmp/haproxy.cfg.$$
 for sg in $srvgears; do
     if [ -z "${curr_server_gears[$sg]}" ]; then
-        sed -i "/\s*server\s*gear-$sg\s.*/d" /tmp/haproxy.cfg.$$
+        sed -i "/\s*server\s*gear-$sg\s.*/d" "$haproxy_cfg"
     fi
 done
 
@@ -106,13 +105,11 @@ fi
 local_ep=$local_ip:$local_port
 
 # Enable local endpoint based on number of serving gears.
-if [ $(grep -E "server\s*gear" /tmp/haproxy.cfg.$$ | wc -l) -le 1 ]; then
-    sed -i "/\s*server\s*local-gear\s.*/d" /tmp/haproxy.cfg.$$
-    echo "    server local-gear $local_ep check fall 2 rise 3 inter 2000 cookie local-$OPENSHIFT_GEAR_UUID" >> /tmp/haproxy.cfg.$$
+if [ $(grep -E "server\s*gear" "$haproxy_cfg" | wc -l) -le 1 ]; then
+    sed -i "/\s*server\s*local-gear\s.*/d" "$haproxy_cfg"
+    echo "    server local-gear $local_ep check fall 2 rise 3 inter 2000 cookie local-$OPENSHIFT_GEAR_UUID" >> "$haproxy_cfg"
 fi
 
-cat /tmp/haproxy.cfg.$$ > "$haproxy_cfg"
-rm -f /tmp/haproxy.cfg.$$
 flock -u 200
 
 uuid=$3
