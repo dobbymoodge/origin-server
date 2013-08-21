@@ -85,6 +85,7 @@ User errors:
 191: Specify parameters 'name'/'value' or 'environment_variables'.
 192: Environment name 'X' already exists in application.
 193: Environment variable deletion not allowed for this operation.
+194: Name can only contain letters, digits and underscore and can't begin with a digit.
 210: Can not override existing location for git repo
 211: Parent directory for git repo does not exist
 212: Could not find libra_id_rsa
