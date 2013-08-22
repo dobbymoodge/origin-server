@@ -3,7 +3,7 @@
 
 Summary:   Li broker components
 Name:      rhc-broker
-Version: 1.13.8
+Version: 1.13.9
 Release:   1%{?dist}
 Group:     Network/Daemons
 License:   GPLv2
@@ -155,6 +155,11 @@ if [ ! -f %{_var}/log/openshift/broker/usage.log ]; then
 fi
 
 %changelog
+* Thu Aug 22 2013 Adam Miller <admiller@redhat.com> 1.13.9-1
+- Script to delete all subaccounts that has no activity for at least a week and
+  has no applications for a given parent login or for all parent logins.
+  (rpenta@redhat.com)
+
 * Tue Aug 20 2013 Adam Miller <admiller@redhat.com> 1.13.8-1
 - Merge pull request #1839 from rajatchopra/master (dmcphers@redhat.com)
 - add postrelease mode for datastore migration (rchopra@redhat.com)
