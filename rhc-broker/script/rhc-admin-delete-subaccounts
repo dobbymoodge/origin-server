@@ -28,15 +28,17 @@ def usage
 
 == Usage
 
-#{$0} --all|--login <login_name>|--help [--verbose]
+#{$0} --all|--login <login_name>|--help [--threads] [--verbose]
 
 Options:
 -a|--all
     All OpenShift logins
 -l|--login <login_name>
     Login with OpenShift access
+-t|--threads
+    Number of threads for parallel processing (default: 4)
 -v|--verbose
-    Print information on each subaccount user
+    Print information on each deleted subaccount user
 -h|--help
     Show Usage info
 USAGE
@@ -48,6 +50,7 @@ begin
   opts = GetoptLong.new(
     ["--all",           "-a", GetoptLong::NO_ARGUMENT],
     ["--login",         "-l", GetoptLong::REQUIRED_ARGUMENT],
+    ["--threads",       "-t", GetoptLong::REQUIRED_ARGUMENT],
     ["--verbose",       "-v", GetoptLong::NO_ARGUMENT],
     ["--help",          "-h", GetoptLong::NO_ARGUMENT]
   )
@@ -56,10 +59,15 @@ rescue GetoptLong::Error => e
   usage
 end
 
+MAX_THREADS=16
 $all = args["--all"]
 $login = args["--login"]
+if args["--threads"]
+  $threads = args["--threads"].to_i
+else
+  $threads = 4
+end
 $verbose = args["--verbose"]
-$total_users = $deleted_users = 0
 
 usage if ($login.nil? and $all.nil?) or args["--help"]
 
@@ -68,63 +76,121 @@ if $login and $all
   exit 1
 end
 
+if $threads > MAX_THREADS
+  puts "Error: Max allowed threads is #{MAX_THREADS}."
+  exit 2
+end
+
 require "/var/www/openshift/broker/config/environment"
 
-def delete_subaccounts(cloud_user)
-  $total_users += 1
-  print "Subaccount '#{cloud_user.login}' " if $verbose
-  app_exists = false
-  cloud_user.domains.each do |domain|
-    if domain.applications.count > 0
-      app_exists = true
-      break
-    end if domain.applications
-  end if cloud_user.domains
-  if app_exists
-    print "has apps => Skipped\n" if $verbose
-  else
-    # As of Jun 26, 2013 we do not generate usage records for subaccounts.
-    # For now, these are no-ops
-    UsageRecord.where(user_id: cloud_user._id).delete
-    Usage.where(user_id: cloud_user._id).delete
+week_old_time = Time.now.utc - (7*24*60*60)
+user_hash = {}
+domain_hash = {}
+query = {}
 
-    cloud_user.force_delete
-    $deleted_users += 1
-    print "has NO apps => Deleted\n" if $verbose
+if $login
+  # Find parent login id
+  parent_user_id = nil
+  OpenShift::DataStore.find(:cloud_users, {'login' => $login}, {:fields => []}) do |user|
+    parent_user_id = user['_id']
+  end
+  unless parent_user_id
+    puts "Login '#{$login}' not found."
+    exit 5
+  end 
+
+  query = {'parent_user_id' => parent_user_id, 'updated_at' => {"$lte" => week_old_time}}
+else
+  query = {'parent_user_id' => {"$ne" => nil}, 'updated_at' => {"$lte" => week_old_time}}
+end
+
+# Populate user_hash for subaccounts that need to be deleted
+OpenShift::DataStore.find(:cloud_users, query, {:fields => [], :timeout => false}) do |user|
+  user_hash[user["_id"].to_s] = true
+end
+
+# Populate domain_hash for subaccounts that need to be deleted
+OpenShift::DataStore.find(:domains, {}, {:fields => ['owner_id'], :timeout => false}) do |domain|
+  owner_id = domain["owner_id"].to_s
+  if user_hash[owner_id]
+    domain_hash[domain["_id"].to_s] = owner_id
   end
 end
 
-begin
-  week_old_time = Time.now.utc - (7*24*60*60)
-  query = {}
+# Ignore domains that has valid apps
+OpenShift::DataStore.find(:applications, {}, {:fields => ['domain_id'], :timeout => false}) do |app|
+  domain_id = app['domain_id'].to_s
+  domain_hash.delete(domain_id) if domain_hash[domain_id]
+end
 
-  if $login
-    # Find parent login id
-    parent_user_id = nil
+def delete_subaccounts(tid_info)
+  tid_info['dom_info'].each do |domain_id, user_id|
     begin
-      parent_user_id = CloudUser.find_by(login: $login)._id
-    rescue Mongoid::Errors::DocumentNotFound
-      raise Exception.new "Login '#{$login}' not found."
+      # Mongoid will ensure domain won't get deleted in case of any apps
+      Domain.where(_id: Moped::BSON::ObjectId(domain_id)).delete
+      tid_info['cu_handle'].remove({'_id' => BSON::ObjectId(user_id)})
+      tid_info['deleted_count'] += 1
+      puts "Deleted subaccount domain_id: #{domain_id}, user_id: #{user_id}" if $verbose
+    rescue Mongoid::Errors::DeleteRestriction
+      tid_info['skipped_count'] += 1
+    rescue Exception => e
+      tid_info['failed_count'] += 1
+      Rails.logger.error e.message
+      Rails.logger.error e.backtrace.inspect
     end
-  
-    # Find and delete one week old subaccounts
-    puts "One week old subaccounts for user '#{$login}':" if $verbose
-    query = {'parent_user_id' => parent_user_id, 'updated_at' => {"$lte" => week_old_time}}
-  else
-    query = {'parent_user_id' => {"$ne" => nil}, 'updated_at' => {"$lte" => week_old_time}}
   end
+end
 
-  CloudUser.no_timeout.where(query).each do |cloud_user|
-    delete_subaccounts(cloud_user)
-  end
+tids = []
+tid_info = []
+# Init thread info
+$threads.times do |idx|
+  cu_handle = OpenShift::DataStore.db[:cloud_users]
+  tid_info[idx] = { 'deleted_count' => 0, 'failed_count' => 0, 'skipped_count' => 0,
+                    'cu_handle' => cu_handle, 'dom_info' => {} }
+end
 
-  puts "NO users found." if $verbose and ($total_users == 0)
-  puts
+idx = 0
+# Distribute work among threads
+domain_hash.each do |dk, dv|
+  tid_info[idx]['dom_info'][dk] = dv
+  idx += 1
+  idx = 0 if idx == $threads
+end
+
+tid_info.each do |ti|
+  tids << Thread.new { delete_subaccounts(ti) }
+end
+
+begin
+  tids.each { |tid| tid.join }
+rescue SystemExit, Interrupt
+  tids.each { |tid| tid.kill }
+end
+
+deleted_count = failed_count = skipped_count = 0
+tid_info.each do |ti|
+  deleted_count += ti['deleted_count']
+  failed_count += ti['failed_count']
+  skipped_count += ti['skipped_count']
+end
+total_count = domain_hash.size - skipped_count
+unprocessed_count = total_count - deleted_count - failed_count
+
+puts
+if $login 
+  puts "Summary of one week old subaccounts for user '#{$login}':"
+else
   puts "Summary of one week old subaccounts:"
-  puts "\tTotal   : #{$total_users}"
-  puts "\tDeleted : #{$deleted_users}"
-rescue Exception => e
-  puts e.message
-  exit 1
+end
+puts "\tTotal       : #{total_count}"
+puts "\tDeleted     : #{deleted_count}"
+puts "\tFailed      : #{failed_count}"
+puts "\tUnprocessed : #{unprocessed_count}"
+puts
+if (failed_count == 0) and (unprocessed_count == 0)
+  puts "SUCCESS"
+else
+  puts "INCOMPLETE"
 end
 exit 0
