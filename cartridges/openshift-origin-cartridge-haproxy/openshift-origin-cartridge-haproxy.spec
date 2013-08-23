@@ -6,7 +6,7 @@
 
 Summary:       Provides HA Proxy
 Name:          openshift-origin-cartridge-haproxy
-Version:       0.4.11
+Version:       0.4.12
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
@@ -45,6 +45,9 @@ HAProxy cartridge for OpenShift. (Cartridge Format V2)
 %doc %{cartridgedir}/LICENSE
 
 %changelog
+* Fri Aug 23 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.12-1
+- Bug 928257 - Directly edit haproxy config (jdetiber@redhat.com)
+
 * Mon Aug 12 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.11-1
 - Bug 995004 - maxconn set to 2 for local gear (bleanhar@redhat.com)
 
