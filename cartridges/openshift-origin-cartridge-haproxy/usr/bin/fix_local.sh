@@ -38,12 +38,9 @@ done
 (
  flock -e 200
  echo "Disabling local-gear"
- cp -f $haproxy_cfg /tmp/haproxy.cfg.$$
  ## disable local-gear serving with weight 0.
- sed -i "/\s*server\s*local-gear\s.*/d" /tmp/haproxy.cfg.$$
- echo "    server local-gear $local_ep weight 0" >> /tmp/haproxy.cfg.$$
- cat /tmp/haproxy.cfg.$$ > "$haproxy_cfg"
- rm -f /tmp/haproxy.cfg.$$
+ sed -i "/\s*server\s*local-gear\s.*/d" "$haproxy_cfg"
+ echo "    server local-gear $local_ep weight 0" >> "$haproxy_cfg"
 ) 200>${haproxy_cfg}.lock
 
 # Restart haproxy to pick up the new configuration
