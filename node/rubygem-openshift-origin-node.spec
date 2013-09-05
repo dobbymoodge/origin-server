@@ -16,7 +16,7 @@
 
 Summary:       Cloud Development Node
 Name:          rubygem-%{gem_name}
-Version: 1.9.14.3
+Version: 1.9.14.4
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -304,6 +304,9 @@ fi
 %attr(0755,-,-) /etc/cron.monthly/openshift-origin-cron-monthly
 
 %changelog
+* Thu Sep 05 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.14.4-1
+- Run cron jobs as unconfined_u (rmillner@redhat.com)
+
 * Tue Aug 20 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.14.3-1
 - Bug 999085 - oo-app-state-show calls "get_app_state" on
   OpenShift::ApplicationContainer (bleanhar@redhat.com)
