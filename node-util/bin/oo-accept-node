@@ -339,8 +339,8 @@ def check_cgroup_procs
     verbose("checking cgroups processes")
 
     ### Gather current procs running ###
-    min_uid = $CONF.get('GEAR_MIN_UID').to_i
-    max_uid = $CONF.get('GEAR_MAX_UID').to_i
+    min_uid = ENV['GEAR_MIN_UID'].to_i
+    max_uid = ENV['GEAR_MAX_UID'].to_i
     uid_range = (min_uid..max_uid)
 
     # Need to collect 3 and 4 digit uids since a non-district host could have a 3 digit uid
@@ -351,7 +351,7 @@ def check_cgroup_procs
         uid = uid.to_i
 
         if uid_range.include?(uid)
-            passwd_lines = $USERS.select { |u| u.uid == uid }
+            passwd_lines = users.grep(/:#{uid}:/)
 
             if passwd_lines.empty?
                 do_fail("Process #{pid} is owned by a gear that's no longer on the system, uid: #{uid}")
@@ -389,7 +389,7 @@ def check_cgroup_procs
                     # this fixes both the transient process and the defunct process
                     # detection problems
                     if proc_data.size > 1 && !proc_data.last.strip.end_with?('<defunct>')
-                        user_fail(uuid, "#{uuid} has a process missing from cgroups: #{pid} cgroups controller: #{controller}")
+                        do_fail("#{uuid} has a process missing from cgroups:  #{pid} cgroups controller: #{controller}")
                     end
                 end
             end
