@@ -1,6 +1,6 @@
 Summary:       Utility scripts for the OpenShift Origin broker
 Name:          openshift-origin-node-util
-Version: 1.9.9.2
+Version: 1.9.9.3
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
@@ -126,6 +126,9 @@ mv services/openshift-gears.service %{buildroot}/etc/systemd/system/openshift-ge
 /sbin/restorecon /usr/sbin/oo-restorer* || :
 
 %changelog
+* Fri Sep 06 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.9.3-1
+- <oo-accept-node> Bug 1001151 - oo-accept-node fixes (jdetiber@redhat.com)
+
 * Thu Aug 15 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.9.2-1
 - Bug 997129, Bug 995525 - oo-last-access script chokes on
   /etc/openshift/node.conf with only space in configuration line
