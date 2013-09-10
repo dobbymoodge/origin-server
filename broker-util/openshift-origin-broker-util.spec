@@ -6,7 +6,7 @@
 
 Summary:       Utility scripts for the OpenShift Origin broker
 Name:          openshift-origin-broker-util
-Version: 1.9.10
+Version: 1.9.11
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
@@ -87,6 +87,10 @@ cp man/*.8 %{buildroot}%{_mandir}/man8/
 %{_mandir}/man8/oo-stats.8.gz
 
 %changelog
+* Tue Sep 10 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.11-1
+- Add option to use GSS-TSIG Kerberos credentials to bind.
+  (jpazdziora@redhat.com)
+
 * Wed Jul 24 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.10-1
 - <oo-admin-clear-pending-ops> man page added (lmeyer@redhat.com)
 
