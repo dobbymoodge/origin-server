@@ -1,6 +1,6 @@
 Summary:       Utility scripts for the OpenShift Origin broker
 Name:          openshift-origin-node-util
-Version: 1.9.9.3
+Version: 1.9.9.4
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
@@ -126,6 +126,11 @@ mv services/openshift-gears.service %{buildroot}/etc/systemd/system/openshift-ge
 /sbin/restorecon /usr/sbin/oo-restorer* || :
 
 %changelog
+* Tue Sep 10 2013 Jason DeTiberus <jdetiber@redhat.com> 1.9.9.4-1
+- Merge pull request #132 from detiber/bz1001151 (detiber@gmail.com)
+- <oo-accept-node> Bug 1001151 - Missed some origin/enterprise divergences with
+  the previous fix (jdetiber@redhat.com)
+
 * Fri Sep 06 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.9.3-1
 - <oo-accept-node> Bug 1001151 - oo-accept-node fixes (jdetiber@redhat.com)
 
