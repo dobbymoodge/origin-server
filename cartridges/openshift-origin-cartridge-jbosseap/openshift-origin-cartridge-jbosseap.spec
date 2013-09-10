@@ -4,7 +4,7 @@
 
 Summary:       Provides JBossEAP6.0 support
 Name:          openshift-origin-cartridge-jbosseap
-Version:       2.3.11.1
+Version:       2.3.11.2
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -85,6 +85,10 @@ cp -p %{cartridgedir}/versions/6.0/modules/postgresql_module.xml /etc/alternativ
 %doc %{cartridgedir}/LICENSE
 
 %changelog
+* Tue Sep 10 2013 Brenton Leanhardt <bleanhar@redhat.com> 2.3.11.2-1
+- Bug 1005281, Bug 1004868 - EAP cartridge maps to specific EAP release
+  (bleanhar@redhat.com)
+
 * Mon Jul 22 2013 Brenton Leanhardt <bleanhar@redhat.com> 2.3.11.1-1
 - Bug 986933: add APP_UUID to process (bdecoste@gmail.com)
 
