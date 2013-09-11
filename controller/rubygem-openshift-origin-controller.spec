@@ -9,7 +9,7 @@
 
 Summary:       Cloud Development Controller
 Name:          rubygem-%{gem_name}
-Version: 1.9.16.1
+Version: 1.9.16.2
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -84,6 +84,10 @@ mkdir -p %{buildroot}/etc/openshift/
 %{gem_dir}/doc/%{gem_name}-%{version}
 
 %changelog
+* Wed Sep 11 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.16.2-1
+- Bug 1002919 - scalable app fail to be restarted after upgrade
+  (bleanhar@redhat.com)
+
 * Tue Jul 16 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.16.1-1
 - <controller> bug 983297 test manifest parsing on downloaded cartridge
   #cherrypick (rchopra@redhat.com)
