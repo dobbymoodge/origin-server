@@ -141,7 +141,7 @@ When /^I snapshot the application$/ do
 end
 
 When "I preserve the current snapshot" do
-  assert_file_exists @app.snapshot
+  assert_file_exist @app.snapshot
   tmpdir = Dir.mktmpdir
 
   @saved_snapshot = File.join(tmpdir,File.basename(@app.snapshot))
@@ -160,7 +160,7 @@ When /^I restore the application( from a preserved snapshot)?$/ do |preserve|
   if preserve
     @app.snapshot = @saved_snapshot
   end
-  assert_file_exists @app.snapshot
+  assert_file_exist @app.snapshot
   File.size(@app.snapshot).should > 0
 
   file_list = `tar ztf #{@app.snapshot}`
@@ -246,4 +246,111 @@ end
 
 Then /^the application should not be accessible via node\-web\-proxy$/ do
   @app.is_inaccessible?(60, 8000).should be_true
+end
+
+
+Then /^the application should be assigned to the supplementary groups? "([^\"]*)" as shown by the node's \/etc\/group$/ do | supplementary_groups|
+  added_supplementary_group = supplementary_groups.split(",")
+
+  added_supplementary_group.each do |group|
+    output_buffer = []
+    exit_code = run("cat /etc/group | grep #{group}:x | grep #{@app.uid}", output_buffer)
+    if output_buffer[0] == ""
+      raise "The user for application with uid #{@app.uid} is not assigned to group \'#{group}\'"
+    end
+  end
+end
+
+Then /^the application has the group "([^\"]*)" as a secondary group$/ do |supplementary_group|
+ command = "ssh 2>/dev/null -o BatchMode=yes -o StrictHostKeyChecking=no -tt #{@app.uid}@#{@app.name}-#{@app.namespace}.#{$domain} " +  "groups"
+ $logger.info("About to execute command:'#{command}'")
+ output_buffer=[]
+ exit_code = run(command,output_buffer)
+ raise "Cannot ssh into the application with #{@app.uid}. Running command: '#{command}' returns: \n Exit code: #{exit_code} \nOutput message:\n #{output_buffer[0]}" unless exit_code == 0
+ if !(output_buffer[0].include? supplementary_group)
+   raise "The application with uuid #{@app.uid} is not assigned to group #{supplementary_group}."
+ end
+end
+
+Then /^the haproxy-status page will( not)? be responding$/ do |negate|
+  expected_status = negate ? 1 : 0
+
+  command = "/usr/bin/curl -s -H 'Host: #{@app.name}-#{@app.namespace}.#{$domain}' -s 'http://localhost/haproxy-status/;csv' | /bin/grep -q -e '^stats,FRONTEND'"
+  exit_status = runcon command, 'unconfined_u', 'unconfined_r', 'unconfined_t'
+  exit_status.should == expected_status
+end
+
+Then /^the gear members will be (UP|DOWN)$/ do |state|
+  found = nil
+
+  OpenShift::timeout(120) do
+    while found != 0
+      found = gear_up?("#{@app.name}-#{@app.namespace}.#{$domain}", state)
+      sleep 1
+    end
+  end
+  assert_equal 0, found, "Could not find valid gear"
+end
+
+Then /^(at least )?(\d+) gears will be in the cluster$/ do |fuzzy, expected|
+  expected = expected.to_i
+  actual = 0
+
+  gear_test = lambda { | expected, actual| return actual != expected }
+
+  if fuzzy
+    gear_test = lambda { |expected, actual| return actual < expected }
+  end
+
+
+  host = "'Host: #{@app.name}-#{@app.namespace}.#{$domain}'"
+  OpenShift::timeout(300) do
+    while gear_test.call(expected, actual)
+      sleep 1
+
+      $logger.debug("============ GEAR CSV #{Process.pid} ============")
+      results = `/usr/bin/curl -s -H #{host} -s 'http://localhost/haproxy-status/;csv'`.chomp()
+      $logger.debug(results)
+      $logger.debug("============ GEAR CSV END ============")
+
+      actual = results.split("\n").find_all {|l| l.start_with?('express,gear')}.length() + results.split("\n").find_all {|l| l.start_with?('express,local')}.length()
+      $logger.debug("Gear count: waiting for #{actual} to be #{'at least ' if fuzzy}#{expected}")
+    end
+  end
+
+  assert_equal false, gear_test.call(expected, actual)
+end
+
+def gear_up?(hostname, state='UP')
+  csv = `/usr/bin/curl -s -H 'Host: #{hostname}' -s 'http://localhost/haproxy-status/;csv'`
+  assert $?.success?, "Failed to retrieve haproxy-status results: #{csv}"
+  $logger.debug("============ GEAR CSV #{Process.pid} ============")
+  $logger.debug(csv)
+  $logger.debug('============ GEAR CSV END ============')
+  found = 1
+  csv.split.each do | haproxy_worker |
+
+    worker_attrib_array = haproxy_worker.split(',')
+    if worker_attrib_array[17] and worker_attrib_array[1].to_s == "local-gear" and worker_attrib_array[17].to_s.start_with?(state)
+      $logger.debug("Found: #{worker_attrib_array[1]} - #{worker_attrib_array[17]}")
+      found = 0
+    elsif worker_attrib_array[17] and worker_attrib_array[1].to_s.start_with?('gear') and not worker_attrib_array[17].to_s.start_with?(state)
+      return 1
+    end
+  end
+  $logger.debug("No gears found")
+  return found
+end
+
+When /^JAVA_OPTS_EXT is available$/ do
+  user_vars =  File.join($home_root, @app.uid, '.env', 'user_vars')
+  FileUtils.mkpath(user_vars)
+  env = File.join(user_vars, 'JAVA_OPTS_EXT')
+
+  IO.write(env, '-Dcucumber=true', 0, mode: 'w', perm: 0644)
+end
+
+When /^the jvm is using JAVA_OPTS_EXT$/ do
+  %x(pgrep -fl 'java.*Dcucumber=true')
+  assert_equal(0, $?.exitstatus, 'JAVA_OPTS_EXT is not being used')
 end
