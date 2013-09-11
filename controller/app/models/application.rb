@@ -1002,8 +1002,8 @@ class Application
         tag = sub_inst._id.to_s
 
         sub_ginst.gears.each_index do |idx|
-          break if (sub_inst.is_singleton? && idx > 0)
           gear = sub_ginst.gears[idx]
+          next if (sub_inst.is_singleton? && !gear.host_singletons)
           job = gear.get_unsubscribe_job(sub_inst, pub_cart_name)
           RemoteJob.add_parallel_job(handle, tag, gear, job)
         end
@@ -1033,8 +1033,8 @@ class Application
         tag = conn._id.to_s
   
         pub_ginst.gears.each_index do |idx|
-          break if (pub_inst.is_singleton? && idx > 0)
           gear = pub_ginst.gears[idx]
+          next if (pub_inst.is_singleton? && !gear.host_singletons)
           input_args = [gear.name, self.domain.namespace, gear.uuid]
           job = gear.get_execute_connector_job(pub_inst, conn.from_connector_name, conn.connection_type, input_args)
           RemoteJob.add_parallel_job(handle, tag, gear, job)
@@ -1072,8 +1072,8 @@ class Application
   
           Rails.logger.debug "Output of publisher - '#{pub_out}'"
           sub_ginst.gears.each_index do |idx|
-            break if (sub_inst.is_singleton? && idx > 0)
             gear = sub_ginst.gears[idx]
+            next if (sub_inst.is_singleton? && !gear.host_singletons)
   
             input_args = [gear.name, self.domain.namespace, gear.uuid, input_to_subscriber]
             job = gear.get_execute_connector_job(sub_inst, conn.to_connector_name, conn.connection_type, input_args, pub_inst.cartridge_name)
@@ -1614,10 +1614,8 @@ class Application
   end
   
   def add_component_ops(op_type, component_instance, ops)
-    count = 0
     component_instance.group_instance.gears.each do |gear| 
-      break if component_instance.is_singleton? and count > 0
-      count += 1
+      next if component_instance.is_singleton? and !gear.host_singletons
       op = PendingAppOp.new(op_type: op_type, args: {'group_instance_id' => component_instance.group_instance._id, 'gear_id' => gear._id, 'comp_spec' => {'cart' => component_instance.cartridge_name, 'comp' => component_instance.component_name}})
       ops.push op
     end
