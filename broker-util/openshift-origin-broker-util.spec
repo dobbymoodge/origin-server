@@ -6,7 +6,7 @@
 
 Summary:       Utility scripts for the OpenShift Origin broker
 Name:          openshift-origin-broker-util
-Version: 1.9.11
+Version: 1.9.12
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
@@ -87,6 +87,12 @@ cp man/*.8 %{buildroot}%{_mandir}/man8/
 %{_mandir}/man8/oo-stats.8.gz
 
 %changelog
+* Thu Sep 12 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.12-1
+- Merge pull request #3628 from dobbymoodge/BZ990451-oo-admin-ctl-usage
+  (dmcphers+openshiftbot@redhat.com)
+- Automatic commit of package [openshift-origin-broker-util] release
+  [1.9.11-1]. (jdetiber@redhat.com)
+
 * Tue Sep 10 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.11-1
 - Add option to use GSS-TSIG Kerberos credentials to bind.
   (jpazdziora@redhat.com)
