@@ -3,7 +3,8 @@
 # one remote gear is visible to haproxy or 30 seconds have passed.
 set -x
 rm -f /tmp/fix_local*
-exec &> /tmp/fix_local.$$
+LOGFILE=mktemp /tmp/fix_local.XXXXXX
+exec &> $LOGFILE
 
 prim_cart=$(grep "Cartridge-Short-Name" $OPENSHIFT_PRIMARY_CARTRIDGE_DIR/metadata/manifest.yml | cut -d: -f2 | xargs)
 prim_cart_ip="OPENSHIFT_${prim_cart}_IP"
