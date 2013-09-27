@@ -6,7 +6,7 @@
 
 Summary:       Provides HA Proxy
 Name:          openshift-origin-cartridge-haproxy
-Version:       0.4.13
+Version:       0.4.14
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
@@ -45,6 +45,11 @@ HAProxy cartridge for OpenShift. (Cartridge Format V2)
 %doc %{cartridgedir}/LICENSE
 
 %changelog
+* Fri Sep 27 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.14-1
+- Merge pull request #142 from detiber/bz928257
+  (dmcphers+openshiftbot@redhat.com)
+- <haproxy cart> Bug 928257 - Fix predictable tmp (jdetiber@redhat.com)
+
 * Thu Sep 05 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.13-1
 - Merge pull request #128 from detiber/bz928257
   (dmcphers+openshiftbot@redhat.com)
