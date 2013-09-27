@@ -203,3 +203,131 @@ Then /^an account home directory should( not)? exist$/ do |negate|
   end
 end
 
+And /^the group "([^\"]*)" is added on the node$/ do |group_name|
+  output_buffer=[]
+  command = "groupadd #{group_name}"
+  exit_code = run(command, output_buffer)    
+  if !(output_buffer[0].include? ("already exists")) && exit_code !=0
+     raise "Cannot add group '#{group_name}' to the node. Running '#{command}' returns exit code: #{exit_code} and output: #{output_buffer[0]}"
+  end
+end
+
+And /^the group "([^\"]*)" is deleted from the node$/ do |group_name|
+  output_buffer=[]
+  command = "groupdel #{group_name}"
+  exit_code = run(command, output_buffer)
+  if !(output_buffer[0].include? ("does not exists")) && exit_code !=0
+     raise "Cannot delete group '#{group_name}' from the node. Running '#{command}' returns exit code: #{exit_code} and output: #{output_buffer[0]}"
+  end
+end
+
+#When more than one group is to be added, separate each group with a comma
+#For example: a format for a single group is "foo" and for multiple groups is "foo,group1,group2"
+Then /^the groups? "([^\"]*)" is assigned as supplementary groups? to upcoming new gears on the node$/ do |supplementary_group|
+   filepath="/etc/openshift/node.conf"
+   if File.exists?(filepath)
+    file =  File.open(filepath, 'a')
+    file.write "GEAR_SUPPLEMENTARY_GROUPS=\"#{supplementary_group}\"\n"
+    file.close
+   else
+     raise "Cannot modify file /etc/openshift/node.conf because file does not exist."
+   end
+end
+
+And /^I delete the supplementary group setting from \/etc\/openshift\/node.conf$/ do 
+  output_buffer=[]
+  filepath="/etc/openshift/node.conf"
+  command = "sed -i '\/\\(^GEAR_SUPPLEMENTARY_GROUPS=.*\\)\/d' #{filepath}"
+  exit_code = run(command, output_buffer)
+  if !(output_buffer[0].include? ("does not exists")) && exit_code !=0
+     raise "Cannot delete GEAR_SUPPLEMENTARY_GROUPS setting in file '#{filepath}' from the node. Running '#{command}' returns exit code: #{exit_code} and output: #{output_buffer[0]}"
+  end
+end
+
+# 
+# 
+# Steps that can be used to check applications installed on a server (node)
+#
+
+$home_root = "/var/lib/openshift"
+
+# Convert a unix UID to a hex string suitable for use as a tc(1m) class value
+def netclass uid
+  "%04x" % uid
+end
+
+
+Then /^an account PAM limits file should( not)? exist$/ do |negate|
+  limits_dir = '/etc/security/limits.d'
+  pamfile = "#{limits_dir}/84-#{@account['accountname']}.conf"
+
+  if negate
+    refute_file_exist pamfile
+  else
+    assert_file_exist pamfile
+  end
+end
+
+Then /^the account should( not)? be subscribed to cgroup subsystems$/ do |negate|
+
+  user_cgroup="/openshift/#{@account['accountname']}"
+  test_subsystems = ['cpu', 'cpuacct', 'memory', 'freezer', 'net_cls'].sort
+
+  # Create the list of cgroups to query
+  cmd =  "lscgroup " + test_subsystems.map {|s| "#{s}:#{user_cgroup}"}.join(' ')
+  reply = %x[#{cmd}]
+
+  # This is a horrible bit of cleverness
+  # each group is on one line.  split the lines to an array
+  # extract the subsystem list (before the colon) for each group
+  # split the subsystems on commas (in case there are joined subsystems)
+  # then flatten the list sort and remove duplicates
+  actual = reply.split.map {|s| s[/([^:]+)/,1] }.map {|g| g.split(',')}.flatten.uniq.sort
+
+  if negate then
+    assert_equal 0, actual.length
+  else
+    assert_equal actual, test_subsystems
+  end
+
+end
+
+Then /^selinux labels on the account home directory should be correct$/ do
+  homedir = "#{$home_root}/#{@account['accountname']}"
+  result = `restorecon -v -n #{homedir}`
+  result.should be == "" 
+end
+
+Then /^disk quotas on the account home directory should be correct$/ do
+
+  # EXAMPLE
+  #
+  # no such user
+  # quota: user 00112233445566778899aabbccdde001 does not exist.
+  #
+  # no quotas on user
+  # Disk quotas for user root (uid 0): none
+
+  # Disk quotas for user 00112233445566778899aabbccdde000 (uid 501): 
+  #    Filesystem  blocks   quota   limit   grace   files   quota   limit   grace
+  #     /dev/xvde      24       0  131072               7       0   10000        
+  #    
+
+  result = `quota -u #{@account['accountname']}`
+    
+  result.should_not match /does not exist./
+  result.should_not match /: none\s*\n?/
+  result.should match /Filesystem  blocks   quota   limit   grace   files   quota   limit   grace/
+end
+
+Then /^a traffic control entry should( not)? exist$/ do |negate|
+  acctname = @account['accountname']
+  tc_format = 'tc -s class show dev eth0 classid 1:%s'
+  tc_command = tc_format % (netclass @account['uid'])
+  result = `#{tc_command}`
+  if negate
+    result.should be == ""
+  else
+    result.should_not be == ""
+  end
+end

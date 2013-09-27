@@ -15,6 +15,7 @@ Feature: Cartridge Lifecycle JBossAS Verification Tests
     When the application is changed
     Then it should be updated successfully
     And the application should be accessible
+    And the jvm is using JAVA_OPTS_EXT
 
   Scenario: Application Restarting
     Given an existing jbossas-7 application
