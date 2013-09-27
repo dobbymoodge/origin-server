@@ -2,7 +2,7 @@
 
 Summary:       Provides JBossEWS2.0 support
 Name:          openshift-origin-cartridge-jbossews
-Version:       0.4.10
+Version:       0.4.11
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -76,6 +76,9 @@ alternatives --set jbossews-2.0 /usr/share/tomcat7
 %doc %{cartridgedir}/LICENSE
 
 %changelog
+* Fri Sep 27 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.11-1
+- Bug 1006972 - Backport JAVA_OPTS_EXT for JBoss carts (jdetiber@redhat.com)
+
 * Tue Sep 10 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.10-1
 - Bug 1005281, Bug 1004868 - EAP cartridge maps to specific EAP release
   (bleanhar@redhat.com)
