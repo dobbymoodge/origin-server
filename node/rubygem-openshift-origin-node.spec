@@ -54,6 +54,8 @@ Requires:      python
 Requires:      quota
 Requires:      lsof
 Requires:      rubygem(openshift-origin-common)
+Requires:      unixODBC
+Requires:      unixODBC-devel
 %if 0%{?fedora}%{?rhel} <= 6
 Requires:      libcgroup
 %else
