@@ -1,7 +1,7 @@
 %global cartridgedir %{_libexecdir}/openshift/cartridges/v2/python
 
 Name:          openshift-origin-cartridge-python
-Version:       0.4.8.1
+Version:       0.4.8.2
 Release:       1%{?dist}
 Summary:       Python cartridge
 Group:         Development/Languages
@@ -60,6 +60,10 @@ Python cartridge for OpenShift. (Cartridge Format V2)
 %doc %{cartridgedir}/LICENSE
 
 %changelog
+* Thu Oct 03 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.8.2-1
+- Bug 1014339, Bug 1012721 - no way to use an internal python mirror with
+  python-2.6 cartridges (bleanhar@redhat.com)
+
 * Fri Aug 16 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.4.8.1-1
 - Bug 981148 - missing facter dependency for cartridge installation
   (bleanhar@redhat.com)
