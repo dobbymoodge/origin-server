@@ -54,9 +54,12 @@ function tidy() {
 function build() {
     VIRTENV=$OPENSHIFT_PYTHON_DIR/virtenv
 
-    if `echo $OPENSHIFT_GEAR_DNS | egrep -qe "\.rhcloud\.com"`
-    then
-        OPENSHIFT_PYTHON_MIRROR="-i http://mirror1.ops.rhcloud.com/mirror/python/web/simple"
+    if [ -n "$OPENSHIFT_PYPI_MIRROR_URL" ]; then
+       m=$OPENSHIFT_PYPI_MIRROR_URL
+       if curl -m 15 -f -s "$m" &>/dev/null
+       then
+           mirror_opts="-i $m"
+       fi
     fi
 
     # Run when jenkins is not being used or run when inside a build
@@ -75,7 +78,7 @@ function build() {
         /bin/rm -f lib64
         virtualenv --system-site-packages $VIRTENV
         . ./bin/activate
-        python ${OPENSHIFT_REPO_DIR}setup.py develop $OPENSHIFT_PYTHON_MIRROR
+        python ${OPENSHIFT_REPO_DIR}setup.py develop $mirror_opts
         virtualenv --relocatable $VIRTENV
     fi
 }
