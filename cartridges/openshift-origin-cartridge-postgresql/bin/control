@@ -171,7 +171,14 @@ function cleanup_dump {
 }
 
 function reload {
-  pg_ctl reload
+  if _is_running; then
+    pg_ctl reload
+  else
+    # TODO: client_result is semantically incorrect, but for now,
+    # we'll use it so that CLI can display it.
+    client_error "'reload' is valid only when the database is running"
+    exit 1
+  fi
 }
 
 function tidy {
@@ -202,13 +209,13 @@ case "$1" in
   post-restore)
     post_restore
   ;;
-  reload)
+  reload|force-reload)
     reload
   ;;
   tidy)
     tidy
   ;;
   *)
-    echo 0
+    exit 0
   ;;
 esac
