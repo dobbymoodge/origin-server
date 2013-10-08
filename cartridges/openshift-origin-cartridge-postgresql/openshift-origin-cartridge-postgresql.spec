@@ -7,8 +7,8 @@
 
 Summary:       Provides embedded PostgreSQL support
 Name:          openshift-origin-cartridge-postgresql
-Version:       0.2.7
-Release:       1.1%{?dist}
+Version:       0.2.8
+Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
 URL:           http://www.openshift.com
@@ -69,6 +69,9 @@ Provides PostgreSQL cartridge support to OpenShift. (Cartridge Format V2)
 
 
 %changelog
+* Tue Oct 08 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.2.8-1
+- postgresql cart: Handle reload when stopped (miciah.masters@gmail.com)
+
 * Wed Jun 12 2013 Brenton Leanhardt <bleanhar@redhat.com> 0.2.7-1.1
 - We will not support gdal for Enterprise. (bleanhar@redhat.com)
 
