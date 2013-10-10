@@ -6,7 +6,7 @@
 
 Summary:       Utility scripts for the OpenShift Origin broker
 Name:          openshift-origin-broker-util
-Version: 1.9.12
+Version: 1.9.13
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
@@ -87,6 +87,11 @@ cp man/*.8 %{buildroot}%{_mandir}/man8/
 %{_mandir}/man8/oo-stats.8.gz
 
 %changelog
+* Thu Oct 10 2013 Luke Meyer <lmeyer@redhat.com> 1.9.13-1
+- <oo-accept-broker> smarter checks for ruby bug 1014397 (lmeyer@redhat.com)
+- <oo-admin-move> follow options change on man page bug 1010865
+  (lmeyer@redhat.com)
+
 * Thu Sep 12 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.9.12-1
 - Merge pull request #3628 from dobbymoodge/BZ990451-oo-admin-ctl-usage
   (dmcphers+openshiftbot@redhat.com)
