@@ -6,7 +6,7 @@
 
 Summary:       Utility scripts for the OpenShift Origin broker
 Name:          openshift-origin-broker-util
-Version: 1.9.14
+Version: 1.9.15
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
@@ -87,6 +87,9 @@ cp man/*.8 %{buildroot}%{_mandir}/man8/
 %{_mandir}/man8/oo-stats.8.gz
 
 %changelog
+* Thu Oct 31 2013 Luke Meyer <lmeyer@redhat.com> 1.9.15-1
+- <oo-admin-chk> test for node hostname changes (lmeyer@redhat.com)
+
 * Thu Oct 10 2013 Luke Meyer <lmeyer@redhat.com> 1.9.14-1
 - <oo-accept-systems> prefer oo-admin-broker-cache command (lmeyer@redhat.com)
 - Merge pull request #147 from Miciah/bug-1007700-oo-accept-broker-and-oo-
