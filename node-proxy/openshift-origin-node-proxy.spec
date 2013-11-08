@@ -16,7 +16,7 @@ Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
 URL:           http://www.openshift.com
-Source0:       http://mirror.openshift.com/pub/openshift-origin/source/%{pkg_name}/%{pkg_name}-%{version}.tar.gz
+Source0:       http://mirror.openshift.com/pub/openshift-origin/source/%{name}/%{name}-%{version}.tar.gz
 Requires:      %{?scl:%scl_prefix}nodejs
 Requires:      %{?scl:%scl_prefix}nodejs-async
 Requires:      %{?scl:%scl_prefix}nodejs-optimist
@@ -41,7 +41,7 @@ This package contains a routing proxy (for handling HTTP[S] and Websockets
 traffic) for an OpenShift Origin node.
 
 %prep
-%setup -q -n %{pkg_name}-%{version}
+%setup -q 
 
 %build
 
