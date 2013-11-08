@@ -25,9 +25,9 @@
 # Check that networking is up.
 [ "$NETWORKING" = "no" ] && exit 0
 
-nodesysmodulespath="/usr/lib/node_modules"
+nodesysmodulespath="/opt/rh/nodejs010/root/usr/lib/node_modules"
 cfgfile="/etc/openshift/web-proxy-config.json"
-nodeserver="/usr/lib/node_modules/openshift-node-web-proxy/bin/web-proxy.js"
+nodeserver="${nodesysmodulespath}/openshift-node-web-proxy/bin/web-proxy.js"
 cmd="node-supervisor -w $nodeserver -- $nodeserver --config $cfgfile"
 prog="web-proxy"
 lockfile="/var/lock/subsys/node-web-proxy"
@@ -39,9 +39,15 @@ start() {
     echo -n $"Starting node-web-proxy: "
     chown apache.apache /var/log/node-web-proxy/*.log >/dev/null 2>&1 || :
     export NODE_PATH="$nodesysmodulespath"
-    nohup $cmd &> $logfile &
-    echo $! > $pidfile
-    retval=$?
+    nohup scl enable nodejs010 "$cmd" &> $logfile &
+
+    for i in {1..30}; do
+      pgrep -u 0 -f bin/node-supervisor > $pidfile
+      retval=$?
+      [ $retval -eq 0 ] && break
+      sleep 1
+    done
+
     [ $retval -eq 0 ] && touch $lockfile && echo_success
     echo
     return $retval
@@ -52,8 +58,7 @@ stop() {
     killproc -p $pidfile $prog 
     retval=$?
     # If pid's whacked, we need to send a HUP.
-    pids=$(ps -U root -opid,args | grep "$nodeserver" | grep -v 'grep' |   \
-                                   awk '{print $1}' | tr '\n' ' ')
+    pids=$(/usr/bin/pgrep -f $nodeserver)
     if [ -n "$pids" ]; then
        kill -HUP $pids
        retval=$?
