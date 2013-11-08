@@ -1,3 +1,4 @@
+@not-enterprise
 @broker_api
 @broker_api1
 Feature: quickstarts
