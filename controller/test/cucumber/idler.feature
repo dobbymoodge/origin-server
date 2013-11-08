@@ -6,7 +6,6 @@ Feature: Explicit idle/restore checks
 
     Scenarios:
       | type         | proc_name |
-      | nodejs-0.6   | node      |
       | ruby-1.9     | httpd     |
 
   @rhel-only
@@ -16,7 +15,6 @@ Feature: Explicit idle/restore checks
     Scenarios:
       | type         | proc_name |
       | perl-5.10    | httpd     |
-      | jbossas-7    | java      |
       | jbosseap-6.0 | java      |
       | jbossews-1.0 | java      |
       | ruby-1.8     | httpd     |
@@ -36,7 +34,6 @@ Feature: Explicit idle/restore checks
     Given a new <type> application with <proc_name> process, verify that it can be restored after idling
     Scenarios:
       | type         | proc_name |
-      | nodejs-0.6   | node      |
       | ruby-1.9     | httpd     |
 
   @rhel-only
@@ -45,7 +42,6 @@ Feature: Explicit idle/restore checks
     Scenarios:
       | type         | proc_name |
       | perl-5.10    | httpd     |
-      | jbossas-7    | java      |
       | jbosseap-6.0 | java      |
       | jbossews-1.0 | java      |
       | ruby-1.8     | httpd     |
@@ -64,7 +60,6 @@ Feature: Explicit idle/restore checks
     Given a new <type> application with <proc_name> process, verify that it can be auto-restored after idling
     Scenarios:
       | type         | proc_name |
-      | nodejs-0.6   | node      |
       | ruby-1.9     | httpd     |
 
   @rhel-only
@@ -73,7 +68,6 @@ Feature: Explicit idle/restore checks
     Scenarios:
       | type         | proc_name |
       | perl-5.10    | httpd     |
-      | jbossas-7    | java      |
       | jbosseap-6.0 | java      |
       | jbossews-1.0 | java      |
       | ruby-1.8     | httpd     |

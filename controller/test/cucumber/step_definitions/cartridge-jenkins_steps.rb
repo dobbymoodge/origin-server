@@ -46,7 +46,7 @@ When /^I push an update to the diy application$/ do
     assert_not_nil @diy_git_url, "Failed to find Git URL for diy application"
 
     FileUtils.rm_rf 'diy' if File.exists? 'diy'
-    assert_directory_not_exists 'diy'
+    refute_directory_exist 'diy'
 
     git_dir = "/tmp/rhc/diy_jenkins"
     FileUtils.rm_rf git_dir if File.exists? git_dir
@@ -55,7 +55,7 @@ When /^I push an update to the diy application$/ do
     exit_code = run "git clone #{@diy_git_url} #{git_dir}"
     assert_equal 0, exit_code, "Failed to clone diy repo"
 
-    Dir.chdir("diy") do
+    Dir.chdir(git_dir) do
       exit_code = run "sed -i 's/Welcome to OpenShift/Jenkins Builder Testing/' diy/index.html"
       assert_equal 0, exit_code, "Failed to update diy/index.html"
 
