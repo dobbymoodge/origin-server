@@ -7,6 +7,7 @@
   %global scl_prefix nodejs010-
   %global webproxymoduledir /opt/rh/nodejs010/root%{nodejs_sitelib}/openshift-node-web-proxy
 %endif
+%{!?scl:%global pkg_name %{name}}
 
 Summary:       Routing proxy for OpenShift Origin Node
 Name:          openshift-origin-node-proxy
