@@ -396,16 +396,16 @@ class OODiag
     # don't much care if resolution is correct; what we want
     # is to avoid running a bunch more tests when the nameserver
     # is obviously broken.
-    command = "host -W 1 do-not-expect-to-resolve. #{server}"
+    command = "host -W 1 example.com. #{server}"
     # IPSocket.getaddress goes through /etc/hosts;
     # "host" uses DNS which is what we want.
     output = `#{command} 2>&1`
-    unless output =~ /NXDOMAIN/
+    if output =~ /connection timed out/
       do_fail <<-"FAIL"
         #{server} doesn't appear to respond to DNS requests.
         This command:
           #{command}
-        should have returned NXDOMAIN to the request.
+        should have connected to your primary nameserver.
         Instead, it returned:
           #{output}
         Please check the following to resolve this issue:
@@ -413,7 +413,7 @@ class OODiag
         * Is your nameserver running?
         * Is the firewall on your nameserver open (udp:53)?
         * Can you connect to your nameserver?
-        Not much is going to work without DNS resolution.
+        Many OpenShift functions fail without working DNS resolution.
       FAIL
       abort_tests
     end
@@ -1188,6 +1188,30 @@ class OODiag
       ROGUES
     end
   end
+
+  def test_yum_configuration
+    if system "command -v oo-admin-yum-validator >& /dev/null"
+      output = `oo-admin-yum-validator --report-all 2>&1`
+      $?.success? or do_warn <<-YUM 
+        oo-admin-yum-validator reported some possible problems
+        with your package source configuration:
+--------------------------------------------------------------
+      #{output}
+--------------------------------------------------------------
+        Incorrect package source configuration could lead to
+        failure to install the correct RPMs.
+      YUM
+    elsif @project_is[:enterprise]
+      do_warn <<-YUM
+        oo-admin-yum-validator is not installed. Please install with:
+          yum install openshift-enterprise-release-2.0
+        This tool helps validate and fix your package source
+        configuration. Incorrect configuration could lead to
+        failure to install the correct RPMs.
+      YUM
+    end
+  end
+
 end #class OODiag
 
 
