@@ -9,7 +9,7 @@
 
 Summary:       Cloud Development Common
 Name:          rubygem-%{gem_name}
-Version: 1.8.15
+Version: 1.8.16
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -106,6 +106,11 @@ cp bin/man/*.8 %{buildroot}%{_root_mandir}/man8/
 %doc %{gem_docdir}
 
 %changelog
+* Mon Dec 16 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.8.16-1
+- <oo-diagnostics> loosen DNS test - bug 1033701 (lmeyer@redhat.com)
+- <oo-diagnostics> validate yum conf if possible - bug 1031686
+  (lmeyer@redhat.com)
+
 * Fri Aug 16 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.8.15-1
 - Bug 995525 - backporting the 'params' method for OpenShift::Config
   (bleanhar@redhat.com)
