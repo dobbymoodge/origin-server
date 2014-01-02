@@ -219,22 +219,24 @@ class OODiag
 
   def load_broker_rails_env
     begin
+      verbose "Loading the broker rails environment."
       require "/var/www/openshift/broker/config/environment"
       # Disable analytics for admin scripts
       Rails.configuration.analytics[:enabled] = false
       Rails.configuration.msg_broker[:rpc_options][:disctimeout] = @options[:wait]
+    rescue Interrupt
+      raise
     rescue Exception => e
       do_fail <<-"FAIL"
-        Broker application failed to load. This is most likely a gem
-        dependency problem. Update rubygem RPMs and restart openshift-broker
-        to regenerate the broker Gemfile.lock - this may fix the problem.
-        Another possibility is that you are running this script with a
-        different ruby than what is required for the broker app (1.8 vs 1.9).
+        Broker application failed to load. This is often a gem dependency problem.
+        Updating rubygem RPMs and restarting openshift-broker
+        to regenerate the broker Gemfile.lock may fix the problem.
+        The actual error encountered was:
+        #{e.inspect}
         ***
         THIS PROBLEM NEEDS TO BE RESOLVED FOR THE BROKER TO WORK.
         DISABLING BROKER TESTS.
         ***
-        The error was: #{e.inspect}
       FAIL
       @is_broker = false
     end
@@ -1204,7 +1206,7 @@ class OODiag
     elsif @project_is[:enterprise]
       do_warn <<-YUM
         oo-admin-yum-validator is not installed. Please install with:
-          yum install openshift-enterprise-release-2.0
+          yum install openshift-enterprise-release
         This tool helps validate and fix your package source
         configuration. Incorrect configuration could lead to
         failure to install the correct RPMs.
@@ -1259,21 +1261,26 @@ if __FILE__ == $0
   end
   options[:tests] = ARGV
 
-  #
-  # execute
-  #
-  o = OODiag.new(options)
-  o.run_setup
-  warns, errors = o.run_tests
+  begin
+    #
+    # execute
+    #
+    o = OODiag.new(options)
+    o.run_setup
+    warns, errors = o.run_tests
 
-  #
-  # summarize
-  #
-  o.wputs "#{warns} WARNINGS" if warns > 0
-  if errors > 0
-    o.eputs "#{errors} ERRORS"
-  else
-    puts "NO ERRORS"
+    #
+    # summarize
+    #
+    o.wputs "#{warns} WARNINGS" if warns > 0
+    if errors > 0
+      o.eputs "#{errors} ERRORS"
+    else
+      puts "NO ERRORS"
+    end
+    exit errors
+  rescue Interrupt
+    puts "\nExiting due to user interrupt (^C)."
+    exit 1
   end
-  exit errors
 end
