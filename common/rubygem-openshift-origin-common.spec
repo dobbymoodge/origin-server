@@ -9,7 +9,7 @@
 
 Summary:       Cloud Development Common
 Name:          rubygem-%{gem_name}
-Version: 1.8.16
+Version: 1.8.17
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -106,6 +106,12 @@ cp bin/man/*.8 %{buildroot}%{_root_mandir}/man8/
 %doc %{gem_docdir}
 
 %changelog
+* Thu Jan 02 2014 Luke Meyer <lmeyer@redhat.com> 1.8.17-1
+- <oo-diagnostics> OSE version-agnostic - bug 1043340 (lmeyer@redhat.com)
+- <oo-diagnostics> rewording around broker failure #cherrypick
+  (lmeyer@redhat.com)
+- <oo-diagnostics> handle ^C more cleanly #cherrypick (lmeyer@redhat.com)
+
 * Mon Dec 16 2013 Brenton Leanhardt <bleanhar@redhat.com> 1.8.16-1
 - <oo-diagnostics> loosen DNS test - bug 1033701 (lmeyer@redhat.com)
 - <oo-diagnostics> validate yum conf if possible - bug 1031686
