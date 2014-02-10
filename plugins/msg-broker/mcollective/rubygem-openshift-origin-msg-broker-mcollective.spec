@@ -10,7 +10,7 @@
 
 Summary:       OpenShift plugin for mcollective service
 Name:          rubygem-%{gem_name}
-Version: 1.17.5
+Version: 1.17.6
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -85,6 +85,12 @@ sed -i -e "s|\(/etc/mcollective/client.cfg\)|%{scl_root}/\1|" %{buildroot}/etc/o
 %attr(0644,-,-) %ghost %{?scl:%scl_root}/etc/mcollective/client.cfg
 
 %changelog
+* Mon Feb 10 2014 Brenton Leanhardt <bleanhar@redhat.com> 1.17.6-1
+- Merge pull request #228 from brenton/BZ1056394
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 1049044, Bug 1056394: Creating a single sshkey for each scalable
+  application (abhgupta@redhat.com)
+
 * Mon Feb 10 2014 dobbymoodge <jolamb@redhat.com> 1.17.5-1
 - Bug 1056394 - --with-initial-deployment-dir only applies to gear creation
   (bleanhar@redhat.com)
