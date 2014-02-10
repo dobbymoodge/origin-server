@@ -9,7 +9,7 @@
 
 Summary:       Cloud Development Controller
 Name:          rubygem-%{gem_name}
-Version: 1.17.12.2
+Version: 1.17.12.3
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -85,6 +85,10 @@ mkdir -p %{buildroot}/etc/openshift/
 %{gem_dir}/doc/%{gem_name}-%{version}
 
 %changelog
+* Mon Feb 10 2014 Brenton Leanhardt <bleanhar@redhat.com> 1.17.12.3-1
+- Bug 1049044, Bug 1056394: Creating a single sshkey for each scalable
+  application (abhgupta@redhat.com)
+
 * Mon Feb 10 2014 dobbymoodge <jolamb@redhat.com> 1.17.12.2-1
 - fix bz1036507, Bug 1062844 - improve error message (rchopra@redhat.com)
 - <broker> RFE 1057153: enable customizing default app templates
