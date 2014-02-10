@@ -12,7 +12,7 @@
 
 Summary:       Cloud Development Node
 Name:          rubygem-%{gem_name}
-Version: 1.17.5.9
+Version: 1.17.5.10
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -271,6 +271,18 @@ fi
 %attr(0755,-,-) /etc/cron.daily/openshift-origin-stale-lockfiles
 
 %changelog
+* Mon Feb 10 2014 Brenton Leanhardt <bleanhar@redhat.com> 1.17.5.10-1
+- Bug 1056394 - Fixing essentials test (dmcphers@redhat.com)
+- Bug 1056394 - rsync private key over to new proxy gears (rchopra@redhat.com)
+- Bug 1056394 - Adding a unit test (bleanhar@redhat.com)
+- Bug 1056394 - First pass at avoiding deployment dir create on app moves
+  (bleanhar@redhat.com)
+- Node Platform - Optionally generate application key (jhonce@redhat.com)
+- Merge pull request #224 from detiber/fixExtendedTest
+  (dmcphers+openshiftbot@redhat.com)
+- <extended tests> Fix extended test failure from backported test changes.
+  (jdetiber@redhat.com)
+
 * Thu Feb 06 2014 dobbymoodge <jolamb@redhat.com> 1.17.5.9-1
 - version bump to leapfrog conflicting tag from origin-server
   (jolamb@redhat.com)
