@@ -6,10 +6,11 @@ Description: Web based MySQL admin tool. Requires the MySQL cartridge to be inst
 Version: '4'
 License: GPLv2
 Vendor: Red Hat
-Cartridge-Version: 0.0.6.1
+Cartridge-Version: 0.0.6.2
 Compatible-Versions:
 - 0.0.5
 - 0.0.6
+- 0.0.6.1
 Cartridge-Vendor: redhat
 Website: http://www.phpmyadmin.net/
 Categories:
