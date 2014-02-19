@@ -2,7 +2,7 @@
 %global httpdconfdir /etc/openshift/cart.conf.d/httpd/python
 
 Name:          openshift-origin-cartridge-python
-Version: 1.17.8
+Version: 1.17.8.1
 Release:       1%{?dist}
 Summary:       Python cartridge
 Group:         Development/Languages
@@ -115,6 +115,10 @@ Python cartridge for OpenShift. (Cartridge Format V2)
 %doc %{cartridgedir}/LICENSE
 
 %changelog
+* Wed Feb 19 2014 Luke Meyer <lmeyer@redhat.com> 1.17.8.1-1
+- httpd carts: bump cartridge versions (lmeyer@redhat.com)
+- httpd cartridges: OVERRIDE with custom httpd conf (lmeyer@redhat.com)
+
 * Thu Feb 06 2014 Brenton Leanhardt <bleanhar@redhat.com> 1.17.8-1
 - <httpd carts> bug 1054916: ensure extra httpd conf dirs exist #cherrypick
   (lmeyer@redhat.com)
