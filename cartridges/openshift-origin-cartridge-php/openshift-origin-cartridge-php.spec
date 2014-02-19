@@ -3,7 +3,7 @@
 %global httpdconfdir /etc/openshift/cart.conf.d/httpd/php
 
 Name:          openshift-origin-cartridge-php
-Version: 1.17.3.3
+Version: 1.17.3.4
 Release:       1%{?dist}
 Summary:       Php cartridge
 Group:         Development/Languages
@@ -78,6 +78,10 @@ rm %{buildroot}%{cartridgedir}/metadata/manifest.yml.*
 
 
 %changelog
+* Wed Feb 19 2014 Luke Meyer <lmeyer@redhat.com> 1.17.3.4-1
+- httpd carts: bump cartridge versions (lmeyer@redhat.com)
+- httpd cartridges: OVERRIDE with custom httpd conf (lmeyer@redhat.com)
+
 * Thu Feb 06 2014 Brenton Leanhardt <bleanhar@redhat.com> 1.17.3.3-1
 - Modify PHP stop() to skip httpd stop when the process is already dead
   #cherrypick (hripps@redhat.com)
