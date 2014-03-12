@@ -12,7 +12,7 @@
 
 Summary:       Cloud Development Node
 Name:          rubygem-%{gem_name}
-Version: 1.17.5.11
+Version: 1.17.5.12
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -272,6 +272,10 @@ fi
 %attr(0755,-,-) /etc/cron.daily/openshift-origin-stale-lockfiles
 
 %changelog
+* Wed Mar 12 2014 Brenton Leanhardt <bleanhar@redhat.com> 1.17.5.12-1
+- Bug 1075767 - The broker and node now both require openshift-enterprise-
+  release (bleanhar@redhat.com)
+
 * Wed Feb 12 2014 Brenton Leanhardt <bleanhar@redhat.com> 1.17.5.11-1
 - Merge remote-tracking branch 'origin/enterprise-2.0' into enterprise-2.0
   (bleanhar@redhat.com)
