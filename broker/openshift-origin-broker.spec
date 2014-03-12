@@ -22,6 +22,7 @@ Group:         Network/Daemons
 License:       ASL 2.0
 URL:           http://www.openshift.com
 Source0:       http://mirror.openshift.com/pub/openshift-origin/source/%{name}/%{name}-%{version}.tar.gz
+Requires:      openshift-enterprise-release >= 2.0
 Requires:      httpd
 # TODO: We need to audit these requirements.  Some of these are likely not hard
 # requirements.
