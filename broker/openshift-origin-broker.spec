@@ -16,7 +16,7 @@
 
 Summary:       OpenShift Origin broker components
 Name:          openshift-origin-broker
-Version:       1.15.3.3
+Version:       1.15.3.4
 Release:       1%{?dist}
 Group:         Network/Daemons
 License:       ASL 2.0
@@ -278,6 +278,10 @@ chcon -R -t httpd_var_run_t %{brokerdir}/httpd/run
 /sbin/restorecon -R -v /var/run
 
 %changelog
+* Wed Mar 12 2014 Brenton Leanhardt <bleanhar@redhat.com> 1.15.3.4-1
+- Bug 1075767 - The broker and node now both require openshift-enterprise-
+  release (bleanhar@redhat.com)
+
 * Mon Feb 10 2014 dobbymoodge <jolamb@redhat.com> 1.15.3.3-1
 - <broker func tests> for custom default templates - RFE 1057153
   (lmeyer@redhat.com)
