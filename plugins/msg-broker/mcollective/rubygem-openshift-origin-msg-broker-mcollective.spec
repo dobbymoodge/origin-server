@@ -10,7 +10,7 @@
 
 Summary:       OpenShift plugin for mcollective service
 Name:          rubygem-%{gem_name}
-Version: 1.17.7
+Version: 1.17.8
 Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
@@ -85,6 +85,9 @@ sed -i -e "s|\(/etc/mcollective/client.cfg\)|%{scl_root}/\1|" %{buildroot}/etc/o
 %attr(0644,-,-) %ghost %{?scl:%scl_root}/etc/mcollective/client.cfg
 
 %changelog
+* Fri Mar 14 2014 Brenton Leanhardt <bleanhar@redhat.com> 1.17.8-1
+- Fix for bug 1047957, 1073604 (abhgupta@redhat.com)
+
 * Thu Mar 13 2014 Brenton Leanhardt <bleanhar@redhat.com> 1.17.7-1
 - Bug 1039641, Bug 1073604 - ApplicationsController#create
   raisedMCollective::DDLValidationError: Cannot validate input uid: value
