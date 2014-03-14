@@ -1213,8 +1213,7 @@ module MCollective
       # Returns whether a uid or gid is already reserved on the system
       #
       def has_uid_or_gid_action
-        validate :uid, /^[0-9]+$/
-        uid  = request[:uid].to_i
+        uid  = request[:uid]
 
         begin
           Etc.getpwuid(uid)
