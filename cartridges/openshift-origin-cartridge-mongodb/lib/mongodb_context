@@ -6,24 +6,21 @@ function update_configuration {
     set +u
     if [[ -f /usr/bin/scl ]] && /usr/bin/scl -l | grep -q 'mongodb24'
     then
-        local path_tail="/root/usr/bin"
         local pe=""
-        local scls=( $(/usr/bin/scl enable mongodb24 "printenv X_SCLS") )
         local env_dir="${OPENSHIFT_MONGODB_DIR}/env"
 
-        for collection in ${scls[*]}
-        do
-            pe+="$(cat /etc/scl/prefixes/${collection})/${collection}${path_tail}"
-            if [[ $collection != ${scls[${#scls[@]}-1]} ]]
-            then
-                pe+=":"
-            fi
-        done
-        set_env_var 'OPENSHIFT_MONGODB_PATH_ELEMENT' $pe $env_dir
-
+        local syspath="/bin:/usr/bin"
+        local sclpath=$(PATH="$syspath" scl enable mongodb24 'printenv PATH')
+        pe="${sclpath%:$syspath}"
+        if [[ -n "${pe}" ]]
+        then
+            set_env_var 'OPENSHIFT_MONGODB_PATH_ELEMENT' "${pe}" $env_dir
+        fi
         local ld_path=$(LD_LIBRARY_PATH="" /usr/bin/scl enable mongodb24 "printenv LD_LIBRARY_PATH")
-        set_env_var 'OPENSHIFT_MONGODB_LD_LIBRARY_PATH_ELEMENT' ${ld_path:-:} $env_dir
-
+        if [[ -n "${ld_path}" ]]
+        then
+            set_env_var 'OPENSHIFT_MONGODB_LD_LIBRARY_PATH_ELEMENT' "${ld_path}" $env_dir
+        fi
         local man_path=$(MANPATH="" /usr/bin/scl enable mongodb24 "printenv MANPATH")
         path_append ${MANPATH:-:} ${man_path:-:} > ${env_dir}/MANPATH
     fi
